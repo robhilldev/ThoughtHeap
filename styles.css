@@ -1,0 +1,48 @@
+body {
+  margin: auto;
+  background-color: lightgray;
+}
+
+h1 {
+  text-align: center;
+}
+
+form {
+  margin: 5%;
+  margin-bottom: 3rem;
+}
+
+form input#text-to-add {
+  width: 80%;
+  height: 2rem;
+  float: left;
+}
+
+form input#form-button {
+  width: 15%;
+  height: 2.33rem;
+  float: right;
+}
+
+ul#list {
+  margin: 5%;
+  padding-left: 0%;
+  list-style-position: inside;
+  list-style-type: circle;
+}
+
+li {
+  margin-bottom: 3vh;
+  padding: 1.5%;
+  word-wrap: break-word;
+  border-style: solid;
+  border-color: lightgreen;
+  border-width: .2vh;
+  border-radius: 0.25vh;
+  background-color: #d1ffd1;
+}
+
+button#remove-button {
+  width: 7.5%;
+  float: right;
+}

@@ -4,64 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vanilla JS List App</title>
-  <style>
-    li {
-      margin-bottom: 3vh;
-      padding: 1.5%;
-      word-wrap: break-word;
-      border-style: solid;
-      border-color: lightgreen;
-      border-width: .2vh;
-      border-radius: 0.25vh;
-      background-color: #d1ffd1;
-    }
-    button#remove-button {
-      width: 7.5%;
-      float: right;
-    }
-  </style>
-  <script>
-    const addListItem = () => {
-      event.preventDefault();
-
-      let newLi = document.createElement("li");
-      let textToAdd = document.getElementById("text-to-add");
-      
-      if (textToAdd.value) {
-        newLi.innerHTML = textToAdd.value;
-        newLi.insertAdjacentHTML(
-          "beforeend",
-          " <button id='remove-button' onclick='this.parentElement.remove()'>-</button>"
-        );
-        document.getElementById("list").appendChild(newLi);
-        textToAdd.value= "";
-      }
-    }
-  </script>
+  <link rel="stylesheet" href="styles.css">
+  <script src="main.js" async></script>
 </head>
-<body style="margin: auto; background-color: lightgray;">
-  <h1 style="text-align: center;">My List</h1>
+<body>
+  <h1>My List</h1>
 
-  <form style="margin: 5%; margin-bottom: 3rem;">
+  <form>
     <label for="text-to-add"></label>
-    <input
-      id="text-to-add"
-      style="width: 80%; height: 2rem; float: left;"
-      type="text"
-    >
-    <input
-      style="width: 15%; height: 2.33rem; float: right;"
-      type="submit"
-      value="+"
-      onclick="addListItem()"
-    >
+    <input id="text-to-add" type="text">
+    <input id="form-button" type="submit" value="+" onclick="addListItem()">
   </form>
   <br>
 
-  <ul 
-    id="list"
-    style="margin: 5%; padding-left: 0%; list-style-position: inside; list-style-type: circle;"
-  >
-  </ul>
+  <ul id="list"></ul>
 </body>
 </html>

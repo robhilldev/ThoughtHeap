@@ -26,9 +26,10 @@ const addListItem = () => {
 
     // add list item to page with a remove button
     newLi.innerHTML = textToAdd.value;
+    newLi.id = localStorage.listItemCount;
     newLi.insertAdjacentHTML(
       "beforeend",
-      " <button id='remove-button' onclick='this.parentElement.remove()'>-</button>"
+      " <button id='remove-button' onclick='removeListItem(event)'>-</button>"
     );
     document.getElementById("list").appendChild(newLi);
     // clear input box
@@ -36,6 +37,10 @@ const addListItem = () => {
   }
 }
 
-// vvv TODO vvv
 // remove list item from page and localstorage
-// const removeListItem = () => {}
+const removeListItem = (e) => {
+  let listItem = e.target.parentElement;
+  localStorage.removeItem(JSON.stringify(listItem.id));
+  listItem.remove();
+  localStorage.listItemCount = Number(localStorage.listItemCount) - 1;
+}

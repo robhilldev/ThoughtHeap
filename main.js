@@ -1,6 +1,23 @@
+window.onload = function() {
+  document.getElementById("text-to-add").value = "";
+  // instantiateList();
+}
+
 // vvv TODO vvv
-// initialize list with items in localstorage
-// const initializeList = () => {}
+// create an instance of the list with items from localstorage
+// const instantiateList = () => {
+//   let length = localStorage.listItemCount;
+//   for (let i = 0; i < length; i++) {
+//     let currentItem = localStorage.getItem(JSON.stringify(i));
+//
+//   }
+// }
+
+// **********************************************************
+// TODO: refactor addListItem to accomodate new list items or
+// existing items from localstorage
+// note: for reusing addListItem() in instantiateList()
+// **********************************************************
 
 // add list item to page and localstorage
 const addListItem = () => {

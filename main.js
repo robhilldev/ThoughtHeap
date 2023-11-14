@@ -1,47 +1,39 @@
 window.onload = function() {
   document.getElementById("text-to-add").value = "";
-  // instantiateList();
+  instantiateList();
 }
 
-// vvv TODO vvv
 // create an instance of the list with items from localstorage
-// const instantiateList = () => {
-//   let length = localStorage.listItemCount;
-//   for (let i = 0; i < length; i++) {
-//     let currentItem = localStorage.getItem(JSON.stringify(i));
-//
-//   }
-// }
+function instantiateList() {
+  let keys = Object.keys(localStorage);
+  for (let key of keys) {
+    let currentLi = document.createElement("li");
+    let currentItem = localStorage.getItem(String(key));
+    currentLi.innerHTML = currentItem;
+    currentLi.id = key;
+    currentLi.insertAdjacentHTML(
+      "beforeend",
+      " <button id='remove-button' onclick='removeListItem(event)'>-</button>"
+    );
+    document.getElementById("list").appendChild(currentLi);
+  }
+}
 
-// **********************************************************
-// TODO: refactor addListItem to accomodate new list items or
-// existing items from localstorage
-// note: for reusing addListItem() in instantiateList()
-// **********************************************************
-
-// add list item to page and localstorage
-const addListItem = () => {
+// add item to page
+function addListItem() {
   let newLi = document.createElement("li");
   let textToAdd = document.getElementById("text-to-add");
   
   if (textToAdd.value) {
-    // prevent page refresh on every list item add
     event.preventDefault();
-
-    // store new list item in localstorage
-    // make list item persist on browser refresh or restart
-    if (localStorage.listItemCount) {
-      localStorage.listItemCount = Number(localStorage.listItemCount) + 1;
-    }
-    else {
-      localStorage.listItemCount = 1
-    }
+    // store new item in localstorage with item count as key
+    incrementItemCount();
     localStorage.setItem(
-      JSON.stringify(localStorage.listItemCount),
+      Number(localStorage.listItemCount),
       textToAdd.value
     );
 
-    // add list item to page with a remove button
+    // add item to page with an id and remove button
     newLi.innerHTML = textToAdd.value;
     newLi.id = localStorage.listItemCount;
     newLi.insertAdjacentHTML(
@@ -54,10 +46,20 @@ const addListItem = () => {
   }
 }
 
-// remove list item from page and localstorage
-const removeListItem = (e) => {
+// remove item from page and localstorage
+function removeListItem(e) {
   let listItem = e.target.parentElement;
-  localStorage.removeItem(JSON.stringify(listItem.id));
+  localStorage.removeItem(String(listItem.id));
   listItem.remove();
   localStorage.listItemCount = Number(localStorage.listItemCount) - 1;
+}
+
+// increment local storage item count to use as key
+function incrementItemCount() {
+  if (localStorage.listItemCount) {
+    localStorage.listItemCount = Number(localStorage.listItemCount) + 1;
+  }
+  else {
+    localStorage.listItemCount = 1
+  }
 }

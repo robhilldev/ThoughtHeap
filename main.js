@@ -6,6 +6,8 @@ window.onload = function() {
 // create an instance of the list with items from localstorage
 function instantiateList() {
   let keys = Object.keys(localStorage);
+  keys.pop();
+  keys.reverse();
   for (let key of keys) {
     let currentLi = document.createElement("li");
     let currentItem = localStorage.getItem(String(key));

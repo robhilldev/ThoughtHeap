@@ -3,11 +3,16 @@ window.onload = function() {
   instantiateList();
 }
 
+/**
+ * TODO: fix overriding issue when adding new item to list of
+ * items repopulated from local storage
+ */
+
 // create an instance of the list with items from localstorage
 function instantiateList() {
   let keys = Object.keys(localStorage);
   keys = keys.filter((key) => key != "listItemCount")
-  keys.reverse();
+  keys.sort();
   for (let key of keys) {
     let currentLi = document.createElement("li");
     let currentItem = localStorage.getItem(String(key));

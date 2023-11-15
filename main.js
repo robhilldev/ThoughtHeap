@@ -32,7 +32,9 @@ function addListItem() {
   
   // add item to local storage
   if (textToAdd.value) {
-    let nextKey = Number(this.length) === 0 ? 1 : Number(this[this.length - 1]) + 1;
+    let nextKey = String(
+      Number(this.length) === 0 ? 1 : Number(this[this.length - 1]) + 1
+    );
     localStorage.setItem(
       nextKey,
       textToAdd.value

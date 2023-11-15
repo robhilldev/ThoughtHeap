@@ -26,11 +26,12 @@ function instantiateList(keys) {
 
 // add item to page
 function addListItem() {
+  event.preventDefault();
   let newLi = document.createElement("li");
   let textToAdd = document.getElementById("text-to-add");
   
+  // add item to local storage
   if (textToAdd.value) {
-    event.preventDefault();
     let nextKey = Number(this.length) === 0 ? 1 : Number(this[this.length - 1]) + 1;
     localStorage.setItem(
       nextKey,

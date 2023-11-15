@@ -13,7 +13,7 @@ window.onload = function() {
 function instantiateList(keys) {
   for (let key of keys) {
     let currentLi = document.createElement("li");
-    let currentItem = localStorage.getItem(String(key));
+    let currentItem = localStorage.getItem(key);
     currentLi.innerHTML = currentItem;
     currentLi.id = key;
     currentLi.insertAdjacentHTML(
@@ -55,6 +55,6 @@ function addListItem() {
 // remove item from page and localstorage
 function removeListItem(e) {
   let listItem = e.target.parentElement;
-  localStorage.removeItem(String(listItem.id));
+  localStorage.removeItem(listItem.id);
   listItem.remove();
 }

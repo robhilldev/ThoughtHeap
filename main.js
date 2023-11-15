@@ -1,18 +1,16 @@
 window.onload = function() {
   document.getElementById("text-to-add").value = "";
-  instantiateList();
+
+  let keys = Object.keys(localStorage);
+  keys.sort();
+  instantiateList(keys);
+
+  let addButton = document.getElementById("form-button");
+  addButton.addEventListener("click", addListItem.bind(keys));
 }
 
-/**
- * TODO: fix overriding issue when adding new item to list of
- * items repopulated from local storage
- */
-
 // create an instance of the list with items from localstorage
-function instantiateList() {
-  let keys = Object.keys(localStorage);
-  keys = keys.filter((key) => key != "listItemCount")
-  keys.sort();
+function instantiateList(keys) {
   for (let key of keys) {
     let currentLi = document.createElement("li");
     let currentItem = localStorage.getItem(String(key));
@@ -33,16 +31,16 @@ function addListItem() {
   
   if (textToAdd.value) {
     event.preventDefault();
-    // store new item in localstorage with item count as key
-    incrementItemCount();
+    let nextKey = Number(this.length) === 0 ? 1 : Number(this[this.length - 1]) + 1;
     localStorage.setItem(
-      Number(localStorage.listItemCount),
+      nextKey,
       textToAdd.value
     );
+    this.push(nextKey);
 
     // add item to page with an id and remove button
     newLi.innerHTML = textToAdd.value;
-    newLi.id = localStorage.listItemCount;
+    newLi.id = nextKey;
     newLi.insertAdjacentHTML(
       "beforeend",
       " <button id='remove-button' onclick='removeListItem(event)'>-</button>"
@@ -58,15 +56,4 @@ function removeListItem(e) {
   let listItem = e.target.parentElement;
   localStorage.removeItem(String(listItem.id));
   listItem.remove();
-  localStorage.listItemCount = Number(localStorage.listItemCount) - 1;
-}
-
-// increment local storage item count to use as key
-function incrementItemCount() {
-  if (localStorage.listItemCount) {
-    localStorage.listItemCount = Number(localStorage.listItemCount) + 1;
-  }
-  else {
-    localStorage.listItemCount = 1
-  }
 }

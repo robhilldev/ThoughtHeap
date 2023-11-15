@@ -29,18 +29,18 @@ function addListItem() {
   let textToAdd = document.getElementById("text-to-add");
   
   if (textToAdd.value) {
-    let nextKey = String(
+    let currentKey = String(
       Number(keys.length) === 0 ? 1 : Number(keys[keys.length - 1]) + 1
     );
     // add item to local storage and key array
-    localStorage.setItem(nextKey, textToAdd.value);
-    keys.push(nextKey);
+    localStorage.setItem(currentKey, textToAdd.value);
+    keys.push(currentKey);
 
     // add item to page with an id and remove button
     newLi.innerHTML = textToAdd.value;
-    newLi.id = nextKey;
+    newLi.id = currentKey;
     document.getElementById("list").appendChild(newLi);
-    addRemoveButton(newLi, nextKey);
+    addRemoveButton(newLi, currentKey);
     // clear input box
     textToAdd.value= "";
   }

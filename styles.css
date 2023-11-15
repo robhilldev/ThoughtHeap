@@ -42,7 +42,7 @@ li {
   background-color: #d1ffd1;
 }
 
-button#remove-button {
+button.remove {
   width: 7.5%;
   float: right;
 }

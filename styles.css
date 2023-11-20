@@ -12,6 +12,10 @@ form {
   margin-bottom: 3rem;
 }
 
+form label {
+  display: none;
+}
+
 form input#text-to-add {
   width: 80%;
   height: 2rem;
@@ -27,6 +31,7 @@ form input#form-button {
 
 ul#list {
   margin: 5%;
+  margin-top: 3%;
   padding-left: 0%;
   list-style-position: inside;
   list-style-type: circle;

@@ -3,7 +3,11 @@ let keys = Object.keys(localStorage);
 window.onload = function() {
   document.getElementById("text-to-add").value = "";
 
-  keys.sort();
+  keys.sort((a, b) => {
+    if (Number(a) < Number(b)) { return -1; }
+    if (Number(a) > Number(b)) { return 1; }
+    return 0;
+  });
   instantiateList(keys);
 
   let addButton = document.getElementById("form-button");
@@ -65,7 +69,7 @@ function addEditButton(element, buttonNumber) {
     `<button id='edit-button-${buttonNumber}' class='edit'>&#128393;</button>`
   );
   let editButton = document.getElementById(`edit-button-${buttonNumber}`);
-  //editButton.addEventListener("click", editListItem);
+  //editButton.addEventListener("click", editItem);
 }
 
 // remove item from page, localstorage, and remove key from array
@@ -76,6 +80,7 @@ function removeListItem(e) {
   listItem.remove();
 }
 
-// open input box with existing content in li, allow editing of content,
+// open input box with existing content, allow editing of content,
 // then allow saving new content
-// function editListItem(e) {}
+// make edit feature work for list item or list title
+// function editItem(e) {}

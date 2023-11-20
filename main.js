@@ -19,6 +19,7 @@ function instantiateList(keys) {
     currentLi.id = key;
     document.getElementById("list").appendChild(currentLi);
     addRemoveButton(currentLi, key);
+    addEditButton(currentLi, key);
   }
 }
 
@@ -41,6 +42,7 @@ function addListItem() {
     newLi.id = currentKey;
     document.getElementById("list").appendChild(newLi);
     addRemoveButton(newLi, currentKey);
+    addEditButton(newLi, currentKey);
     // clear input box
     textToAdd.value= "";
   }
@@ -50,16 +52,30 @@ function addListItem() {
 function addRemoveButton(element, buttonNumber) {
   element.insertAdjacentHTML(
     "beforeend",
-    `<button id='remove-button-${buttonNumber}' class='remove'>-</button>`
+    `<button id='remove-button-${buttonNumber}' class='remove'>&Cross;</button>`
   );
   let removeButton = document.getElementById(`remove-button-${buttonNumber}`);
   removeButton.addEventListener("click", removeListItem);
 }
 
-// remove item from page, localstorage, and remove key array
+// add edit button to list item with event listener
+function addEditButton(element, buttonNumber) {
+  element.insertAdjacentHTML(
+    "beforeend",
+    `<button id='edit-button-${buttonNumber}' class='edit'>&#128393;</button>`
+  );
+  let editButton = document.getElementById(`edit-button-${buttonNumber}`);
+  //editButton.addEventListener("click", editListItem);
+}
+
+// remove item from page, localstorage, and remove key from array
 function removeListItem(e) {
   let listItem = e.target.parentElement;
   localStorage.removeItem(listItem.id);
   keys = keys.filter((key) => key !== listItem.id);
   listItem.remove();
 }
+
+// open input box with existing content in li, allow editing of content,
+// then allow saving new content
+// function editListItem(e) {}

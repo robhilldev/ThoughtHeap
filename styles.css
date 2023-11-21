@@ -17,14 +17,18 @@ form label {
 }
 
 form input#text-to-add {
-  width: 80%;
+  width: 76%;
   height: 2rem;
+  padding-left: 2%;
+  padding-right: 2%;
+  border-radius: 1em;
   float: left;
 }
 
 form input#form-button {
   width: 15%;
   height: 2.33rem;
+  border-radius: 0.75em;
   float: right;
   font-size: larger;
 }
@@ -34,26 +38,48 @@ ul#list {
   margin-top: 3%;
   padding-left: 0%;
   list-style-position: inside;
-  list-style-type: circle;
+  list-style-type: none;
 }
 
 li {
   margin-bottom: 3vh;
   padding: 1.5%;
+  padding-left: 2.5%;
   word-wrap: break-word;
   border-style: solid;
   border-color: lightgreen;
   border-width: .2vh;
-  border-radius: 0.25vh;
+  border-radius: 1em;
   background-color: #d1ffd1;
 }
 
+li div {
+  display: inline-block;
+  max-width: 75%;
+}
+
+li input {
+  width: 75%;
+}
+
 button.remove {
+  width: 3.5em;
+  border-radius: 0.5em;
   float: right;
 }
 
 button.edit {
+  width: 5em;
   margin-right: 1vw;
+  border-radius: 0.75em;
   float: right;
   font-size: xx-small;
+}
+
+button.save-edit {
+  width: 5em;
+  margin-right: 3.5%;
+  border-radius: 0.5em;
+  float: right;
+  font-size: x-small;
 }

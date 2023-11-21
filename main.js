@@ -19,7 +19,7 @@ function instantiateList(keys) {
   for (let key of keys) {
     let currentLi = document.createElement("li");
     let currentItem = localStorage.getItem(key);
-    currentLi.innerHTML = currentItem;
+    currentLi.innerHTML = "<div>" + currentItem + "</div>";
     currentLi.id = key;
     document.getElementById("list").appendChild(currentLi);
     addRemoveButton(currentLi, key);
@@ -42,7 +42,7 @@ function addListItem() {
     keys.push(currentKey);
 
     // add item to page with an id and remove button
-    newLi.innerHTML = textToAdd.value;
+    newLi.innerHTML = "<div>" + textToAdd.value + "</div>";
     newLi.id = currentKey;
     document.getElementById("list").appendChild(newLi);
     addRemoveButton(newLi, currentKey);
@@ -50,6 +50,14 @@ function addListItem() {
     // clear input box
     textToAdd.value= "";
   }
+}
+
+// remove item from page, localstorage, and remove key from array
+function removeListItem(e) {
+  let listItem = e.target.parentElement;
+  localStorage.removeItem(listItem.id);
+  keys = keys.filter((key) => key !== listItem.id);
+  listItem.remove();
 }
 
 // add remove button to list item with event listener
@@ -69,18 +77,39 @@ function addEditButton(element, buttonNumber) {
     `<button id='edit-button-${buttonNumber}' class='edit'>&#128393;</button>`
   );
   let editButton = document.getElementById(`edit-button-${buttonNumber}`);
-  //editButton.addEventListener("click", editItem);
+  editButton.addEventListener("click", editListItem);
 }
 
-// remove item from page, localstorage, and remove key from array
-function removeListItem(e) {
-  let listItem = e.target.parentElement;
-  localStorage.removeItem(listItem.id);
-  keys = keys.filter((key) => key !== listItem.id);
-  listItem.remove();
+// swap to save edit button and pass existing buttons to save edit handler
+function swapToSaveEditButton(element, buttonNumber) {
+  element.insertAdjacentHTML(
+    "beforeend",
+    `<button id='save-edit-button-${buttonNumber}' class='save-edit'>&#128427;</button>`
+  );
+  let saveEditButton = document.getElementById(`save-edit-button-${buttonNumber}`);
+  let editButton = document.getElementById(`edit-button-${buttonNumber}`);
+  let removeButton = document.getElementById(`remove-button-${buttonNumber}`);
+  removeButton.parentElement.removeChild(removeButton);
+  editButton.parentElement.replaceChild(saveEditButton, editButton);
+  // saveEditButton.addEventListener("click", saveEdit(editButton, removeButton));
 }
 
-// open input box with existing content, allow editing of content,
-// then allow saving new content
-// make edit feature work for list item or list title
-// function editItem(e) {}
+// open input box with existing content to allow editing of content
+function editListItem(e) {
+  // store existing parent li, child text div, and text content
+  let parentLi = e.target.parentElement;
+  let childDiv = e.target.parentElement.firstElementChild;
+  let currentText = e.target.parentElement.firstElementChild.textContent;
+
+  // create and populate new input box for editing
+  let editInputBox = document.createElement("input");
+  editInputBox.value = currentText;
+
+  // replace existing elements with editing elements
+  parentLi.replaceChild(editInputBox, childDiv);
+  editInputBox.focus();
+  swapToSaveEditButton(parentLi, parentLi.id);
+}
+
+// handle saving of edited list item to page and localstorage
+// function saveEdit(e) {}

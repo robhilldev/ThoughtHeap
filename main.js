@@ -86,11 +86,23 @@ function swapToSaveEditButton(element, buttonNumber) {
     "beforeend",
     `<button id='save-edit-button-${buttonNumber}' class='save-edit'>&#128427;</button>`
   );
+
   let saveEditButton = document.getElementById(`save-edit-button-${buttonNumber}`);
   let editButton = document.getElementById(`edit-button-${buttonNumber}`);
   let removeButton = document.getElementById(`remove-button-${buttonNumber}`);
+
   removeButton.parentElement.removeChild(removeButton);
   editButton.parentElement.replaceChild(saveEditButton, editButton);
+
+  // allow pressing enter key within input box to trigger save edit button
+  let editInputBox = saveEditButton.parentElement.firstElementChild;
+  editInputBox.addEventListener("keypress", (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      document.getElementById(saveEditButton.id).click();
+    }
+  });
+
   // pass event object and temporarily removed buttons to event handler
   saveEditButton.addEventListener("click", (e) => {
     let dataToPass = {"event": e, "args": [editButton, removeButton]};
@@ -115,7 +127,7 @@ function editListItem(e) {
   swapToSaveEditButton(parentLi, parentLi.id);
 }
 
-// handle saving of edited list item to page (TODO: and localstorage)
+// handle saving of edited list item to page and localstorage
 // along with swapping save edit button out for edit and remove buttons
 function saveListItemEdit(dataToPass) {
   let editButton = dataToPass.args[0];
@@ -126,6 +138,8 @@ function saveListItemEdit(dataToPass) {
   let childInputBox = dataToPass.event.target.parentElement.firstElementChild;
   let edittedText = dataToPass.event.target.parentElement.firstElementChild.value;
   let saveEditButton = dataToPass.event.target.parentElement.lastElementChild;
+
+  localStorage.setItem(parentLi.id, edittedText);
 
   // create new div and populate with editted text content
   let newTextDiv = document.createElement("div");

@@ -91,7 +91,11 @@ function swapToSaveEditButton(element, buttonNumber) {
   let removeButton = document.getElementById(`remove-button-${buttonNumber}`);
   removeButton.parentElement.removeChild(removeButton);
   editButton.parentElement.replaceChild(saveEditButton, editButton);
-  // saveEditButton.addEventListener("click", saveEdit(editButton, removeButton));
+  // pass event object and temporarily removed buttons to event handler
+  saveEditButton.addEventListener("click", (e) => {
+    let dataToPass = {"event": e, "args": [editButton, removeButton]};
+    saveListItemEdit(dataToPass);
+  });
 }
 
 // open input box with existing content to allow editing of content
@@ -105,11 +109,31 @@ function editListItem(e) {
   let editInputBox = document.createElement("input");
   editInputBox.value = currentText;
 
-  // replace existing elements with editing elements
+  // replace existing text div with editing input box, swap buttons
   parentLi.replaceChild(editInputBox, childDiv);
   editInputBox.focus();
   swapToSaveEditButton(parentLi, parentLi.id);
 }
 
-// handle saving of edited list item to page and localstorage
-// function saveEdit(e) {}
+// handle saving of edited list item to page (TODO: and localstorage)
+// along with swapping save edit button out for edit and remove buttons
+function saveListItemEdit(dataToPass) {
+  let editButton = dataToPass.args[0];
+  let removeButton = dataToPass.args[1];
+
+  // store existing parent li, child input box, text content, and button
+  let parentLi = dataToPass.event.target.parentElement;
+  let childInputBox = dataToPass.event.target.parentElement.firstElementChild;
+  let edittedText = dataToPass.event.target.parentElement.firstElementChild.value;
+  let saveEditButton = dataToPass.event.target.parentElement.lastElementChild;
+
+  // create new div and populate with editted text content
+  let newTextDiv = document.createElement("div");
+  newTextDiv.textContent = edittedText;
+
+  // swap input box for text div and save edit button for remove and edit buttons
+  parentLi.replaceChild(newTextDiv, childInputBox);
+  parentLi.removeChild(saveEditButton);
+  parentLi.appendChild(removeButton);
+  parentLi.appendChild(editButton);
+}

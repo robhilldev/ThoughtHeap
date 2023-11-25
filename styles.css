@@ -22,14 +22,14 @@ form input#text-to-add {
   height: 2rem;
   padding-left: 2%;
   padding-right: 2%;
-  border-radius: 1em;
+  border-radius: 0.75rem;
   float: left;
 }
 
 form input#form-button {
   width: 15%;
   height: 2.33rem;
-  border-radius: 0.75em;
+  border-radius: 0.75rem;
   float: right;
   font-size: larger;
 }
@@ -50,7 +50,7 @@ li {
   border-style: solid;
   border-color: lightgreen;
   border-width: .2vh;
-  border-radius: 1em;
+  border-radius: 0.75rem;
   background-color: #d1ffd1;
 }
 

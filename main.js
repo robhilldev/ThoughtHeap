@@ -95,18 +95,22 @@ function swapToSaveEditButton(element, buttonNumber) {
   editButton.parentElement.replaceChild(saveEditButton, editButton);
 
   // allow pressing enter key within input box to trigger save edit button
+  // or pressing escape key to cancel changes
   let editInputBox = saveEditButton.parentElement.firstElementChild;
-  editInputBox.addEventListener("keypress", (event) => {
+  editInputBox.addEventListener("keyup", (event) => {
+    event.preventDefault();
     if (event.key === "Enter") {
-      event.preventDefault();
       document.getElementById(saveEditButton.id).click();
+    } else if (event.key === "Escape") {
+      let dataToPass = {"event": event, "args": [editButton, removeButton]};
+      exitListItemEdit(dataToPass);
     }
   });
 
   // pass event object and temporarily removed buttons to event handler
-  saveEditButton.addEventListener("click", (e) => {
-    let dataToPass = {"event": e, "args": [editButton, removeButton]};
-    saveListItemEdit(dataToPass);
+  saveEditButton.addEventListener("click", (event) => {
+    let dataToPass = {"event": event, "args": [editButton, removeButton]};
+    exitListItemEdit(dataToPass);
   });
 }
 
@@ -129,7 +133,7 @@ function editListItem(e) {
 
 // handle saving of edited list item to page and localstorage
 // along with swapping save edit button out for edit and remove buttons
-function saveListItemEdit(dataToPass) {
+function exitListItemEdit(dataToPass) {
   let editButton = dataToPass.args[0];
   let removeButton = dataToPass.args[1];
 
@@ -139,11 +143,14 @@ function saveListItemEdit(dataToPass) {
   let edittedText = dataToPass.event.target.parentElement.firstElementChild.value;
   let saveEditButton = dataToPass.event.target.parentElement.lastElementChild;
 
-  localStorage.setItem(parentLi.id, edittedText);
-
-  // create new div and populate with editted text content
+  // create new div and populate with editted text content or old content
   let newTextDiv = document.createElement("div");
-  newTextDiv.textContent = edittedText;
+  if (event.target.className == "save-edit") {
+    localStorage.setItem(parentLi.id, edittedText);
+    newTextDiv.textContent = edittedText;
+  } else {
+    newTextDiv.textContent = localStorage.getItem(parentLi.id);
+  }
 
   // swap input box for text div and save edit button for remove and edit buttons
   parentLi.replaceChild(newTextDiv, childInputBox);

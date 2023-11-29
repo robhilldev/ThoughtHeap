@@ -74,7 +74,7 @@ function addRemoveButton(element, buttonNumber) {
 function addEditButton(element, buttonNumber) {
   element.insertAdjacentHTML(
     "beforeend",
-    `<button id='edit-button-${buttonNumber}' class='edit'>&#128393;</button>`
+    `<button id='edit-button-${buttonNumber}' class='edit'>&#9881;</button>`
   );
   let editButton = document.getElementById(`edit-button-${buttonNumber}`);
   editButton.addEventListener("click", editListItem);
@@ -84,7 +84,7 @@ function addEditButton(element, buttonNumber) {
 function swapToSaveEditButton(element, buttonNumber) {
   element.insertAdjacentHTML(
     "beforeend",
-    `<button id='save-edit-button-${buttonNumber}' class='save-edit'>&#128427;</button>`
+    `<button id='save-edit-button-${buttonNumber}' class='save-edit'>&check;</button>`
   );
 
   let saveEditButton = document.getElementById(`save-edit-button-${buttonNumber}`);

@@ -1,16 +1,28 @@
 body {
   margin: auto;
-  background-color: lightgray;
+  background-color: #DDD0C8;
   font: 1em sans-serif;
 }
 
+header {
+  display: grid;
+  align-items: center;
+  justify-content: center;
+}
+
 h1 {
-  text-align: center;
+  margin-top: 3rem;
+  margin-bottom: 2.5rem;
+}
+
+main {
+  display: grid;
 }
 
 form {
-  margin: 5%;
-  margin-bottom: 3rem;
+  margin-bottom: 2.5rem;
+  margin-left: 5%;
+  margin-right: 5%;
 }
 
 form label {
@@ -18,25 +30,30 @@ form label {
 }
 
 form input#text-to-add {
-  width: 76%;
+  width: 84%;
   height: 2rem;
-  padding-left: 2%;
-  padding-right: 2%;
-  border-radius: 0.75rem;
-  float: left;
+  padding-left: 5px;
+  border: 2px outset #323232;
+  border-radius: 0.25rem;
+}
+
+form input#text-to-add:focus {
+  outline: none;
 }
 
 form input#form-button {
-  width: 15%;
+  width: 2.33rem;
   height: 2.33rem;
-  border-radius: 0.75rem;
+  border-radius: 50%;
+  border: 2px outset #323232;
   float: right;
-  font-size: larger;
+  font-size: x-large;
+  background-color: white;
 }
 
 ul#list {
   margin: 5%;
-  margin-top: 3%;
+  margin-top: 0;
   padding-left: 0%;
   list-style-position: inside;
   list-style-type: none;
@@ -44,43 +61,50 @@ ul#list {
 
 li {
   margin-bottom: 3vh;
-  padding: 1.5%;
+  padding: 2vw;
   padding-left: 2.5%;
+  background-color: #323232;
+  color: white;
   word-wrap: break-word;
-  border-style: solid;
-  border-color: lightgreen;
-  border-width: .2vh;
-  border-radius: 0.75rem;
-  background-color: #d1ffd1;
+  border-radius: 0.25rem;
 }
 
 li div {
   display: inline-block;
-  max-width: 75%;
+  max-width: 84%;
 }
 
 li input {
-  width: 75%;
+  width: 84%;
 }
 
 button.remove {
-  width: 3.5em;
-  border-radius: 0.5em;
   float: right;
+  width: 1.33rem;
+  height: 1.33rem;
+  border-radius: 50%;
+  background-color: white;
+  border: 2px outset #DDD0C8;
 }
 
 button.edit {
-  width: 5em;
   margin-right: 1vw;
-  border-radius: 0.75em;
   float: right;
-  font-size: xx-small;
+  font-size: x-small;
+  width: 1.33rem;
+  height: 1.33rem;
+  border-radius: 50%;
+  background-color: white;
+  border: 2px solid #DDD0C8;
 }
 
 button.save-edit {
-  width: 5em;
-  margin-right: 3.5%;
-  border-radius: 0.5em;
+  margin-right: 2.5%;
   float: right;
-  font-size: x-small;
+  font-size: small;
+  width: 1.33rem;
+  height: 1.33rem;
+  border-radius: 50%;
+  background-color: white;
+  border: 2px solid #DDD0C8;
 }

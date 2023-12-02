@@ -2,6 +2,7 @@ body {
   margin: auto;
   background-color: #DDD0C8;
   font: 1em sans-serif;
+  color: black;
 }
 
 header {
@@ -30,7 +31,7 @@ form label {
 }
 
 form input#text-to-add {
-  width: 84%;
+  width: 80%;
   height: 2rem;
   padding-left: 5px;
   border: 2px outset #323232;
@@ -47,9 +48,12 @@ form input#form-button {
   height: 2.33rem;
   border-radius: 50%;
   border: 2px outset #323232;
+  text-align: center;
+  line-height: normal;
   float: right;
-  font-size: x-large;
+  font-size: 1.25rem;
   background-color: white;
+  color: black;
 }
 
 ul#list {
@@ -72,16 +76,22 @@ li {
 
 li div {
   display: inline-block;
-  max-width: 84%;
+  max-width: 80%;
 }
 
 li input {
-  width: 84%;
+  width: 80%;
+}
+
+li input:focus {
+  outline: 0.1rem solid #DDD0C8;
 }
 
 button.remove {
   padding: 0;
   float: right;
+  text-align: center;
+  line-height: normal;
   width: 1.33rem;
   height: 1.33rem;
   border-radius: 50%;
@@ -94,6 +104,8 @@ button.edit {
   margin-right: 1vw;
   float: right;
   font-size: x-small;
+  text-align: center;
+  line-height: normal;
   width: 1.33rem;
   height: 1.33rem;
   border-radius: 50%;

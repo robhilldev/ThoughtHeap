@@ -21,6 +21,9 @@ main {
 }
 
 form {
+  display: flex;
+  align-items: center;
+  justify-content: start;
   margin-bottom: 2.5rem;
   margin-left: 5%;
   margin-right: 5%;
@@ -31,7 +34,7 @@ form label {
 }
 
 form input#text-to-add {
-  width: 80%;
+  min-width: 80%;
   height: 2rem;
   padding-left: 5px;
   border: 2px outset #323232;
@@ -44,6 +47,7 @@ form input#text-to-add:focus {
 
 form input#form-button {
   padding: 0;
+  margin-left: auto; /* push button to right side */
   width: 2.33rem;
   height: 2.33rem;
   border-radius: 50%;
@@ -65,6 +69,9 @@ ul#list {
 }
 
 li {
+  display: flex;
+  align-items: center;
+  justify-content: start;
   margin-bottom: 3vh;
   padding: 2vw;
   padding-left: 2.5%;
@@ -75,12 +82,11 @@ li {
 }
 
 li div {
-  display: inline-block;
   max-width: 80%;
 }
 
 li input {
-  width: 80%;
+  min-width: 80%;
 }
 
 li input:focus {
@@ -89,38 +95,43 @@ li input:focus {
 
 button.remove {
   padding: 0;
-  float: right;
+  font-size: 0.84rem;
   text-align: center;
   line-height: normal;
   width: 1.33rem;
   height: 1.33rem;
   border-radius: 50%;
   background-color: white;
+  color: black;
   border: 2px outset #DDD0C8;
 }
 
 button.edit {
   padding: 0;
   margin-right: 1vw;
-  float: right;
-  font-size: x-small;
+  margin-left: auto; /* push buttons to right side */
+  font-size: 0.6rem;
   text-align: center;
   line-height: normal;
   width: 1.33rem;
   height: 1.33rem;
   border-radius: 50%;
   background-color: white;
+  color: black;
   border: 2px solid #DDD0C8;
 }
 
 button.save-edit {
   padding: 0;
   margin-right: 2.5%;
-  float: right;
-  font-size: small;
+  margin-left: 1vw;
+  font-size: 0.75rem;
+  text-align: center;
+  line-height: normal;
   width: 1.33rem;
   height: 1.33rem;
   border-radius: 50%;
   background-color: white;
+  color: black;
   border: 2px solid #DDD0C8;
 }

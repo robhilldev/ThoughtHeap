@@ -22,8 +22,8 @@ function instantiateList(keys) {
     currentLi.innerHTML = "<div>" + currentItem + "</div>";
     currentLi.id = key;
     document.getElementById("list").appendChild(currentLi);
-    addRemoveButton(currentLi, key);
     addEditButton(currentLi, key);
+    addRemoveButton(currentLi, key);
   }
 }
 
@@ -45,8 +45,8 @@ function addListItem() {
     newLi.innerHTML = "<div>" + textToAdd.value + "</div>";
     newLi.id = currentKey;
     document.getElementById("list").appendChild(newLi);
-    addRemoveButton(newLi, currentKey);
     addEditButton(newLi, currentKey);
+    addRemoveButton(newLi, currentKey);
     // clear input box
     textToAdd.value= "";
   }
@@ -155,6 +155,6 @@ function exitListItemEdit(dataToPass) {
   // swap input box for text div and save edit button for remove and edit buttons
   parentLi.replaceChild(newTextDiv, childInputBox);
   parentLi.removeChild(saveEditButton);
-  parentLi.appendChild(removeButton);
   parentLi.appendChild(editButton);
+  parentLi.appendChild(removeButton);
 }

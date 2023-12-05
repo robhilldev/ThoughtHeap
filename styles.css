@@ -57,8 +57,9 @@ form input#form-button {
   height: 2.33rem;
   border-radius: 50%;
   border: 2px outset #323232;
-  text-align: center;
-  line-height: normal;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   font-size: 1.25rem;
   background-color: white;
   color: black;
@@ -100,9 +101,9 @@ li input:focus {
 button.remove {
   padding: 0;
   /* font-size: 0.84rem; */
-  text-align: -webkit-center;
-  text-align: center;
-  line-height: normal;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 1.5rem;
   height: 1.5rem;
   border-radius: 50%;
@@ -116,9 +117,9 @@ button.edit {
   /* VVV push buttons to right side VVV */
   margin-left: auto;
   margin-right: 1vw;
-  text-align: -webkit-center;
-  text-align: center;
-  line-height: normal;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 1.5rem;
   height: 1.5rem;
   border-radius: 50%;
@@ -129,9 +130,9 @@ button.edit {
 
 button.discard-edit {
   padding: 0;
-  text-align: -webkit-center;
-  text-align: center;
-  line-height: normal;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 1.5rem;
   height: 1.5rem;
   border-radius: 50%;
@@ -144,9 +145,9 @@ button.save-edit {
   padding: 0;
   margin-left: 1vw;
   margin-right: 1vw;
-  text-align: -webkit-center;
-  text-align: center;
-  line-height: normal;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 1.5rem;
   height: 1.5rem;
   border-radius: 50%;

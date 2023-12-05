@@ -97,8 +97,8 @@ function editNote(e) {
   // allow pressing enter key within input box to trigger save edit button
   // or pressing escape key to cancel changes
   editInputBox.addEventListener("keydown", (event) => {
-    event.preventDefault();
     if (event.key === "Enter") {
+      event.preventDefault();
       document.getElementById(saveEditButton.id).click();
     } else if (event.key === "Escape") {
       document.getElementById(discardEditButton.id).click();

@@ -1,8 +1,6 @@
 ## Try it:
 https://robhilldev.github.io/notes_app/
 
-&nbsp;
-
 ## For running the app locally:
 
 Since seperate JavaScript files loaded as modules are treated as Cross Origin Resource Sharing (CORS) requests by modern browsers, and CORS requests can only be made over HTTP or HTTPS, a local web server will be needed for local development.

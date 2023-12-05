@@ -1,4 +1,4 @@
-import { addRemoveButton, addEditButton, swapToSaveEditButton } from "./button.js";
+import { addRemoveButton, addEditButton, swapToEditButtons } from "./button.js";
 
 let keys = Object.keys(localStorage);
 
@@ -77,10 +77,14 @@ function editNote(e) {
   // replace existing text div with editing input box
   parentLi.replaceChild(editInputBox, childDiv);
   editInputBox.focus();
-  // swap to save edit button and store save edit, edit, and remove buttons
-  let [saveEditButton, editButton, removeButton] = swapToSaveEditButton(parentLi.id);
+  // swap to save edit and discard edit buttons, and store save edit, edit, and remove buttons
+  let [discardEditButton, saveEditButton, editButton, removeButton] = swapToEditButtons(parentLi.id);
 
-  // pass event object and temporarily removed buttons to event handler
+  // pass event object and temporarily removed buttons to event handler on click
+  discardEditButton.addEventListener("click", (event) => {
+    let dataToPass = {"event": event, "args": [editButton, removeButton]};
+    exitNoteEdit(dataToPass);
+  });
   saveEditButton.addEventListener("click", (event) => {
     let dataToPass = {"event": event, "args": [editButton, removeButton]};
     exitNoteEdit(dataToPass);
@@ -92,13 +96,12 @@ function editNote(e) {
     if (event.key === "Enter") {
       document.getElementById(saveEditButton.id).click();
     } else if (event.key === "Escape") {
-      let dataToPass = {"event": event, "args": [editButton, removeButton]};
-      exitNoteEdit(dataToPass);
+      document.getElementById(discardEditButton.id).click();
     }
   });
 }
 
-// handle saving of edited note to page and localstorage
+// handle saving of edited note to page and localstorage, or discarding edit
 function exitNoteEdit(dataToPass) {
   let editButton = dataToPass.args[0];
   let removeButton = dataToPass.args[1];
@@ -107,7 +110,8 @@ function exitNoteEdit(dataToPass) {
   let parentLi = dataToPass.event.target.parentElement;
   let childInputBox = dataToPass.event.target.parentElement.firstElementChild;
   let edittedText = dataToPass.event.target.parentElement.firstElementChild.value;
-  let saveEditButton = dataToPass.event.target.parentElement.lastElementChild;
+  let discardEditButton = dataToPass.event.target.parentElement.lastElementChild;
+  let saveEditButton = dataToPass.event.target.parentElement.lastElementChild.previousElementSibling;
 
   // create new div and populate with editted text content or old content
   let newTextDiv = document.createElement("div");
@@ -118,8 +122,8 @@ function exitNoteEdit(dataToPass) {
     newTextDiv.textContent = localStorage.getItem(parentLi.id);
   }
 
-  // swap input box for text div and save edit button for remove and edit buttons
+  // swap in updated text div, edit button, and remove button
   parentLi.replaceChild(newTextDiv, childInputBox);
-  parentLi.removeChild(saveEditButton);
-  parentLi.append(editButton, removeButton);
+  parentLi.replaceChild(editButton, saveEditButton);
+  parentLi.replaceChild(removeButton, discardEditButton);
 }

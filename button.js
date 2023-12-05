@@ -14,19 +14,25 @@ function addEditButton(buttonNumber) {
   return editButton;
 }
 
-function swapToSaveEditButton(buttonNumber) {
+function swapToEditButtons(buttonNumber) {
   let saveEditButton = document.createElement("button");
   saveEditButton.id = `save-edit-button-${buttonNumber}`;
   saveEditButton.className = "save-edit";
   saveEditButton.innerHTML = "&check;";
 
+  let discardEditButton = document.createElement("button");
+  discardEditButton.id = `discard-edit-button-${buttonNumber}`;
+  discardEditButton.className = "discard-edit";
+  discardEditButton.innerHTML = "&Cross;";
+
   let editButton = document.getElementById(`edit-button-${buttonNumber}`);
   let removeButton = document.getElementById(`remove-button-${buttonNumber}`);
 
-  removeButton.parentElement.removeChild(removeButton);
+  // removeButton.parentElement.removeChild(removeButton);
+  removeButton.parentElement.replaceChild(discardEditButton, removeButton);
   editButton.parentElement.replaceChild(saveEditButton, editButton);
 
-  return [saveEditButton, editButton, removeButton];
+  return [discardEditButton, saveEditButton, editButton, removeButton];
 }
 
-export { addRemoveButton, addEditButton, swapToSaveEditButton };
+export { addRemoveButton, addEditButton, swapToEditButtons };

@@ -5,9 +5,9 @@ https://robhilldev.github.io/notes_app/
 
 ## For running the app locally:
 
-Since seperate JavaScript files loaded in as modules are treated as Cross Origin Resource Sharing (CORS) requests by modern browsers, and CORS requests can only be made over HTTP or HTTPS, a local web server will be needed for local development.
+Since seperate JavaScript files loaded as modules are treated as Cross Origin Resource Sharing (CORS) requests by modern browsers, and CORS requests can only be made over HTTP or HTTPS, a local web server will be needed for local development.
 
-#### A python HTTP server can be used for this by opening a terminal and running:
+#### A python HTTP server can be used for this by opening a terminal at the same folder as index.html and running:
 ```
 python3 -m http.server
 ```

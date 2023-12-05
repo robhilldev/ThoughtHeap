@@ -51,7 +51,8 @@ form input#text-to-add:focus {
 
 form input#form-button {
   padding: 0;
-  margin-left: auto; /* push button to right side */
+  /* VVV push button to right side VVV */
+  margin-left: auto;
   width: 2.33rem;
   height: 2.33rem;
   border-radius: 50%;
@@ -110,8 +111,9 @@ button.remove {
 
 button.edit {
   padding: 0;
+  /* VVV push buttons to right side VVV */
+  margin-left: auto;
   margin-right: 1vw;
-  margin-left: auto; /* push buttons to right side */
   font-size: 0.7rem;
   text-align: center;
   line-height: normal;

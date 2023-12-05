@@ -1,5 +1,8 @@
+import { addRemoveButton, addEditButton, swapToSaveEditButton } from "./button.js";
+
 let keys = Object.keys(localStorage);
 
+// sort localstorage key array, populate page with notes, set up add note button
 window.onload = function() {
   document.getElementById("text-to-add").value = "";
 
@@ -11,24 +14,24 @@ window.onload = function() {
   instantiateList(keys);
 
   let addButton = document.getElementById("form-button");
-  addButton.addEventListener("click", addListItem);
+  addButton.addEventListener("click", addNote);
 }
 
-// create an instance of the list with items from localstorage
+// create an instance of the list with notes from localstorage
 function instantiateList(keys) {
   for (let key of keys) {
     let currentLi = document.createElement("li");
-    let currentItem = localStorage.getItem(key);
-    currentLi.innerHTML = "<div>" + currentItem + "</div>";
+    let currentNote = localStorage.getItem(key);
+    currentLi.innerHTML = "<div>" + currentNote + "</div>";
     currentLi.id = key;
+    currentLi.appendChild(addEditButton(key)).addEventListener("click", editNote);
+    currentLi.appendChild(addRemoveButton(key)).addEventListener("click", removeNote);
     document.getElementById("list").appendChild(currentLi);
-    addEditButton(currentLi, key);
-    addRemoveButton(currentLi, key);
   }
 }
 
-// add item to page, localstorage, and add key to array
-function addListItem() {
+// add note to page, localstorage, and add key to array
+function addNote() {
   event.preventDefault();
   let newLi = document.createElement("li");
   let textToAdd = document.getElementById("text-to-add");
@@ -37,85 +40,31 @@ function addListItem() {
     let currentKey = String(
       Number(keys.length) === 0 ? 1 : Number(keys[keys.length - 1]) + 1
     );
-    // add item to local storage and key array
+    // add note to local storage and key array
     localStorage.setItem(currentKey, textToAdd.value);
     keys.push(currentKey);
 
-    // add item to page with an id and remove button
+    // add note to page with an id, edit button, and remove button
     newLi.innerHTML = "<div>" + textToAdd.value + "</div>";
     newLi.id = currentKey;
+    newLi.appendChild(addEditButton(currentKey)).addEventListener("click", editNote);
+    newLi.appendChild(addRemoveButton(currentKey)).addEventListener("click", removeNote);
     document.getElementById("list").appendChild(newLi);
-    addEditButton(newLi, currentKey);
-    addRemoveButton(newLi, currentKey);
     // clear input box
     textToAdd.value= "";
   }
 }
 
-// remove item from page, localstorage, and remove key from array
-function removeListItem(e) {
-  let listItem = e.target.parentElement;
-  localStorage.removeItem(listItem.id);
-  keys = keys.filter((key) => key !== listItem.id);
-  listItem.remove();
-}
-
-// add remove button to list item with event listener
-function addRemoveButton(element, buttonNumber) {
-  element.insertAdjacentHTML(
-    "beforeend",
-    `<button id='remove-button-${buttonNumber}' class='remove'>&Cross;</button>`
-  );
-  let removeButton = document.getElementById(`remove-button-${buttonNumber}`);
-  removeButton.addEventListener("click", removeListItem);
-}
-
-// add edit button to list item with event listener
-function addEditButton(element, buttonNumber) {
-  element.insertAdjacentHTML(
-    "beforeend",
-    `<button id='edit-button-${buttonNumber}' class='edit'>&#9881;</button>`
-  );
-  let editButton = document.getElementById(`edit-button-${buttonNumber}`);
-  editButton.addEventListener("click", editListItem);
-}
-
-// swap to save edit button and pass existing buttons to save edit handler
-function swapToSaveEditButton(element, buttonNumber) {
-  element.insertAdjacentHTML(
-    "beforeend",
-    `<button id='save-edit-button-${buttonNumber}' class='save-edit'>&check;</button>`
-  );
-
-  let saveEditButton = document.getElementById(`save-edit-button-${buttonNumber}`);
-  let editButton = document.getElementById(`edit-button-${buttonNumber}`);
-  let removeButton = document.getElementById(`remove-button-${buttonNumber}`);
-
-  removeButton.parentElement.removeChild(removeButton);
-  editButton.parentElement.replaceChild(saveEditButton, editButton);
-
-  // allow pressing enter key within input box to trigger save edit button
-  // or pressing escape key to cancel changes
-  let editInputBox = saveEditButton.parentElement.firstElementChild;
-  editInputBox.addEventListener("keyup", (event) => {
-    event.preventDefault();
-    if (event.key === "Enter") {
-      document.getElementById(saveEditButton.id).click();
-    } else if (event.key === "Escape") {
-      let dataToPass = {"event": event, "args": [editButton, removeButton]};
-      exitListItemEdit(dataToPass);
-    }
-  });
-
-  // pass event object and temporarily removed buttons to event handler
-  saveEditButton.addEventListener("click", (event) => {
-    let dataToPass = {"event": event, "args": [editButton, removeButton]};
-    exitListItemEdit(dataToPass);
-  });
+// remove note from page, localstorage, and remove key from array
+function removeNote(e) {
+  let note = e.target.parentElement;
+  localStorage.removeItem(note.id);
+  keys = keys.filter((key) => key !== note.id);
+  note.remove();
 }
 
 // open input box with existing content to allow editing of content
-function editListItem(e) {
+function editNote(e) {
   // store existing parent li, child text div, and text content
   let parentLi = e.target.parentElement;
   let childDiv = e.target.parentElement.firstElementChild;
@@ -125,15 +74,32 @@ function editListItem(e) {
   let editInputBox = document.createElement("input");
   editInputBox.value = currentText;
 
-  // replace existing text div with editing input box, swap buttons
+  // replace existing text div with editing input box
   parentLi.replaceChild(editInputBox, childDiv);
   editInputBox.focus();
-  swapToSaveEditButton(parentLi, parentLi.id);
+  // swap to save edit button and store save edit, edit, and remove buttons
+  let [saveEditButton, editButton, removeButton] = swapToSaveEditButton(parentLi.id);
+
+  // pass event object and temporarily removed buttons to event handler
+  saveEditButton.addEventListener("click", (event) => {
+    let dataToPass = {"event": event, "args": [editButton, removeButton]};
+    exitNoteEdit(dataToPass);
+  });
+  // allow pressing enter key within input box to trigger save edit button
+  // or pressing escape key to cancel changes
+  editInputBox.addEventListener("keyup", (event) => {
+    event.preventDefault();
+    if (event.key === "Enter") {
+      document.getElementById(saveEditButton.id).click();
+    } else if (event.key === "Escape") {
+      let dataToPass = {"event": event, "args": [editButton, removeButton]};
+      exitNoteEdit(dataToPass);
+    }
+  });
 }
 
-// handle saving of edited list item to page and localstorage
-// along with swapping save edit button out for edit and remove buttons
-function exitListItemEdit(dataToPass) {
+// handle saving of edited note to page and localstorage
+function exitNoteEdit(dataToPass) {
   let editButton = dataToPass.args[0];
   let removeButton = dataToPass.args[1];
 
@@ -155,6 +121,5 @@ function exitListItemEdit(dataToPass) {
   // swap input box for text div and save edit button for remove and edit buttons
   parentLi.replaceChild(newTextDiv, childInputBox);
   parentLi.removeChild(saveEditButton);
-  parentLi.appendChild(editButton);
-  parentLi.appendChild(removeButton);
+  parentLi.append(editButton, removeButton);
 }

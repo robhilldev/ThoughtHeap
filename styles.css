@@ -27,6 +27,7 @@ main {
 form {
   display: flex;
   align-items: center;
+  gap: 5%;
   justify-content: start;
   margin-bottom: 2.5rem;
   margin-left: 5%;
@@ -38,7 +39,7 @@ form label {
 }
 
 form input#text-to-add {
-  min-width: 80%;
+  flex-grow: 1;
   height: 2rem;
   padding-left: 5px;
   border: 2px outset #323232;
@@ -50,9 +51,8 @@ form input#text-to-add:focus {
 }
 
 form input#form-button {
+  flex-basis: 2.33rem;
   padding: 0;
-  /* VVV push button to right side VVV */
-  margin-left: auto;
   width: 2.33rem;
   height: 2.33rem;
   border-radius: 50%;
@@ -75,10 +75,11 @@ ul#list {
 
 li {
   display: flex;
+  gap: 1vw;
   align-items: center;
   justify-content: start;
-  margin-bottom: 3vh;
-  padding: 1rem;
+  padding: 0.8rem;
+  margin-bottom: 2.5vh;
   background-color: #323232;
   color: white;
   word-wrap: break-word;
@@ -87,7 +88,7 @@ li {
 }
 
 li div {
-  max-width: 80%;
+  flex-grow: 1;
 }
 
 li input {
@@ -98,67 +99,59 @@ li input:focus {
   outline: 0.1rem solid #DDD0C8;
 }
 
-button.remove {
+li span {
+  padding-right: 0.5rem;
+  flex-basis: 1;
+  font-family: inherit;
+  background-color: white;
+  color: black;
+}
+
+li span:focus {
+  outline: 0.2rem solid #DDD0C8;
+}
+
+button {
   padding: 0;
-  /* font-size: 0.84rem; */
+  flex-shrink: 0;
+  flex-basis: 1.5rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  align-self: self-start;
   width: 1.5rem;
   height: 1.5rem;
   border-radius: 50%;
   background-color: white;
   color: black;
+}
+
+button.remove {
   border: 2px outset #DDD0C8;
 }
 
 button.edit {
-  padding: 0;
-  /* VVV push buttons to right side VVV */
-  margin-left: auto;
-  margin-right: 1vw;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.5rem;
-  height: 1.5rem;
-  border-radius: 50%;
-  background-color: white;
-  color: black;
   border: 2px solid #DDD0C8;
 }
 
 button.discard-edit {
-  padding: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.5rem;
-  height: 1.5rem;
-  border-radius: 50%;
-  background-color: white;
-  color: black;
   border: 2px solid #DDD0C8;
+  align-self: center;
 }
 
 button.save-edit {
-  padding: 0;
-  margin-left: 1vw;
-  margin-right: 1vw;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.5rem;
-  height: 1.5rem;
-  border-radius: 50%;
-  background-color: white;
-  color: black;
+  margin-left: 0.5vw;
   border: 2px solid #DDD0C8;
+  align-self: center;
 }
 
 @media (max-width: 640px) {
   h1 {
     margin-top: 1.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  form {
     margin-bottom: 1.5rem;
   }
 }

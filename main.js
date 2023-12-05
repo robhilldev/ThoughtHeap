@@ -71,12 +71,17 @@ function editNote(e) {
   let currentText = e.target.parentElement.firstElementChild.textContent;
 
   // create and populate new input box for editing
-  let editInputBox = document.createElement("input");
-  editInputBox.value = currentText;
+  let editInputBox = document.createElement("span");
+  editInputBox.role = "textbox";
+  editInputBox.contentEditable = true;
+  editInputBox.innerText = currentText;
 
   // replace existing text div with editing input box
   parentLi.replaceChild(editInputBox, childDiv);
   editInputBox.focus();
+  // place text cursor at end of input box (span)
+  document.getSelection().collapse(editInputBox, 1);
+
   // swap to save edit and discard edit buttons, and store save edit, edit, and remove buttons
   let [discardEditButton, saveEditButton, editButton, removeButton] = swapToEditButtons(parentLi.id);
 
@@ -91,7 +96,7 @@ function editNote(e) {
   });
   // allow pressing enter key within input box to trigger save edit button
   // or pressing escape key to cancel changes
-  editInputBox.addEventListener("keyup", (event) => {
+  editInputBox.addEventListener("keydown", (event) => {
     event.preventDefault();
     if (event.key === "Enter") {
       document.getElementById(saveEditButton.id).click();
@@ -109,7 +114,7 @@ function exitNoteEdit(dataToPass) {
   // store existing parent li, child input box, text content, and button
   let parentLi = dataToPass.event.target.parentElement;
   let childInputBox = dataToPass.event.target.parentElement.firstElementChild;
-  let edittedText = dataToPass.event.target.parentElement.firstElementChild.value;
+  let edittedText = dataToPass.event.target.parentElement.firstElementChild.innerText;
   let discardEditButton = dataToPass.event.target.parentElement.lastElementChild;
   let saveEditButton = dataToPass.event.target.parentElement.lastElementChild.previousElementSibling;
 

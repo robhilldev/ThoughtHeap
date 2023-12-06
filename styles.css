@@ -42,7 +42,7 @@ form input#text-to-add {
   flex-grow: 1;
   height: 2rem;
   padding-left: 5px;
-  border: 2px outset #323232;
+  border: 2px outset black;
   border-radius: 0.25rem;
 }
 
@@ -56,7 +56,7 @@ form input#form-button {
   width: 2.33rem;
   height: 2.33rem;
   border-radius: 50%;
-  border: 2px outset #323232;
+  border: 2px outset black;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -115,10 +115,8 @@ button {
   padding: 0;
   flex-shrink: 0;
   flex-basis: 1.5rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   align-self: self-start;
+  text-align: center;
   width: 1.5rem;
   height: 1.5rem;
   border-radius: 50%;

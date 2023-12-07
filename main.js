@@ -1,54 +1,68 @@
-import { addRemoveButton, addEditButton, swapToEditButtons } from "./button.js";
+import { addRemoveButton, addEditButton, swapToEditButtons } from "./Button.js";
 
-let keys = Object.keys(localStorage);
+let listTitles = Object.keys(localStorage);
+let lists = Object.values(localStorage);
+// VVV this should determine the "_current" list eventually instead of first title VVV
+let currentListTitle = listTitles.length > 0 ? listTitles[0] : "1_My Notes_current";
+// VVV this should determine the current list eventually instead of first list VVV
+let currentList = lists.length > 0 ? JSON.parse(lists[0]) : [];
+let noteKeys = [];
 
-// sort localstorage key array, populate page with notes, set up add note button
+// add current title to page, clear input box, set up add note button, display notes
 window.onload = function() {
+  document.getElementsByTagName("h1")[0].textContent = currentListTitle.split("_")[1];
   document.getElementById("text-to-add").value = "";
-
-  keys.sort((a, b) => {
-    if (Number(a) < Number(b)) { return -1; }
-    if (Number(a) > Number(b)) { return 1; }
-    return 0;
-  });
-  instantiateList(keys);
 
   let addButton = document.getElementById("form-button");
   addButton.addEventListener("click", addNote);
+
+  // keys.sort((a, b) => {
+  //   if (Number(a) < Number(b)) { return -1; }
+  //   if (Number(a) > Number(b)) { return 1; }
+  //   return 0;
+  // });
+  // initializeCurrentList(keys);
+  initializeCurrentList(currentList);
 }
 
-// create an instance of the list with notes from localstorage
-function instantiateList(keys) {
-  for (let key of keys) {
+// retrieve the current list from localstorage and display it on the page
+function initializeCurrentList(list) {
+  for (let i = 0; i < currentList.length; i++) {
+    // also update keys for this list of notes
+    noteKeys.push(String(i));
     let currentLi = document.createElement("li");
-    let currentNote = localStorage.getItem(key);
-    currentLi.innerHTML = "<div>" + currentNote + "</div>";
-    currentLi.id = key;
-    currentLi.appendChild(addEditButton(key)).addEventListener("click", editNote);
-    currentLi.appendChild(addRemoveButton(key)).addEventListener("click", removeNote);
+    currentLi.innerHTML = "<div>" + currentList[i] + "</div>";
+    currentLi.id = i;
+    currentLi.appendChild(addEditButton(i)).addEventListener("click", editNote);
+    currentLi.appendChild(addRemoveButton(i)).addEventListener("click", removeNote);
     document.getElementById("list").appendChild(currentLi);
   }
+  console.log(noteKeys);
 }
+
+// function addList() {}
 
 // add note to page, localstorage, and add key to array
 function addNote() {
   event.preventDefault();
-  let newLi = document.createElement("li");
   let textToAdd = document.getElementById("text-to-add");
   
   if (textToAdd.value) {
-    let currentKey = String(
-      Number(keys.length) === 0 ? 1 : Number(keys[keys.length - 1]) + 1
+    let newLi = document.createElement("li");
+    let newId = String(
+      Number(noteKeys.length) === 0 ? 1 : Number(noteKeys[noteKeys.length - 1]) + 1
     );
-    // add note to local storage and key array
-    localStorage.setItem(currentKey, textToAdd.value);
-    keys.push(currentKey);
+    noteKeys.push(newId);
+
+    // add note to list, local storage, and key array
+    currentList.push(textToAdd.value);
+    localStorage.setItem(currentListTitle, JSON.stringify(currentList));
 
     // add note to page with an id, edit button, and remove button
     newLi.innerHTML = "<div>" + textToAdd.value + "</div>";
-    newLi.id = currentKey;
-    newLi.appendChild(addEditButton(currentKey)).addEventListener("click", editNote);
-    newLi.appendChild(addRemoveButton(currentKey)).addEventListener("click", removeNote);
+    newLi.id = newId;
+    newLi.appendChild(addEditButton(newId)).addEventListener("click", editNote);
+    newLi.appendChild(addRemoveButton(newId)).addEventListener("click", removeNote);
     document.getElementById("list").appendChild(newLi);
     // clear input box
     textToAdd.value= "";
@@ -58,9 +72,11 @@ function addNote() {
 // remove note from page, localstorage, and remove key from array
 function removeNote(e) {
   let note = e.target.parentElement;
-  localStorage.removeItem(note.id);
-  keys = keys.filter((key) => key !== note.id);
   note.remove();
+  currentList.splice(note.id, 1);
+  localStorage.setItem(currentListTitle, JSON.stringify(currentList));
+  noteKeys = noteKeys.filter((key) => key !== note.id);
+  console.log(noteKeys);
 }
 
 // open input box with existing content to allow editing of content

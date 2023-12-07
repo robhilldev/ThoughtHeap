@@ -13,11 +13,40 @@ header {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 1vw;
+  padding-top: 3rem;
+  padding-bottom: 2.5rem;
 }
 
-h1 {
-  margin-top: 3rem;
-  margin-bottom: 2.5rem;
+header h1 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+header span {
+  padding-left: 0.1rem;
+  padding-right: 0.5rem;
+  flex-basis: 1;
+  font-family: inherit;
+  background-color: white;
+  color: black;
+}
+
+header span:focus {
+  outline: 0.2rem solid #323232;
+}
+
+button#edit-button-header {
+  align-self: center;
+  border: 2px outset #323232;
+}
+
+button#discard-edit-button-header {
+  border: 2px solid #323232;
+}
+
+button#save-edit-button-header {
+  border: 2px solid #323232;
 }
 
 main {
@@ -91,15 +120,8 @@ li div {
   flex-grow: 1;
 }
 
-li input {
-  min-width: 80%;
-}
-
-li input:focus {
-  outline: 0.1rem solid #DDD0C8;
-}
-
 li span {
+  padding-left: 0.1rem;
   padding-right: 0.5rem;
   flex-basis: 1;
   font-family: inherit;
@@ -144,9 +166,9 @@ button.save-edit {
 }
 
 @media (max-width: 640px) {
-  h1 {
-    margin-top: 1.8rem;
-    margin-bottom: 1.5rem;
+  header {
+    padding-top: 1.8rem;
+    padding-bottom: 1.5rem;
   }
 
   form {

@@ -26,12 +26,17 @@ function swapToEditButtons(buttonNumber) {
   discardEditButton.innerHTML = "&#10007;";
 
   let editButton = document.getElementById(`edit-button-${buttonNumber}`);
-  let removeButton = document.getElementById(`remove-button-${buttonNumber}`);
-
-  removeButton.parentElement.replaceChild(discardEditButton, removeButton);
-  editButton.parentElement.replaceChild(saveEditButton, editButton);
-
-  return [discardEditButton, saveEditButton, editButton, removeButton];
+  if (editButton.parentElement.tagName === "LI") {
+    let removeButton = document.getElementById(`remove-button-${buttonNumber}`);
+    editButton.parentElement.replaceChild(discardEditButton, removeButton);
+    editButton.parentElement.replaceChild(saveEditButton, editButton);
+    return [discardEditButton, saveEditButton, editButton, removeButton];
+  } else if (editButton.parentElement.tagName === "HEADER") {
+    let removeButton = document.createElement("button");
+    editButton.parentElement.appendChild(discardEditButton);
+    editButton.parentElement.replaceChild(saveEditButton, editButton);
+    return [discardEditButton, saveEditButton, editButton, removeButton];
+  }
 }
 
 export { addRemoveButton, addEditButton, swapToEditButtons };

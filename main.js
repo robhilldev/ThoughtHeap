@@ -1,11 +1,11 @@
 import { addRemoveButton, addEditButton, swapToEditButtons } from "./Button.js";
 
 let titles = Object.keys(localStorage);
-let lists = Object.values(localStorage);
-// VVV this should determine the "_current" title eventually instead of first title VVV
-let currentTitle = titles.length > 0 ? titles[0] : "0_My Notes_current";
-// VVV this should determine the current list eventually instead of first list VVV
-let currentList = lists.length > 0 ? JSON.parse(lists[0]) : [];
+// determine the _current (or last viewed) list title
+let currentTitle = titles.length > 0
+  ? titles.find((title) => title.endsWith("_current"))
+  : "0_My Notes_current";
+let currentList = JSON.parse(localStorage.getItem(currentTitle));
 // let titleKeys = [];
 let noteKeys = [];
 
@@ -77,7 +77,6 @@ function addNote() {
 function removeNote(e) {
   let note = e.target.parentElement;
   note.remove();
-  // currentList.splice(note.id, 1);
   currentList.splice(note.id, 1, `x_${note.firstElementChild.textContent}_x`);
   localStorage.setItem(currentTitle, JSON.stringify(currentList));
   // noteKeys = noteKeys.filter((key) => key !== note.id);
@@ -134,7 +133,7 @@ function exitTextEdit(dataToPass) {
   let editButton = dataToPass.args[0];
   let removeButton = dataToPass.args[1];
 
-  // store existing parent element, child input box, text content, and button
+  // store existing parent element, child input box, text content, and buttons
   let parent = dataToPass.event.target.parentElement;
   let childInputBox = dataToPass.event.target.parentElement.firstElementChild;
   let edittedText = dataToPass.event.target.parentElement.firstElementChild.innerText;

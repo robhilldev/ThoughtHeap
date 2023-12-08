@@ -1,11 +1,13 @@
 import { addRemoveButton, addEditButton, swapToEditButtons } from "./Button.js";
 
 let titles = Object.keys(localStorage);
-// determine the _current (or last viewed) list title
+// determine the _current (or last viewed) list title, or return a default
 let currentTitle = titles.length > 0
   ? titles.find((title) => title.endsWith("_current"))
   : "0_My Notes_current";
-let currentList = JSON.parse(localStorage.getItem(currentTitle));
+let currentList = localStorage.length === 0
+  ? []
+  : JSON.parse(localStorage.getItem(currentTitle));
 // let titleKeys = [];
 let noteKeys = [];
 
@@ -31,7 +33,7 @@ function initializeCurrentList(list) {
   for (let i = 0; i < currentList.length; i++) {
     // also update keys for this list of notes
     noteKeys.push(String(i));
-    // don't show notes marked for deletion
+    // show only notes not marked for deletion
     if (!currentList[i].startsWith("x_", 0) && !currentList[i].endsWith("_x")) {
       let currentLi = document.createElement("li");
       currentLi.innerHTML = "<div>" + currentList[i] + "</div>";

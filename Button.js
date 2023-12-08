@@ -2,7 +2,7 @@ function addRemoveButton(buttonNumber) {
   let removeButton = document.createElement("button");
   removeButton.id = `remove-button-${buttonNumber}`;
   removeButton.className = "remove";
-  removeButton.innerHTML = "&#10005;";
+  removeButton.innerHTML = "&#128465;";
   return removeButton;
 }
 

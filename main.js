@@ -3,7 +3,7 @@ import { addRemoveButton, addEditButton, swapToEditButtons } from "./Button.js";
 let titles = Object.keys(localStorage);
 let lists = Object.values(localStorage);
 // VVV this should determine the "_current" title eventually instead of first title VVV
-let currentTitle = titles.length > 0 ? titles[0] : "1_My Notes_current";
+let currentTitle = titles.length > 0 ? titles[0] : "0_My Notes_current";
 // VVV this should determine the current list eventually instead of first list VVV
 let currentList = lists.length > 0 ? JSON.parse(lists[0]) : [];
 // let titleKeys = [];
@@ -21,12 +21,6 @@ window.onload = function() {
   let addButton = document.getElementById("form-button");
   addButton.addEventListener("click", addNote);
 
-  // keys.sort((a, b) => {
-  //   if (Number(a) < Number(b)) { return -1; }
-  //   if (Number(a) > Number(b)) { return 1; }
-  //   return 0;
-  // });
-  // initializeCurrentList(keys);
   initializeCurrentList(currentList);
 }
 
@@ -37,12 +31,15 @@ function initializeCurrentList(list) {
   for (let i = 0; i < currentList.length; i++) {
     // also update keys for this list of notes
     noteKeys.push(String(i));
-    let currentLi = document.createElement("li");
-    currentLi.innerHTML = "<div>" + currentList[i] + "</div>";
-    currentLi.id = i;
-    currentLi.appendChild(addEditButton(i)).addEventListener("click", editText);
-    currentLi.appendChild(addRemoveButton(i)).addEventListener("click", removeNote);
-    document.getElementById("list").appendChild(currentLi);
+    // don't show notes marked for deletion
+    if (!currentList[i].startsWith("x_", 0) && !currentList[i].endsWith("_x")) {
+      let currentLi = document.createElement("li");
+      currentLi.innerHTML = "<div>" + currentList[i] + "</div>";
+      currentLi.id = i;
+      currentLi.appendChild(addEditButton(i)).addEventListener("click", editText);
+      currentLi.appendChild(addRemoveButton(i)).addEventListener("click", removeNote);
+      document.getElementById("list").appendChild(currentLi);
+    }
   }
 }
 
@@ -57,7 +54,7 @@ function addNote() {
   if (textToAdd.value) {
     let newLi = document.createElement("li");
     let newId = String(
-      Number(noteKeys.length) === 0 ? 1 : Number(noteKeys[noteKeys.length - 1]) + 1
+      Number(noteKeys.length) === 0 ? 0 : Number(noteKeys[noteKeys.length - 1]) + 1
     );
 
     // add note to list, local storage, and note key to array
@@ -80,10 +77,14 @@ function addNote() {
 function removeNote(e) {
   let note = e.target.parentElement;
   note.remove();
-  currentList.splice(note.id, 1);
+  // currentList.splice(note.id, 1);
+  currentList.splice(note.id, 1, `x_${note.firstElementChild.textContent}_x`);
   localStorage.setItem(currentTitle, JSON.stringify(currentList));
-  noteKeys = noteKeys.filter((key) => key !== note.id);
+  // noteKeys = noteKeys.filter((key) => key !== note.id);
 }
+
+// function emptyTrash() {}
+// note: will need to realign keys on emptying of trash
 
 // open input box with existing content to allow editing of content
 function editText(e) {

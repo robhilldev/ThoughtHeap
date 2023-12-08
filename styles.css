@@ -13,35 +13,42 @@ header {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1vw;
+  column-gap: 1vw;
   padding-top: 3rem;
   padding-bottom: 2.5rem;
 }
 
 header h1 {
+  margin-left: 5%;
   margin-top: 0;
   margin-bottom: 0;
+  padding: 2px;
 }
 
 header span {
+  margin-left: 5%;
   padding-left: 0.1rem;
   padding-right: 0.5rem;
   flex-basis: 1;
   font-family: inherit;
-  background-color: white;
+  font-size: 2em;
+  font-weight: bold;
   color: black;
+  border: 2px solid #323232;
 }
 
 header span:focus {
-  outline: 0.2rem solid #323232;
+  outline: 0.1rem solid #323232;
 }
 
 button#edit-button-header {
+  margin-right: 5%;
   align-self: center;
   border: 2px outset #323232;
 }
 
 button#discard-edit-button-header {
+  margin-right: 5%;
   border: 2px solid #323232;
 }
 

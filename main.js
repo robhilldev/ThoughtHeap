@@ -1,11 +1,12 @@
 import { addRemoveButton, addEditButton, swapToEditButtons } from "./Button.js";
 
 let titles = Object.keys(localStorage);
-// determine the _current (or last viewed) list title, or return a default
+// determine the _current (last viewed) list title, or return a default
 let currentTitle = titles.length > 0
   ? titles.find((title) => title.endsWith("_current"))
   : "0_My Notes_current";
-let currentList = localStorage.length === 0
+// determine if there's a current list and store it, or store an empty array
+let currentList = titles.length === 0
   ? []
   : JSON.parse(localStorage.getItem(currentTitle));
 // let titleKeys = [];

@@ -97,6 +97,7 @@ function editText(e) {
 
   // create and populate new input box for editing
   let editInputBox = document.createElement("span");
+  editInputBox.id = "edit-input-box";
   editInputBox.role = "textbox";
   editInputBox.contentEditable = true;
   editInputBox.innerText = currentText;

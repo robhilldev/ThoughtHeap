@@ -4,9 +4,28 @@
 
 body {
   margin: auto;
-  background-color: #DDD0C8;
+  background: rgb(255,140,0);
+  background: linear-gradient(0deg, rgba(255,140,0,1) 0%, rgba(135,206,235,1) 100%);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: 100vw 100vh;
+  /* background-color: #DDD0C8; */
   font: 1em sans-serif;
-  color: black;
+  color: #323232;
+}
+
+button {
+  padding: 0;
+  flex-shrink: 0;
+  flex-basis: 1.5rem;
+  cursor: pointer;
+  text-align: center;
+  align-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background-color: white;
+  color: #323232;
 }
 
 header {
@@ -14,24 +33,23 @@ header {
   align-items: center;
   justify-content: center;
   column-gap: 1vw;
-  padding-top: 3rem;
-  padding-bottom: 2.5rem;
+  padding-top: 2.4rem;
+  padding-bottom: 2.1rem;
 }
 
-header div#list-select-button {
+header button#list-select-button {
   order: 1;
+  flex-basis: 1.75rem;
   margin-left: 5%;
   margin-right: 0.5vw;
-  padding-left: 3px;
-  padding-right: 3px;
-  font-size: 1.25rem;
+  width: 1.75rem;
+  height: 1.75rem;
   border: 2px solid #323232;
   border-radius: 0.25rem;
+  background: url(images/bars-solid.svg) no-repeat;
   background-color: white;
-}
-
-header div#list-select-button:hover {
-  cursor: pointer;
+  background-size: 50%;
+  background-position: 50%;
 }
 
 header h1 {
@@ -41,7 +59,7 @@ header h1 {
   padding: 2px;
 }
 
-header span {
+header span#edit-input-box {
   order: 2;
   padding-left: 0.1rem;
   padding-right: 0.5rem;
@@ -49,11 +67,10 @@ header span {
   font-family: inherit;
   font-size: 2em;
   font-weight: bold;
-  color: black;
   border: 2px solid #323232;
 }
 
-header span:focus {
+header span#edit-input-box:focus {
   outline: 0.1rem solid #323232;
 }
 
@@ -68,11 +85,19 @@ header button#discard-edit-button-header {
   order: 4;
   margin-right: 5%;
   border: 2px solid #323232;
+  background: url(images/xmark-solid.svg) no-repeat;
+  background-color: white;
+  background-size: 50%;
+  background-position: 50%;
 }
 
 header button#save-edit-button-header {
   order: 3;
   border: 2px solid #323232;
+  background: url(images/check-solid.svg) no-repeat;
+  background-color: white;
+  background-size: 60%;
+  background-position: 50%;
 }
 
 main {
@@ -84,7 +109,7 @@ form {
   align-items: center;
   gap: 5%;
   justify-content: start;
-  margin-bottom: 2.5rem;
+  margin-bottom: 2rem;
   margin-left: 5%;
   margin-right: 5%;
 }
@@ -111,14 +136,12 @@ form input#form-button {
   width: 2.33rem;
   height: 2.33rem;
   border-radius: 50%;
-  border: 2px outset #323232;
+  border: 3px outset #323232;
   cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.25rem;
+  background: url(images/arrow-down-solid.svg) no-repeat;
   background-color: white;
-  color: black;
+  background-size: 40%;
+  background-position: 50%;
 }
 
 ul#list {
@@ -147,50 +170,54 @@ li div {
   flex-grow: 1;
 }
 
-li span {
+li span#edit-input-box {
   padding-left: 0.1rem;
   padding-right: 0.5rem;
   flex-basis: 1;
   font-family: inherit;
   background-color: white;
-  color: black;
+  color: #323232;
 }
 
-li span:focus {
+li span#edit-input-box:focus {
   outline: 0.2rem solid #DDD0C8;
 }
 
-button {
-  padding: 0;
-  flex-shrink: 0;
-  flex-basis: 1.5rem;
-  cursor: pointer;
-  align-self: self-start;
-  text-align: center;
-  width: 1.5rem;
-  height: 1.5rem;
-  border-radius: 50%;
-  background-color: white;
-  color: black;
-}
-
 button.remove {
+  align-self: self-start;
   border: 2px outset #DDD0C8;
+  background: url(images/trash-can-solid.svg) no-repeat;
+  background-color: white;
+  background-size: 60%;
+  background-position: 50%;
 }
 
 button.edit {
+  align-self: self-start;
   border: 2px solid #DDD0C8;
+  background: url(images/pen-to-square-solid.svg) no-repeat;
+  background-color: white;
+  background-size: 60%;
+  background-position: 50%;
 }
 
 button.discard-edit {
-  border: 2px solid #DDD0C8;
   align-self: center;
+  border: 2px solid #DDD0C8;
+  background: url(images/xmark-solid.svg) no-repeat;
+  background-color: white;
+  background-size: 50%;
+  background-position: 50%;
 }
 
 button.save-edit {
+  align-self: center;
   margin-left: 0.5vw;
   border: 2px solid #DDD0C8;
-  align-self: center;
+  background: url(images/check-solid.svg) no-repeat;
+  background-color: white;
+  background-size: 60%;
+  background-position: 50%;
 }
 
 @media (max-width: 640px) {

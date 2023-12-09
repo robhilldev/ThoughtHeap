@@ -3,7 +3,6 @@ function addRemoveButton(buttonNumber) {
   removeButton.id = `remove-button-${buttonNumber}`;
   removeButton.className = "remove";
   removeButton.type = "button";
-  removeButton.innerHTML = "&#128465;";
   return removeButton;
 }
 
@@ -12,7 +11,6 @@ function addEditButton(buttonNumber) {
   editButton.id = `edit-button-${buttonNumber}`;
   editButton.className = "edit";
   editButton.type = "button";
-  editButton.innerHTML = "&#8230;";
   return editButton;
 }
 
@@ -21,13 +19,11 @@ function swapToEditButtons(buttonNumber) {
   saveEditButton.id = `save-edit-button-${buttonNumber}`;
   saveEditButton.className = "save-edit";
   saveEditButton.type = "button";
-  saveEditButton.innerHTML = "&#10003;";
 
   let discardEditButton = document.createElement("button");
   discardEditButton.id = `discard-edit-button-${buttonNumber}`;
   discardEditButton.className = "discard-edit";
   discardEditButton.type = "button";
-  discardEditButton.innerHTML = "&#10007;";
 
   let editButton = document.getElementById(`edit-button-${buttonNumber}`);
   if (editButton.parentElement.tagName === "LI") {

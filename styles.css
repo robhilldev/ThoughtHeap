@@ -18,15 +18,31 @@ header {
   padding-bottom: 2.5rem;
 }
 
-header h1 {
+header div#list-select-button {
+  order: 1;
   margin-left: 5%;
+  margin-right: 0.5vw;
+  padding-left: 3px;
+  padding-right: 3px;
+  font-size: 1.25rem;
+  border: 2px solid #323232;
+  border-radius: 0.25rem;
+  background-color: white;
+}
+
+header div#list-select-button:hover {
+  cursor: pointer;
+}
+
+header h1 {
+  order: 2;
   margin-top: 0;
   margin-bottom: 0;
   padding: 2px;
 }
 
 header span {
-  margin-left: 5%;
+  order: 2;
   padding-left: 0.1rem;
   padding-right: 0.5rem;
   flex-basis: 1;
@@ -41,18 +57,21 @@ header span:focus {
   outline: 0.1rem solid #323232;
 }
 
-button#edit-button-header {
+header button#edit-button-header {
+  order: 3;
   margin-right: 5%;
   align-self: center;
   border: 2px outset #323232;
 }
 
-button#discard-edit-button-header {
+header button#discard-edit-button-header {
+  order: 4;
   margin-right: 5%;
   border: 2px solid #323232;
 }
 
-button#save-edit-button-header {
+header button#save-edit-button-header {
+  order: 3;
   border: 2px solid #323232;
 }
 
@@ -93,6 +112,7 @@ form input#form-button {
   height: 2.33rem;
   border-radius: 50%;
   border: 2px outset #323232;
+  cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -144,6 +164,7 @@ button {
   padding: 0;
   flex-shrink: 0;
   flex-basis: 1.5rem;
+  cursor: pointer;
   align-self: self-start;
   text-align: center;
   width: 1.5rem;
@@ -174,8 +195,14 @@ button.save-edit {
 
 @media (max-width: 640px) {
   header {
+    gap: 1.5vw;
     padding-top: 1.8rem;
     padding-bottom: 1.5rem;
+    font-size: 0.8rem;
+  }
+
+  header div#list-select-button {
+    font-size: 1rem;
   }
 
   form {

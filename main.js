@@ -94,7 +94,7 @@ function editText(e) {
   editInputBox.id = "edit-input-box";
   editInputBox.role = "textbox";
   editInputBox.contentEditable = true;
-  editInputBox.innerText = currentText;
+  editInputBox.textContent = currentText;
 
   // replace existing text element with editing input box
   parent.replaceChild(editInputBox, firstChild);
@@ -134,7 +134,7 @@ function exitTextEdit(dataToPass) {
   // store existing parent element, child input box, text content, and buttons
   let parent = dataToPass.e.target.parentElement;
   let childInputBox = parent.firstElementChild;
-  let edittedText = parent.firstElementChild.innerText;
+  let edittedText = parent.firstElementChild.textContent;
   let discardEditButton = parent.lastElementChild;
   let saveEditButton = parent.lastElementChild.previousElementSibling;
 

@@ -26,17 +26,14 @@ function swapToEditButtons(buttonNumber) {
   discardEditButton.type = "button";
 
   let editButton = document.getElementById(`edit-button-${buttonNumber}`);
+  let removeButton = document.getElementById(`remove-button-${buttonNumber}`)
+    || document.createElement("button");
   if (editButton.parentElement.tagName === "LI") {
-    let removeButton = document.getElementById(`remove-button-${buttonNumber}`);
-    editButton.parentElement.replaceChild(discardEditButton, removeButton);
-    editButton.parentElement.replaceChild(saveEditButton, editButton);
-    return [discardEditButton, saveEditButton, editButton, removeButton];
-  } else if (editButton.parentElement.tagName === "HEADER") {
-    let removeButton = document.createElement("button");
-    editButton.parentElement.appendChild(discardEditButton);
-    editButton.parentElement.replaceChild(saveEditButton, editButton);
-    return [discardEditButton, saveEditButton, editButton, removeButton];
+    editButton.parentElement.removeChild(removeButton);
   }
+  editButton.parentElement.appendChild(discardEditButton);
+  editButton.parentElement.replaceChild(saveEditButton, editButton);
+  return [discardEditButton, saveEditButton, editButton, removeButton];
 }
 
 export { addRemoveButton, addEditButton, swapToEditButtons };

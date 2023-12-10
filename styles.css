@@ -163,6 +163,7 @@ li {
   color: white;
   word-wrap: break-word;
   border-radius: 0.25rem;
+  background-color: rgb(50, 50, 50, 0.8);
   box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
 }
 
@@ -171,10 +172,13 @@ li div {
 }
 
 li span#edit-input-box {
-  padding-left: 0.1rem;
+  padding-left: 0.2rem;
   padding-right: 0.5rem;
+  padding-top: 0.1rem;
+  padding-bottom: 0.3rem;
   flex-basis: 1;
   font-family: inherit;
+  border-radius: 0.25rem;
   background-color: white;
   color: #323232;
 }

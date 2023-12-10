@@ -1,16 +1,10 @@
 import { addRemoveButton, addEditButton, swapToEditButtons } from "./Button.js";
 
 let titles = Object.keys(localStorage);
-// determine the _current (last viewed) list title, or return a default
-let currentTitle = titles.length > 0
-  ? titles.find((title) => title.endsWith("_current"))
-  : "0_My Notes_current";
+let currentTitle = titles.find(t => t.endsWith("_current")) || "0_My Notes_current";
 let userFacingTitle = currentTitle
   .substring(currentTitle.indexOf("_") + 1, currentTitle.lastIndexOf("_"));
-// determine if there's a current list, store it or empty array
-let currentList = titles.length === 0
-  ? []
-  : JSON.parse(localStorage.getItem(currentTitle));
+let currentList = JSON.parse(localStorage.getItem(currentTitle)) || [];
 // let titleKeys = [];
 let noteKeys = [];
 
@@ -18,11 +12,9 @@ let noteKeys = [];
 window.onload = function() {
   document.getElementsByTagName("h1")[0].textContent = currentTitle.split("_")[1];
   document.getElementsByTagName("h1")[0].id = `title-${currentTitle.split("_")[0]}`;
-  document.getElementById("edit-button-header").addEventListener("click", editText);
   document.getElementById("text-to-add").value = "";
-
-  let addButton = document.getElementById("form-button");
-  addButton.addEventListener("click", addNote);
+  document.getElementById("edit-button-header").addEventListener("click", editText);
+  document.getElementById("form-button").addEventListener("click", addNote);
 
   initializeCurrentList(currentList);
 }

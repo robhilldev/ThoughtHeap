@@ -5,20 +5,20 @@ let titles = Object.keys(localStorage);
 let currentTitle = titles.length > 0
   ? titles.find((title) => title.endsWith("_current"))
   : "0_My Notes_current";
-// determine if there's a current list and store it, or store an empty array
+let userFacingTitle = currentTitle
+  .substring(currentTitle.indexOf("_") + 1, currentTitle.lastIndexOf("_"));
+// determine if there's a current list, store it or empty array
 let currentList = titles.length === 0
   ? []
   : JSON.parse(localStorage.getItem(currentTitle));
 // let titleKeys = [];
 let noteKeys = [];
 
-// add current title to page, clear input box, set up add note button, display notes
+// add current title to page, clear input box, set up buttons, display notes
 window.onload = function() {
   document.getElementsByTagName("h1")[0].textContent = currentTitle.split("_")[1];
   document.getElementsByTagName("h1")[0].id = `title-${currentTitle.split("_")[0]}`;
-  document.getElementsByTagName("header")[0]
-    .appendChild(addEditButton("header"))
-    .addEventListener("click", editText);
+  document.getElementById("edit-button-header").addEventListener("click", editText);
   document.getElementById("text-to-add").value = "";
 
   let addButton = document.getElementById("form-button");
@@ -48,19 +48,19 @@ function initializeCurrentList(list) {
 
 // function addList() {}
 
-// add note to page, localstorage, and add key to array
+// add note to page and localstorage, add key to array
 function addNote() {
   event.preventDefault();
   let textToAdd = document.getElementById("text-to-add");
   
-  // create li element for housing new note and create key
   if (textToAdd.value) {
+    // create li element for housing new note and create key
     let newLi = document.createElement("li");
     let newId = String(
       Number(noteKeys.length) === 0 ? 0 : Number(noteKeys[noteKeys.length - 1]) + 1
     );
 
-    // add note to list, local storage, and note key to array
+    // add note to list array and local storage, add note key to key array
     currentList.push(textToAdd.value);
     localStorage.setItem(currentTitle, JSON.stringify(currentList));
     noteKeys.push(newId);
@@ -71,29 +71,31 @@ function addNote() {
     newLi.appendChild(addEditButton(newId)).addEventListener("click", editText);
     newLi.appendChild(addRemoveButton(newId)).addEventListener("click", removeNote);
     document.getElementById("list").appendChild(newLi);
+
     // clear input box
-    textToAdd.value= "";
+    textToAdd.value = "";
   }
 }
 
-// remove note from page, localstorage, and remove key from array
+// remove note from page and mark note for deletion in localstorage
 function removeNote(e) {
   let note = e.target.parentElement;
   note.remove();
   currentList.splice(note.id, 1, `x_${note.firstElementChild.textContent}_x`);
   localStorage.setItem(currentTitle, JSON.stringify(currentList));
-  // noteKeys = noteKeys.filter((key) => key !== note.id);
 }
 
-// function emptyTrash() {}
+// function removeList(e) {}
+
+// function emptyTrash(e) {}
 // note: will need to realign keys on emptying of trash
 
 // open input box with existing content to allow editing of content
 function editText(e) {
-  // store existing parent element, first child element, and text content
+  // store existing parent element, text element, and text content
   let parent = e.target.parentElement;
-  let firstChild = e.target.parentElement.firstElementChild;
-  let currentText = e.target.parentElement.firstElementChild.textContent;
+  let firstChild = parent.firstElementChild;
+  let currentText = parent.firstElementChild.textContent;
 
   // create and populate new input box for editing
   let editInputBox = document.createElement("span");
@@ -102,26 +104,26 @@ function editText(e) {
   editInputBox.contentEditable = true;
   editInputBox.innerText = currentText;
 
-  // replace existing first child element with editing input box
+  // replace existing text element with editing input box
   parent.replaceChild(editInputBox, firstChild);
   editInputBox.focus();
   // place text cursor at end of input box (span)
   document.getSelection().collapse(editInputBox, 1);
 
-  // swap to save edit and discard edit buttons, and store save edit, edit, and remove buttons
+  // swap to save edit and discard edit buttons, store save edit, edit, and remove buttons
   let [discardEditButton, saveEditButton, editButton, removeButton] = swapToEditButtons(parent.id);
 
   // pass event object and temporarily removed buttons to event handler on click
   discardEditButton.addEventListener("click", (event) => {
-    let dataToPass = {"event": event, "args": [editButton, removeButton]};
+    let dataToPass = {"e": event, "args": [editButton, removeButton]};
     exitTextEdit(dataToPass);
   });
   saveEditButton.addEventListener("click", (event) => {
-    let dataToPass = {"event": event, "args": [editButton, removeButton]};
+    let dataToPass = {"e": event, "args": [editButton, removeButton]};
     exitTextEdit(dataToPass);
   });
-  // allow pressing enter key within input box to trigger save edit button
-  // or pressing escape key to cancel changes
+  
+  // within input box, make enter trigger save edit and escape trigger discard edit
   editInputBox.addEventListener("keydown", (event) => {
     if (event.key === "Enter") {
       event.preventDefault();
@@ -132,51 +134,52 @@ function editText(e) {
   });
 }
 
-// handle saving of edited note to page and localstorage, or discarding edit
+// handle saving of edited content to page and localstorage, or discarding edit
 function exitTextEdit(dataToPass) {
   let editButton = dataToPass.args[0];
   let removeButton = dataToPass.args[1];
 
   // store existing parent element, child input box, text content, and buttons
-  let parent = dataToPass.event.target.parentElement;
-  let childInputBox = dataToPass.event.target.parentElement.firstElementChild;
-  let edittedText = dataToPass.event.target.parentElement.firstElementChild.innerText;
-  let discardEditButton = dataToPass.event.target.parentElement.lastElementChild;
-  let saveEditButton = dataToPass.event.target.parentElement.lastElementChild.previousElementSibling;
+  let parent = dataToPass.e.target.parentElement;
+  let childInputBox = parent.firstElementChild;
+  let edittedText = parent.firstElementChild.innerText;
+  let discardEditButton = parent.lastElementChild;
+  let saveEditButton = parent.lastElementChild.previousElementSibling;
 
-  // create new first child element, populate with editted text or old text
+  // create new text element, populate with editted text or old text
   if (parent.tagName === "LI") {
+    // on note edit
     let newTextElement = document.createElement("div");
-    if (event.target.className == "save-edit") {
-      // update list array with new value, localstorage, and page
+    if (dataToPass.e.target.className == "save-edit") {
+      // update list array and localstorage, populate new text element
       currentList.splice(parent.id, 1, edittedText);
       localStorage.setItem(currentTitle, JSON.stringify(currentList));
       newTextElement.textContent = edittedText;
     } else {
-      // put back existing value
+      // put back existing text
       newTextElement.textContent = currentList[parent.id];
     }
-    // swap in updated first child element, edit button, and remove button
+    // swap in updated text element, edit button, and remove button
     parent.replaceChild(newTextElement, childInputBox);
     parent.replaceChild(editButton, saveEditButton);
     parent.replaceChild(removeButton, discardEditButton);
   } else if (parent.tagName === "HEADER") {
+    // on title edit
     let newTextElement = document.createElement("h1");
-    if (event.target.className == "save-edit") {
-      // store current title, update current title in multiple places
-      let titleBeingChanged = currentTitle;
-      currentTitle = `${currentTitle.split("_")[0]}_${edittedText}_current`;
-      titles.splice(titleBeingChanged.split("_")[0], 1, currentTitle);
-      // create a new entry in localstorage with new title, remove old entry
+    if (dataToPass.e.target.className == "save-edit") {
+      // update title array and localstorage, populate new text element
+      let previousTitle = currentTitle;
+      let titleKey = currentTitle.substring(0, currentTitle.indexOf("_"));
+      currentTitle = `${titleKey}_${edittedText}_current`;
+      titles.splice(titleKey, 1, currentTitle);
       localStorage.setItem(currentTitle, JSON.stringify(currentList));
-      localStorage.removeItem(titleBeingChanged);
-      // update title on page
+      localStorage.removeItem(previousTitle);
       newTextElement.textContent = edittedText;
     } else {
-      // put back existing value
+      // put back existing text
       newTextElement.textContent = currentTitle.split("_")[1];
     }
-    // swap in updated first child element and edit button, remove discard button
+    // swap in updated text element and edit button, remove discard button
     parent.replaceChild(newTextElement, childInputBox);
     parent.replaceChild(editButton, saveEditButton);
     parent.removeChild(discardEditButton);

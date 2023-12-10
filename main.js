@@ -1,17 +1,18 @@
 import { addRemoveButton, addEditButton, swapToEditButtons } from "./Button.js";
 
 let titles = Object.keys(localStorage);
+// let titleKeys = [];
 let currentTitle = titles.find(t => t.endsWith("_current")) || "0_My Notes_current";
+let currentTitleKey = currentTitle.substring(0, currentTitle.indexOf("_"));
 let userFacingTitle = currentTitle
   .substring(currentTitle.indexOf("_") + 1, currentTitle.lastIndexOf("_"));
 let currentList = JSON.parse(localStorage.getItem(currentTitle)) || [];
-// let titleKeys = [];
 let noteKeys = [];
 
 // add current title to page, clear input box, set up buttons, display notes
 window.onload = function() {
-  document.getElementsByTagName("h1")[0].textContent = currentTitle.split("_")[1];
-  document.getElementsByTagName("h1")[0].id = `title-${currentTitle.split("_")[0]}`;
+  document.getElementsByTagName("h1")[0].textContent = userFacingTitle;
+  document.getElementsByTagName("h1")[0].id = `title-${currentTitleKey}`;
   document.getElementById("text-to-add").value = "";
   document.getElementById("edit-button-header").addEventListener("click", editText);
   document.getElementById("form-button").addEventListener("click", addNote);
@@ -78,7 +79,6 @@ function removeNote(e) {
 }
 
 // function removeList(e) {}
-
 // function emptyTrash(e) {}
 // note: will need to realign keys on emptying of trash
 
@@ -161,9 +161,8 @@ function exitTextEdit(dataToPass) {
     if (dataToPass.e.target.className == "save-edit") {
       // update title array and localstorage, populate new text element
       let previousTitle = currentTitle;
-      let titleKey = currentTitle.substring(0, currentTitle.indexOf("_"));
-      currentTitle = `${titleKey}_${edittedText}_current`;
-      titles.splice(titleKey, 1, currentTitle);
+      currentTitle = `${currentTitleKey}_${edittedText}_current`;
+      titles.splice(currentTitleKey, 1, currentTitle);
       localStorage.setItem(currentTitle, JSON.stringify(currentList));
       localStorage.removeItem(previousTitle);
       newTextElement.textContent = edittedText;

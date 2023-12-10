@@ -27,7 +27,7 @@ function initializeCurrentList(list) {
   for (let i = 0; i < currentList.length; i++) {
     // also update keys for this list of notes
     noteKeys.push(String(i));
-    // show only notes not marked for deletion
+    // only show note if not marked for deletion
     if (!currentList[i].startsWith("x_", 0) && !currentList[i].endsWith("_x")) {
       let currentLi = document.createElement("li");
       currentLi.innerHTML = "<div>" + currentList[i] + "</div>";
@@ -165,6 +165,7 @@ function exitTextEdit(dataToPass) {
       titles.splice(currentTitleKey, 1, currentTitle);
       localStorage.setItem(currentTitle, JSON.stringify(currentList));
       localStorage.removeItem(previousTitle);
+      userFacingTitle = edittedText;
       newTextElement.textContent = edittedText;
     } else {
       // put back existing text

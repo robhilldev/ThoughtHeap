@@ -4,12 +4,16 @@
 
 body {
   margin: auto;
-  background: rgb(255,140,0);
-  background: linear-gradient(0deg, rgba(255,140,0,1) 0%, rgba(135,206,235,1) 100%);
+  background: rgb(255, 140, 0);
+  background: linear-gradient(
+    0deg,
+    rgba(255, 140, 0, 1) 0%,
+    rgba(135, 206, 235, 1) 100%
+  );
   background-attachment: fixed;
   background-repeat: no-repeat;
   background-size: 100vw 100vh;
-  /* background-color: #DDD0C8; */
+  /* background-color: #ddd0c8; */
   font: 1em sans-serif;
   color: #323232;
 }
@@ -44,7 +48,7 @@ header button#list-select-button {
   margin-right: 0.5vw;
   width: 1.75rem;
   height: 1.75rem;
-  border: 2px solid #323232;
+  border: 2px outset #323232;
   border-radius: 0.25rem;
   background: url(images/bars-solid.svg) no-repeat;
   background-color: white;
@@ -164,7 +168,8 @@ li {
   word-wrap: break-word;
   border-radius: 0.25rem;
   background-color: rgb(50, 50, 50, 0.8);
-  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1),
+    0 8px 10px -6px rgb(0 0 0 / 0.1);
 }
 
 li div {
@@ -184,12 +189,12 @@ li span#edit-input-box {
 }
 
 li span#edit-input-box:focus {
-  outline: 0.2rem solid #DDD0C8;
+  outline: 0.2rem solid #ddd0c8;
 }
 
 button.remove {
   align-self: self-start;
-  border: 2px outset #DDD0C8;
+  border: 2px outset #ddd0c8;
   background: url(images/trash-can-solid.svg) no-repeat;
   background-color: white;
   background-size: 60%;
@@ -198,7 +203,7 @@ button.remove {
 
 button.edit {
   align-self: self-start;
-  border: 2px solid #DDD0C8;
+  border: 2px solid #ddd0c8;
   background: url(images/pen-to-square-solid.svg) no-repeat;
   background-color: white;
   background-size: 60%;
@@ -207,7 +212,7 @@ button.edit {
 
 button.discard-edit {
   align-self: center;
-  border: 2px solid #DDD0C8;
+  border: 2px solid #ddd0c8;
   background: url(images/xmark-solid.svg) no-repeat;
   background-color: white;
   background-size: 50%;
@@ -217,7 +222,7 @@ button.discard-edit {
 button.save-edit {
   align-self: center;
   margin-left: 0.5vw;
-  border: 2px solid #DDD0C8;
+  border: 2px solid #ddd0c8;
   background: url(images/check-solid.svg) no-repeat;
   background-color: white;
   background-size: 60%;

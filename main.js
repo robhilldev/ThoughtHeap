@@ -9,7 +9,7 @@ let userFacingTitle = currentTitle
 let currentList = JSON.parse(localStorage.getItem(currentTitle)) || [];
 
 // add current title to page, clear input box, set up buttons, display notes
-window.onload = function() {
+window.onload = () => {
   document.getElementsByTagName("h1")[0].textContent = userFacingTitle;
   document.getElementsByTagName("h1")[0].id = `title-${currentTitleKey}`;
   document.getElementById("text-to-add").value = "";
@@ -17,7 +17,7 @@ window.onload = function() {
   document.getElementById("form-button").addEventListener("click", addNote);
 
   initializeCurrentList();
-}
+};
 
 // retrieve the current list from localstorage and display it on the page
 function initializeCurrentList() {
@@ -132,7 +132,7 @@ function exitTextEdit(dataToPass) {
   // create new text element, populate with editted text or old text
   if (parent.tagName === "LI") {
     // on note edit
-    let newTextElement = document.createElement("div");
+    const newTextElement = document.createElement("div");
     if (dataToPass.e.target.className == "save-edit") {
       // update list array and localstorage, populate new text element
       currentList.splice(parent.id, 1, edittedText);
@@ -148,10 +148,10 @@ function exitTextEdit(dataToPass) {
     parent.replaceChild(removeButton, discardEditButton);
   } else if (parent.tagName === "HEADER") {
     // on title edit
-    let newTextElement = document.createElement("h1");
+    const newTextElement = document.createElement("h1");
     if (dataToPass.e.target.className == "save-edit") {
       // update title array and localstorage, populate new text element
-      let previousTitle = currentTitle;
+      const previousTitle = currentTitle;
       currentTitle = `${currentTitleKey}_${edittedText}_current`;
       titles.splice(currentTitleKey, 1, currentTitle);
       localStorage.setItem(currentTitle, JSON.stringify(currentList));

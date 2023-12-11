@@ -3,6 +3,7 @@ function addRemoveButton(buttonNumber) {
   removeButton.id = `remove-button-${buttonNumber}`;
   removeButton.className = "remove";
   removeButton.type = "button";
+  removeButton.ariaLabel = `remove-button-${buttonNumber}`;
   return removeButton;
 }
 
@@ -11,6 +12,7 @@ function addEditButton(buttonNumber) {
   editButton.id = `edit-button-${buttonNumber}`;
   editButton.className = "edit";
   editButton.type = "button";
+  editButton.ariaLabel = `edit-button-${buttonNumber}`;
   return editButton;
 }
 
@@ -26,8 +28,9 @@ function swapToEditButtons(buttonNumber) {
   discardEditButton.type = "button";
 
   let editButton = document.getElementById(`edit-button-${buttonNumber}`);
-  let removeButton = document.getElementById(`remove-button-${buttonNumber}`)
-    || document.createElement("button");
+  let removeButton =
+    document.getElementById(`remove-button-${buttonNumber}`) ||
+    document.createElement("button");
   if (editButton.parentElement.tagName === "LI") {
     editButton.parentElement.removeChild(removeButton);
   }

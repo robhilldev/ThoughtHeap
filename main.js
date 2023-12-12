@@ -68,7 +68,6 @@ function generateListMenu(i) {
   let menuItemDivider = document.createElement("hr");
   let menuItemElement = document.createElement("span");
   menuItemElement.id = `title-${i}`;
-  console.log(titles[i]);
   if (titles[i] === currentTitle) {
     menuItemElement.textContent = titles[i].substring(
       titles[i].indexOf("_") + 1,
@@ -87,7 +86,7 @@ function generateListMenu(i) {
 
 function addList() {
   const newKey = titles.length;
-  const newListTitle = `${newKey}_New List_current`;
+  const newTitle = `${newKey}_New List_current`;
 
   // remove current from previous title
   const prevList = JSON.parse(localStorage.getItem(currentTitle)) || [];
@@ -97,14 +96,14 @@ function addList() {
   localStorage.removeItem(currentTitle);
 
   // add new title to localstorage
-  localStorage.setItem(newListTitle, "[]");
+  localStorage.setItem(newTitle, "[]");
 
   // update title and title key arrays
   titleKeys.push(newKey);
-  titles.push(newListTitle);
+  titles.push(newTitle);
 
   // update current title and title key to reflect new list
-  currentTitle = newListTitle;
+  currentTitle = newTitle;
   currentTitleKey = newKey;
   userFacingTitle = currentTitle
     .substring(currentTitle.indexOf("_") + 1, currentTitle.lastIndexOf("_"));
@@ -170,8 +169,38 @@ function closeListMenu(e) {
   }
 }
 
-// don't forget to update currentList
-function changeList(e) {}
+// change to the list selected in the list select menu
+function changeList(e) {
+  const newKey = e.target.id.substring(
+    e.target.id.indexOf("-") + 1,
+    e.target.id.length
+  );
+
+  if (newKey !== currentTitleKey) {
+    let newTitle = `${newKey}_${e.target.textContent}`;
+    const newList = JSON.parse(localStorage.getItem(newTitle));
+    newTitle = newTitle.concat("_current");
+    const prevTitle = currentTitle.substring(0, currentTitle.lastIndexOf("_"));
+    const prevList = currentList;
+
+    // update localstorage entries for previous and new list
+    localStorage.setItem(newTitle, JSON.stringify(newList));
+    localStorage.removeItem(`${newKey}_${e.target.textContent}`);
+    localStorage.setItem(prevTitle, JSON.stringify(prevList));
+    localStorage.removeItem(currentTitle);
+
+    // update variables tracking current titles, keys, and list
+    currentTitle = newTitle;
+    currentTitleKey = newKey;
+    userFacingTitle = e.target.textContent;
+    currentList = newList;
+
+    // update the page to show the new list
+    document.getElementById("list").innerHTML = "";
+    document.getElementsByTagName("h1")[0].textContent = userFacingTitle;
+    initializeCurrentList();
+  }
+}
 
 // open input box with existing content to allow editing of content
 function editText(e) {

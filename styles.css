@@ -94,14 +94,31 @@ header div#list-select-content.visible {
   display: block;
 }
 
+header div#list-select-content button#add-list-button {
+  margin: 1rem;
+  border-radius: 0.25rem;
+  background: url(images/plus-solid.svg) no-repeat;
+  background-color: white;
+  background-size: 60%;
+  background-position: 50%;
+}
+
 header div#list-select-content span {
-  line-height: 3;
-  text-decoration: underline;
+  display: inline-block;
+  line-height: 1.2;
+  padding: 0.8rem;
 }
 
 header div#list-select-content span:hover {
-  font-weight: bolder;
+  font-weight: bold;
   cursor: pointer;
+}
+
+header div#list-select-content hr {
+  margin: auto;
+  width: 90%;
+  border: 2px solid #323232;
+  border-radius: 0.5rem;
 }
 
 header h1 {

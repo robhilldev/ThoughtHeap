@@ -76,7 +76,7 @@ function removeNote(e) {
 // function removeList(e) {}
 // function emptyTrash(e) {}
 
-// open or close the list selection menu
+// open or close the list selection menu when clicking its button
 function toggleListMenu() {
   document.getElementById("list-select-content").classList.toggle("visible");
 }

@@ -1,9 +1,12 @@
 import { addRemoveButton, addEditButton, swapToEditButtons } from "./Button.js";
 
 let titles = Object.keys(localStorage);
-// let titleKeys = [];
+sortTitleArray();
+let titleKeys = [];
 let currentTitle = 
   titles.find(t => t.endsWith("_current")) || "0_My Notes_current";
+// add first default title to titles array on first load
+if (titles.length === 0) titles = [currentTitle];
 let currentTitleKey = currentTitle.substring(0, currentTitle.indexOf("_"));
 let userFacingTitle = currentTitle
   .substring(currentTitle.indexOf("_") + 1, currentTitle.lastIndexOf("_"));
@@ -14,10 +17,16 @@ window.onload = () => {
   document.getElementsByTagName("h1")[0].textContent = userFacingTitle;
   document.getElementsByTagName("h1")[0].id = `title-${currentTitleKey}`;
   document.getElementById("list-select-button").addEventListener("click", toggleListMenu);
+  document.getElementById("add-list-button").addEventListener("click", addList);
   document.getElementById("edit-button-header").addEventListener("click", editText);
   document.getElementById("form-button").addEventListener("click", addNote);
   document.getElementById("text-to-add").value = "";
   window.addEventListener("click", closeListMenu);
+
+  // populate title key array
+  for (let i = 0; i < titles.length; i++) {
+    titleKeys[i] = titles[i].substring(0, titles[i].indexOf("_"));
+  }
 
   initializeCurrentList();
 };
@@ -37,7 +46,50 @@ function initializeCurrentList() {
   }
 }
 
-// function addList() {}
+function sortTitleArray() {
+  titles.sort((a, b) => {
+    if (
+      Number(a.substring(0, a.indexOf("_"))) <
+      Number(b.substring(0, a.indexOf("_")))
+    )
+      return -1;
+    if (
+      Number(a.substring(0, a.indexOf("_"))) >
+      Number(b.substring(0, a.indexOf("_")))
+    )
+      return 1;
+    return 0;
+  });
+}
+
+function addList() {
+  const newKey = titles.length;
+  const newListTitle = `${newKey}_New List_current`;
+
+  // remove current from previous title
+  const prevList = JSON.parse(localStorage.getItem(currentTitle)) || [];
+  let prevTitle = currentTitle;
+  prevTitle = currentTitle.substring(0, currentTitle.lastIndexOf("_"));
+  localStorage.setItem(prevTitle, JSON.stringify(prevList));
+  localStorage.removeItem(currentTitle);
+
+  // add new title to localstorage
+  localStorage.setItem(newListTitle, "[]");
+
+  // update title and title key arrays
+  titleKeys.push(newKey);
+  titles.push(newListTitle);
+
+  // update current title and title key to reflect new list
+  currentTitle = newListTitle;
+  currentTitleKey = newKey;
+  userFacingTitle = currentTitle
+    .substring(currentTitle.indexOf("_") + 1, currentTitle.lastIndexOf("_"));
+
+  // remove previous list from the screen
+  document.getElementById("list").innerHTML = "";
+  document.getElementsByTagName("h1")[0].textContent = userFacingTitle;
+}
 
 // add note to page and localstorage
 function addNote(e) {
@@ -74,6 +126,7 @@ function removeNote(e) {
 }
 
 // function removeList(e) {}
+// remember to realign title key array on list remove
 // function emptyTrash(e) {}
 
 // open or close the list selection menu when clicking its button
@@ -89,6 +142,8 @@ function closeListMenu(e) {
     listSelectContent.classList.remove("visible");
   }
 }
+
+// function changeList(e) {}
 
 // open input box with existing content to allow editing of content
 function editText(e) {

@@ -41,11 +41,23 @@ header {
   padding-bottom: 2.1rem;
 }
 
-header button#list-select-button {
+header div#list-select-dropdown {
+  position: relative;
+  display: inline-block;
+  z-index: 1;
   order: 1;
   flex-basis: 1.75rem;
   margin-left: 5%;
   margin-right: 0.5vw;
+  width: 1.75rem;
+  height: 1.75rem;
+}
+
+header button#list-select-button {
+  /* order: 1;
+  flex-basis: 1.75rem;
+  margin-left: 5%;
+  margin-right: 0.5vw; */
   width: 1.75rem;
   height: 1.75rem;
   border: 2px outset #323232;
@@ -54,6 +66,42 @@ header button#list-select-button {
   background-color: white;
   background-size: 50%;
   background-position: 50%;
+}
+
+header div#list-select-content {
+  display: none;
+  position: absolute;
+  margin-top: 0.4rem;
+  min-width: 20vw;
+  /* background-color: rgb(50, 50, 50, 1); */
+  background: rgb(255, 140, 0);
+  background: linear-gradient(
+    135deg,
+    rgba(135, 206, 235, 1) 0%,
+    rgba(255, 140, 0, 1) 100%
+  );
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1),
+    0 8px 10px -6px rgb(0 0 0 / 0.1);
+  overflow: auto;
+  text-align: center;
+  border: 2px outset #323232;
+  border-radius: 0.25rem;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+header div#list-select-content.visible {
+  display: block;
+}
+
+header div#list-select-content span {
+  line-height: 3;
+  text-decoration: underline;
+}
+
+header div#list-select-content span:hover {
+  font-weight: bolder;
+  cursor: pointer;
 }
 
 header h1 {
@@ -237,8 +285,8 @@ button.save-edit {
     font-size: 0.8rem;
   }
 
-  header div#list-select-button {
-    font-size: 1rem;
+  header div#list-select-content {
+    min-width: 40vw;
   }
 
   form {

@@ -9,13 +9,15 @@ let userFacingTitle = currentTitle
   .substring(currentTitle.indexOf("_") + 1, currentTitle.lastIndexOf("_"));
 let currentList = JSON.parse(localStorage.getItem(currentTitle)) || [];
 
-// add current title to page, clear input box, set up buttons, display notes
+// add current title to page, clear input box, set up event listeners, display notes
 window.onload = () => {
   document.getElementsByTagName("h1")[0].textContent = userFacingTitle;
   document.getElementsByTagName("h1")[0].id = `title-${currentTitleKey}`;
-  document.getElementById("text-to-add").value = "";
+  document.getElementById("list-select-button").addEventListener("click", toggleListMenu);
   document.getElementById("edit-button-header").addEventListener("click", editText);
   document.getElementById("form-button").addEventListener("click", addNote);
+  document.getElementById("text-to-add").value = "";
+  window.addEventListener("click", closeListMenu);
 
   initializeCurrentList();
 };
@@ -73,6 +75,20 @@ function removeNote(e) {
 
 // function removeList(e) {}
 // function emptyTrash(e) {}
+
+// open or close the list selection menu
+function toggleListMenu() {
+  document.getElementById("list-select-content").classList.toggle("visible");
+}
+
+// close the list menu when clicking outside of it or on a menu item
+function closeListMenu(e) {
+  const listSelectButton = document.getElementById("list-select-button");
+  const listSelectContent = document.getElementById("list-select-content");
+  if (e.target !== listSelectButton && e.target !== listSelectContent) {
+    listSelectContent.classList.remove("visible");
+  }
+}
 
 // open input box with existing content to allow editing of content
 function editText(e) {

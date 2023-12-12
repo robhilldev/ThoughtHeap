@@ -23,9 +23,10 @@ window.onload = () => {
   document.getElementById("text-to-add").value = "";
   window.addEventListener("click", closeListMenu);
 
-  // populate title key array
+  // populate title key array and list menu
   for (let i = 0; i < titles.length; i++) {
     titleKeys[i] = titles[i].substring(0, titles[i].indexOf("_"));
+    populateListMenu(i);
   }
 
   initializeCurrentList();
@@ -62,6 +63,18 @@ function sortTitleArray() {
   });
 }
 
+function populateListMenu(i) {
+  let menuItemDivider = document.createElement("hr");
+  let menuItemElement = document.createElement("span");
+  menuItemElement.textContent = titles[i].substring(
+    currentTitle.indexOf("_") + 1,
+    currentTitle.lastIndexOf("_")
+  );
+
+  document.getElementById("list-select-content").appendChild(menuItemDivider);
+  document.getElementById("list-select-content").appendChild(menuItemElement);
+}
+
 function addList() {
   const newKey = titles.length;
   const newListTitle = `${newKey}_New List_current`;
@@ -89,6 +102,9 @@ function addList() {
   // remove previous list from the screen
   document.getElementById("list").innerHTML = "";
   document.getElementsByTagName("h1")[0].textContent = userFacingTitle;
+
+  // add new list to list menu
+  populateListMenu(newKey);
 }
 
 // add note to page and localstorage

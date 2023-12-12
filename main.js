@@ -26,7 +26,7 @@ window.onload = () => {
   // populate title key array and list menu
   for (let i = 0; i < titles.length; i++) {
     titleKeys[i] = titles[i].substring(0, titles[i].indexOf("_"));
-    populateListMenu(i);
+    generateListMenu(i);
   }
 
   initializeCurrentList();
@@ -63,16 +63,26 @@ function sortTitleArray() {
   });
 }
 
-function populateListMenu(i) {
+// add list titles to title menu and attach event listeners
+function generateListMenu(i) {
   let menuItemDivider = document.createElement("hr");
   let menuItemElement = document.createElement("span");
-  menuItemElement.textContent = titles[i].substring(
-    currentTitle.indexOf("_") + 1,
-    currentTitle.lastIndexOf("_")
-  );
+  menuItemElement.id = `title-${i}`;
+  console.log(titles[i]);
+  if (titles[i] === currentTitle) {
+    menuItemElement.textContent = titles[i].substring(
+      titles[i].indexOf("_") + 1,
+      titles[i].lastIndexOf("_")
+    );
+  } else {
+    menuItemElement.textContent = titles[i].substring(
+      titles[i].indexOf("_") + 1,
+    );
+  }
 
   document.getElementById("list-select-content").appendChild(menuItemDivider);
   document.getElementById("list-select-content").appendChild(menuItemElement);
+  menuItemElement.addEventListener("click", changeList);
 }
 
 function addList() {
@@ -99,12 +109,13 @@ function addList() {
   userFacingTitle = currentTitle
     .substring(currentTitle.indexOf("_") + 1, currentTitle.lastIndexOf("_"));
 
-  // remove previous list from the screen
+  // remove previous list from the screen and list array
   document.getElementById("list").innerHTML = "";
   document.getElementsByTagName("h1")[0].textContent = userFacingTitle;
+  currentList = [];
 
   // add new list to list menu
-  populateListMenu(newKey);
+  generateListMenu(newKey);
 }
 
 // add note to page and localstorage
@@ -159,7 +170,8 @@ function closeListMenu(e) {
   }
 }
 
-// function changeList(e) {}
+// don't forget to update currentList
+function changeList(e) {}
 
 // open input box with existing content to allow editing of content
 function editText(e) {
@@ -251,6 +263,10 @@ function exitTextEdit(dataToPass) {
       localStorage.removeItem(previousTitle);
       userFacingTitle = edittedText;
       textElement.textContent = edittedText;
+
+      // also update title in list select menu
+      let menuItem = document.getElementById(`title-${currentTitleKey}`);
+      menuItem.textContent = edittedText;
     } else {
       // put back existing text
       textElement.textContent = currentTitle.split("_")[1];

@@ -6,14 +6,14 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
     />
-    <meta name="description" content="A browser based notes app" />
-    <title>Notes App</title>
+    <meta name="description" content="A place to track your thoughts" />
+    <title>Thought Heap</title>
     <link rel="stylesheet" href="styles.css" />
     <script src="main.js" type="module" async></script>
   </head>
   <body>
     <header id="header">
-      <h1>My Notes</h1>
+      <h1>My Thoughts</h1>
       <div id="list-select-dropdown">
         <button
           id="list-select-button"
@@ -38,13 +38,15 @@
 
     <main>
       <form autocomplete="off">
-        <label for="text-to-add" aria-label="note-input-box">Add a note:</label>
-        <input id="text-to-add" type="text" aria-label="add-note-here" />
+        <label for="text-to-add" aria-label="thought-input-box">
+          Add a thought:
+        </label>
+        <input id="text-to-add" type="text" aria-label="add-thought-here" />
         <input
           id="form-button"
           type="submit"
           value=""
-          aria-label="add-note-button"
+          aria-label="add-thought-button"
         />
       </form>
       <ul id="list"></ul>

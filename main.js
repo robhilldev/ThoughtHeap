@@ -4,7 +4,7 @@ let titles = Object.keys(localStorage);
 sortTitleArray();
 let titleKeys = [];
 let currentTitle = 
-  titles.find(t => t.endsWith("_current")) || "0_My Notes_current";
+  titles.find(t => t.endsWith("_current")) || "0_My Thoughts_current";
 // add first default title to titles array on first load
 if (titles.length === 0) titles = [currentTitle];
 let currentTitleKey = currentTitle.substring(0, currentTitle.indexOf("_"));
@@ -17,11 +17,11 @@ window.onload = () => {
   document.getElementsByTagName("h1")[0].textContent = userFacingTitle;
   document.getElementsByTagName("h1")[0].id = `title-${currentTitleKey}`;
   document.getElementById("list-select-button").addEventListener("click", toggleListMenu);
+  document.addEventListener("click", closeListMenu);
   document.getElementById("add-list-button").addEventListener("click", addList);
   document.getElementById("edit-button-header").addEventListener("click", editText);
   document.getElementById("form-button").addEventListener("click", addNote);
   document.getElementById("text-to-add").value = "";
-  window.addEventListener("click", closeListMenu);
 
   // populate title key array and list menu
   for (let i = 0; i < titles.length; i++) {
@@ -47,6 +47,7 @@ function initializeCurrentList() {
   }
 }
 
+// make sure title array is sorted based on preceding key values
 function sortTitleArray() {
   titles.sort((a, b) => {
     if (
@@ -84,6 +85,7 @@ function generateListMenu(i) {
   menuItemElement.addEventListener("click", changeList);
 }
 
+// add list to page and localstorage, update title variables
 function addList() {
   const newKey = titles.length;
   const newTitle = `${newKey}_New List_current`;
@@ -117,7 +119,7 @@ function addList() {
   generateListMenu(newKey);
 }
 
-// add note to page and localstorage
+// add note to page and localstorage, update list variables
 function addNote(e) {
   e.preventDefault();
   const textToAdd = document.getElementById("text-to-add");
@@ -151,8 +153,9 @@ function removeNote(e) {
   localStorage.setItem(currentTitle, JSON.stringify(currentList));
 }
 
-// function removeList(e) {}
+// TO IMPLEMENT:
 // remember to realign title key array on list remove
+// function removeList(e) {}
 // function emptyTrash(e) {}
 
 // open or close the list selection menu when clicking its button
@@ -176,7 +179,9 @@ function changeList(e) {
     e.target.id.length
   );
 
+  // given the menu item selected is not the current list
   if (newKey !== currentTitleKey) {
+    // store new and previous title and list
     let newTitle = `${newKey}_${e.target.textContent}`;
     const newList = JSON.parse(localStorage.getItem(newTitle));
     newTitle = newTitle.concat("_current");
@@ -222,8 +227,9 @@ function editText(e) {
   // place text cursor at end of input box (span)
   document.getSelection().collapse(editInputBox, 1);
 
-  // swap to save edit and discard edit buttons, store save edit, edit, and remove buttons
-  const [discardEditButton, saveEditButton, editButton, removeButton] = swapToEditButtons(parent.id);
+  // swap to edit mode buttons, store default mode buttons
+  const [discardEditButton, saveEditButton, editButton, removeButton] =
+    swapToEditButtons(parent.id);
 
   // pass event object, removed buttons, and text element to event handler on click
   discardEditButton.addEventListener("click", (e) => {

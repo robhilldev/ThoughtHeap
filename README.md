@@ -1,5 +1,5 @@
 ## Try it:
-https://robhilldev.github.io/notes_app/
+https://robhilldev.github.io/ThoughtHeap/
 
 ## For running the app locally:
 

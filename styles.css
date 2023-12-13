@@ -13,7 +13,6 @@ body {
   background-attachment: fixed;
   background-repeat: no-repeat;
   background-size: 100vw 100vh;
-  /* background-color: #ddd0c8; */
   font: 1em sans-serif;
   color: #323232;
 }
@@ -54,10 +53,6 @@ header div#list-select-dropdown {
 }
 
 header button#list-select-button {
-  /* order: 1;
-  flex-basis: 1.75rem;
-  margin-left: 5%;
-  margin-right: 0.5vw; */
   width: 1.75rem;
   height: 1.75rem;
   border: 2px outset #323232;
@@ -96,6 +91,7 @@ header div#list-select-content.visible {
 
 header div#list-select-content button#add-list-button {
   margin: 1rem;
+  border: 2px outset #323232;
   border-radius: 0.25rem;
   background: url(images/plus-solid.svg) no-repeat;
   background-color: white;

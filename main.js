@@ -10,8 +10,14 @@ let previousTitle = null;
 let currentTitle = 
   titles.find(t => t.endsWith("_current")) || DEFAULT_INITIAL_TITLE;
 // add first default title to titles array on first load
-if (titles.length === 0) titles.push(currentTitle.substring(0, currentTitle.lastIndexOf("_")));
-let previousTitleKey = null;
+if (titles.length === 0) {
+  titles.push(currentTitle.substring(0, currentTitle.lastIndexOf("_")));
+}
+// remove current tag from titles array if present
+titles = titles.map((t) => {
+  if (t.includes("_current")) return t.substring(0, t.lastIndexOf("_"));
+  else return t;
+});
 let currentTitleKey = currentTitle.substring(0, currentTitle.indexOf("_"));
 // add first default title key to titleKeys array on first load
 if (titleKeys.length === 0) titleKeys.push(currentTitleKey);
@@ -35,10 +41,10 @@ window.onload = () => {
   // populate title key array and list menu
   for (let i = 0; i < titles.length; i++) {
     titleKeys[i] = titles[i].substring(0, titles[i].indexOf("_"));
-    generateListMenu(i);
   }
 
   initializeCurrentList();
+  generateListMenu();
 };
 
 // retrieve the current list from localstorage and display it on the page
@@ -74,19 +80,36 @@ function sortTitlesArray() {
 }
 
 // add list titles to title menu and attach event listeners
-function generateListMenu(i) {
-  let menuItemDivider = document.createElement("hr");
-  let menuItemElement = document.createElement("span");
-  menuItemElement.id = `title-menu-${i}`;
-  menuItemDivider.id = `title-menu-divider-${i}`
+function generateListMenu() {
+  const menuContent = document.getElementById("list-select-content");
+  const pageTitleId = document.getElementsByTagName("h1")[0].id;
 
-  menuItemElement.textContent = titles[i].substring(
-    titles[i].indexOf("_") + 1, titles[i].length
-  );
+  while(menuContent.children.length > 1) {
+    menuContent.removeChild(
+      menuContent.children[menuContent.children.length - 1]
+    );
+  }
+  for (let i = 0; i < titles.length; i++) {
+    let menuItemDivider = document.createElement("hr");
+    let menuItemElement = document.createElement("span");
+    menuItemElement.id = `title-menu-${i}`;
+    menuItemDivider.id = `title-menu-divider-${i}`
 
-  document.getElementById("list-select-content").appendChild(menuItemDivider);
-  document.getElementById("list-select-content").appendChild(menuItemElement);
-  menuItemElement.addEventListener("click", changeList);
+    menuItemElement.textContent = titles[i].substring(
+      titles[i].indexOf("_") + 1, titles[i].length
+    );
+    if (titles[i].substring(0, titles[i].indexOf("_"))
+        === pageTitleId.substring(pageTitleId.lastIndexOf("-") + 1)) {
+      menuItemElement.innerHTML
+        = `&rArr;&nbsp;&nbsp;&nbsp;
+          ${menuItemElement.textContent}
+          &nbsp;&nbsp;&nbsp;&lArr;`;
+    }
+
+    menuContent.appendChild(menuItemDivider);
+    menuContent.appendChild(menuItemElement);
+    menuItemElement.addEventListener("click", changeList);
+  }
 }
 
 // add list to page and localstorage, update title variables
@@ -119,10 +142,11 @@ function addList() {
   // remove previous list from the screen and list array
   document.getElementById("list").innerHTML = "";
   document.getElementsByTagName("h1")[0].textContent = userFacingTitle;
+  document.getElementsByTagName("h1")[0].id = `title-${newKey}`;
   currentList = [];
 
   // add new list to list menu
-  generateListMenu(newKey);
+  generateListMenu();
 }
 
 // add note to page and localstorage, update list variables
@@ -185,18 +209,14 @@ function removeList() {
     
     // remove list from page
     document.getElementById("list").innerHTML = "";
-    // update title menu, title and key arrays upon last list deletion
-    document.getElementById(`title-menu-${currentTitleKey}`).remove();
-    document.getElementById(`title-menu-divider-${currentTitleKey}`).remove();
+    // update titles and titleKeys arrays upon last list deletion
     if (titles.length === 0) {
       titles.push(nextTitle.substring(0, nextTitle.lastIndexOf("_")));
       titleKeys.push(nextTitleKey);
     }
-    if (document.getElementById("list-select-content").children.length <= 2) {
-      generateListMenu(nextTitleKey);
-    }
     // add next title to page
     document.getElementsByTagName("h1")[0].textContent = userFacingTitle;
+    document.getElementsByTagName("h1")[0].id = `title-${nextTitleKey}`;
 
     // remove list from localstorage and tag next list with _current
     localStorage.removeItem(currentTitle);
@@ -210,13 +230,13 @@ function removeList() {
     // update remainder of state tracking variables
     previousTitle = currentTitle.substring(0, currentTitle.lastIndexOf("_"));
     currentTitle = nextTitle;
-    previousTitleKey = currentTitleKey;
     currentTitleKey = nextTitleKey;
     previousList = currentList;
     currentList = nextList;
 
-    // add next list to page
+    // add next list to page and update list menu
     initializeCurrentList();
+    generateListMenu();
   }
 }
 
@@ -230,7 +250,7 @@ function changeList(e) {
   // given the menu item selected is not the current list
   if (newKey !== currentTitleKey) {
     // store new and previous title and list
-    let newTitle = `${newKey}_${e.target.textContent}`;
+    let newTitle = titles.find((t) => t.startsWith(newKey));
     const newList = JSON.parse(localStorage.getItem(newTitle));
     newTitle = newTitle.concat("_current");
     previousTitle = currentTitle.substring(0, currentTitle.lastIndexOf("_"));
@@ -239,7 +259,7 @@ function changeList(e) {
     // update localstorage entries for previous and new list
     // update new list first to ensure at least one list always has _current
     localStorage.setItem(newTitle, JSON.stringify(newList));
-    localStorage.removeItem(`${newKey}_${e.target.textContent}`);
+    localStorage.removeItem(titles.find((t) => t.startsWith(newKey)));
     localStorage.setItem(previousTitle, JSON.stringify(previousList));
     localStorage.removeItem(currentTitle);
 
@@ -252,7 +272,9 @@ function changeList(e) {
     // update the page to show the new list
     document.getElementById("list").innerHTML = "";
     document.getElementsByTagName("h1")[0].textContent = userFacingTitle;
+    document.getElementsByTagName("h1")[0].id = `title-${newKey}`;
     initializeCurrentList();
+    generateListMenu();
   }
 }
 
@@ -348,8 +370,7 @@ function exitTextEdit(dataToPass) {
       textElement.textContent = edittedText;
 
       // also update title in list select menu
-      let menuItem = document.getElementById(`title-menu-${currentTitleKey}`);
-      menuItem.textContent = edittedText;
+      generateListMenu();
     } else {
       // put back existing text
       textElement.textContent = userFacingTitle;

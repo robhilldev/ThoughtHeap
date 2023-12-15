@@ -82,7 +82,7 @@ function sortTitlesArray() {
 // add list titles to title menu and attach event listeners
 function generateListMenu() {
   const menuContent = document.getElementById("list-select-content");
-  const pageTitleId = document.getElementsByTagName("h1")[0].id;
+  const pageTitleId = document.getElementById("header").firstElementChild.id;
 
   while(menuContent.children.length > 1) {
     menuContent.removeChild(

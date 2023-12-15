@@ -68,19 +68,20 @@ header div#list-select-content {
   position: absolute;
   margin-top: 0.4rem;
   min-width: 20vw;
-  /* background-color: rgb(50, 50, 50, 1); */
-  background: rgb(255, 140, 0);
+  background-color: rgb(50, 50, 50, 0.8);
+  /* background: rgb(255, 140, 0);
   background: linear-gradient(
     135deg,
     rgba(135, 206, 235, 1) 0%,
     rgba(255, 140, 0, 1) 100%
-  );
+  ); */
   box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1),
     0 8px 10px -6px rgb(0 0 0 / 0.1);
   overflow: auto;
   text-align: center;
   border: 2px outset #323232;
   border-radius: 0.25rem;
+  color: white;
   -webkit-user-select: none;
   user-select: none;
 }
@@ -113,7 +114,7 @@ header div#list-select-content span:hover {
 header div#list-select-content hr {
   margin: auto;
   width: 90%;
-  border: 2px solid #323232;
+  border: 1px solid white;
   border-radius: 0.5rem;
 }
 
@@ -141,6 +142,12 @@ header span#edit-input-box:focus {
 
 header button#edit-button-header {
   order: 3;
+  align-self: center;
+  border: 2px outset #323232;
+}
+
+header button#remove-button-header {
+  order: 4;
   margin-right: 5%;
   align-self: center;
   border: 2px outset #323232;

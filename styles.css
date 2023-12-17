@@ -65,16 +65,9 @@ header button#list-select-button {
 
 header div#list-select-content {
   display: none;
-  position: absolute;
+  position: fixed;
   margin-top: 0.4rem;
-  min-width: 20vw;
   background-color: rgb(50, 50, 50, 0.8);
-  /* background: rgb(255, 140, 0);
-  background: linear-gradient(
-    135deg,
-    rgba(135, 206, 235, 1) 0%,
-    rgba(255, 140, 0, 1) 100%
-  ); */
   box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1),
     0 8px 10px -6px rgb(0 0 0 / 0.1);
   overflow: auto;
@@ -125,7 +118,7 @@ header h1 {
   padding: 2px;
 }
 
-header span#edit-input-box {
+header span.edit-input-box {
   order: 2;
   padding-left: 0.1rem;
   padding-right: 0.5rem;
@@ -136,7 +129,7 @@ header span#edit-input-box {
   border: 2px solid #323232;
 }
 
-header span#edit-input-box:focus {
+header span.edit-input-box:focus {
   outline: 0.1rem solid #323232;
 }
 
@@ -244,7 +237,7 @@ li div {
   flex-grow: 1;
 }
 
-li span#edit-input-box {
+li span.edit-input-box {
   padding-left: 0.2rem;
   padding-right: 0.5rem;
   padding-top: 0.2rem;
@@ -256,7 +249,7 @@ li span#edit-input-box {
   color: #323232;
 }
 
-li span#edit-input-box:focus {
+li span.edit-input-box:focus {
   outline: 0.2rem solid #ddd0c8;
 }
 
@@ -303,10 +296,6 @@ button.save-edit {
     padding-top: 1.8rem;
     padding-bottom: 1.5rem;
     font-size: 0.8rem;
-  }
-
-  header div#list-select-content {
-    min-width: 40vw;
   }
 
   form {

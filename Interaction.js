@@ -1,6 +1,17 @@
 // open or close the list selection menu when clicking its button
 function toggleListMenu() {
-  document.getElementById("list-select-content").classList.toggle("visible");
+  const menu = document.getElementById("list-select-content");
+  const titleRightEdge = document.getElementsByTagName("header")[0]
+    .children[0].getBoundingClientRect().right;
+  const menuButtonLeftEdge = document.getElementsByTagName("header")[0]
+    .children[1].getBoundingClientRect().left;
+
+  // before opening menu determine its size and position
+  if (!menu.classList.contains("visible")) {
+    menu.style.width = `${titleRightEdge - menuButtonLeftEdge}px`;
+  }
+  
+  menu.classList.toggle("visible");
 }
 
 // close the list menu when clicking outside of it or on a menu item

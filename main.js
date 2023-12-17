@@ -84,11 +84,14 @@ function generateListMenu() {
   const menuContent = document.getElementById("list-select-content");
   const pageTitleId = document.getElementById("header").firstElementChild.id;
 
+  // remove previous menu titles if any
   while(menuContent.children.length > 1) {
     menuContent.removeChild(
       menuContent.children[menuContent.children.length - 1]
     );
   }
+
+  // generate new menu titles
   for (let i = 0; i < titles.length; i++) {
     let menuItemDivider = document.createElement("hr");
     let menuItemElement = document.createElement("span");
@@ -98,12 +101,13 @@ function generateListMenu() {
     menuItemElement.textContent = titles[i].substring(
       titles[i].indexOf("_") + 1, titles[i].length
     );
+
+    // add arrow to currently viewed list title and make it bold
     if (titles[i].substring(0, titles[i].indexOf("_"))
         === pageTitleId.substring(pageTitleId.lastIndexOf("-") + 1)) {
       menuItemElement.innerHTML
-        = `&rArr;&nbsp;&nbsp;&nbsp;
-          ${menuItemElement.textContent}
-          &nbsp;&nbsp;&nbsp;&lArr;`;
+        = `&rArr;&nbsp;&nbsp;${menuItemElement.textContent}`;
+      menuItemElement.style.fontWeight = "900";
     }
 
     menuContent.appendChild(menuItemDivider);
@@ -287,7 +291,7 @@ function editText(e) {
 
   // create and populate new input box for editing
   const editInputBox = document.createElement("span");
-  editInputBox.id = "edit-input-box";
+  editInputBox.className = "edit-input-box";
   editInputBox.role = "textbox";
   editInputBox.contentEditable = true;
   editInputBox.textContent = currentText;

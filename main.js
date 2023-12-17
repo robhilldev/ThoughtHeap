@@ -95,8 +95,8 @@ function generateListMenu() {
   for (let i = 0; i < titles.length; i++) {
     let menuItemDivider = document.createElement("hr");
     let menuItemElement = document.createElement("span");
-    menuItemElement.id = `title-menu-${i}`;
-    menuItemDivider.id = `title-menu-divider-${i}`
+    menuItemElement.id = `title-menu-${titleKeys[i]}`;
+    menuItemDivider.id = `title-menu-divider-${titleKeys[i]}`;
 
     menuItemElement.textContent = titles[i].substring(
       titles[i].indexOf("_") + 1, titles[i].length

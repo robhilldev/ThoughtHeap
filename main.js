@@ -168,7 +168,7 @@ function addNote(e) {
     localStorage.setItem(currentTitle, JSON.stringify(currentList));
 
     // add note to page with an id, edit button, and remove button
-    newLi.innerHTML = `<div id=note-${newKey}>` + textToAdd.value + "</div>";
+    newLi.innerHTML = `<div id=note-${newId}>` + textToAdd.value + "</div>";
     newLi.id = `note-li-${newId}`;
     newLi.appendChild(addEditButton(newId)).addEventListener("click", editText);
     newLi.appendChild(addRemoveButton(newId)).addEventListener("click", removeNote);

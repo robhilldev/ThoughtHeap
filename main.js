@@ -53,8 +53,8 @@ function initializeCurrentList() {
     // only show note if not marked for deletion
     if (!currentList[i].startsWith("x_", 0) && !currentList[i].endsWith("_x")) {
       const currentLi = document.createElement("li");
-      currentLi.innerHTML = "<div>" + currentList[i] + "</div>";
-      currentLi.id = i;
+      currentLi.innerHTML = `<div id=note-${i}>` + currentList[i] + "</div>";
+      currentLi.id = `note-li-${i}`;
       currentLi.appendChild(addEditButton(i)).addEventListener("click", editText);
       currentLi.appendChild(addRemoveButton(i)).addEventListener("click", removeNote);
       document.getElementById("list").appendChild(currentLi);
@@ -168,8 +168,8 @@ function addNote(e) {
     localStorage.setItem(currentTitle, JSON.stringify(currentList));
 
     // add note to page with an id, edit button, and remove button
-    newLi.innerHTML = "<div>" + textToAdd.value + "</div>";
-    newLi.id = newId;
+    newLi.innerHTML = `<div id=note-${newKey}>` + textToAdd.value + "</div>";
+    newLi.id = `note-li-${newId}`;
     newLi.appendChild(addEditButton(newId)).addEventListener("click", editText);
     newLi.appendChild(addRemoveButton(newId)).addEventListener("click", removeNote);
     document.getElementById("list").appendChild(newLi);
@@ -291,6 +291,9 @@ function editText(e) {
 
   // create and populate new input box for editing
   const editInputBox = document.createElement("span");
+  editInputBox.id = `edit-input-box-${textElement.id.substring(
+    textElement.id.lastIndexOf("-") + 1
+  )}`;
   editInputBox.className = "edit-input-box";
   editInputBox.role = "textbox";
   editInputBox.contentEditable = true;

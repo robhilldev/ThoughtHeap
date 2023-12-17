@@ -65,7 +65,7 @@ header button#list-select-button {
 
 header div#list-select-content {
   display: none;
-  position: fixed;
+  position: absolute;
   margin-top: 0.4rem;
   background-color: rgb(50, 50, 50, 0.8);
   box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1),

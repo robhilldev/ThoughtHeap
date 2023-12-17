@@ -54,7 +54,7 @@ function initializeCurrentList() {
     if (!currentList[i].startsWith("x_", 0) && !currentList[i].endsWith("_x")) {
       const currentLi = document.createElement("li");
       currentLi.innerHTML = `<div id=note-${i}>` + currentList[i] + "</div>";
-      currentLi.id = `note-li-${i}`;
+      currentLi.id = i;
       currentLi.appendChild(addEditButton(i)).addEventListener("click", editText);
       currentLi.appendChild(addRemoveButton(i)).addEventListener("click", removeNote);
       document.getElementById("list").appendChild(currentLi);
@@ -169,7 +169,7 @@ function addNote(e) {
 
     // add note to page with an id, edit button, and remove button
     newLi.innerHTML = `<div id=note-${newId}>` + textToAdd.value + "</div>";
-    newLi.id = `note-li-${newId}`;
+    newLi.id = newId;
     newLi.appendChild(addEditButton(newId)).addEventListener("click", editText);
     newLi.appendChild(addRemoveButton(newId)).addEventListener("click", removeNote);
     document.getElementById("list").appendChild(newLi);

@@ -365,7 +365,10 @@ function exitTextEdit(dataToPass) {
       const previousTitle = currentTitle;
       currentTitle = `${currentTitleKey}_${edittedText}_current`;
       titles.splice(
-        currentTitleKey, 1,
+        titles.indexOf(
+          previousTitle.substring(0, previousTitle.lastIndexOf("_"))
+        ),
+        1,
         currentTitle.substring(0, currentTitle.lastIndexOf("_"))
       );
       localStorage.setItem(currentTitle, JSON.stringify(currentList));

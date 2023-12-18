@@ -299,6 +299,11 @@ function editText(e) {
   editInputBox.contentEditable = true;
   editInputBox.textContent = currentText;
 
+  // hide list select menu button on title edit
+  if (parent.id === "header") {
+    document.getElementById("list-select-dropdown").style.display = "none";
+  }
+
   // replace existing text element with editing input box
   parent.replaceChild(editInputBox, textElement);
   editInputBox.focus();
@@ -385,6 +390,10 @@ function exitTextEdit(dataToPass) {
       // put back existing text
       textElement.textContent = userFacingTitle;
     }
+    // make list select menu button visible again
+    document
+      .getElementById("list-select-dropdown")
+      .style.removeProperty("display");
   }
   // swap in updated text element, edit button, and remove button
   parent.replaceChild(textElement, childInputBox);

@@ -37,6 +37,8 @@ header {
   align-items: center;
   justify-content: center;
   column-gap: 1vw;
+  margin-left: 5%;
+  margin-right: 5%;
   padding-top: 2.4rem;
   padding-bottom: 2.1rem;
 }
@@ -47,7 +49,6 @@ header div#list-select-dropdown {
   z-index: 1;
   order: 1;
   flex-basis: 1.75rem;
-  margin-left: 5%;
   margin-right: 0.5vw;
   width: 1.75rem;
   height: 1.75rem;
@@ -137,37 +138,45 @@ header span.edit-input-box:focus {
 header button#edit-button-header {
   order: 3;
   align-self: center;
-  border: 2px outset #323232;
+  border: 2px solid #323232;
 }
 
 header button#remove-button-header {
   order: 4;
-  margin-right: 5%;
   align-self: center;
   border: 2px outset #323232;
 }
 
 header button#discard-edit-button-header {
   order: 4;
-  margin-right: 5%;
+  flex-basis: 2.33rem;
   border: 2px solid #323232;
   background: url(images/xmark-solid.svg) no-repeat;
   background-color: white;
   background-size: 50%;
   background-position: 50%;
+  width: 2.33rem;
+  height: 2.33rem;
+  border: 3px outset #323232;
 }
 
 header button#save-edit-button-header {
   order: 3;
+  flex-basis: 2.33rem;
   border: 2px solid #323232;
   background: url(images/check-solid.svg) no-repeat;
   background-color: white;
   background-size: 60%;
   background-position: 50%;
+  width: 2.33rem;
+  height: 2.33rem;
+  border: 3px outset #323232;
 }
 
 main {
   display: grid;
+  margin-left: 5%;
+  margin-right: 5%;
 }
 
 form {
@@ -176,8 +185,6 @@ form {
   gap: 5%;
   justify-content: start;
   margin-bottom: 2rem;
-  margin-left: 5%;
-  margin-right: 5%;
 }
 
 form label {
@@ -211,8 +218,8 @@ form input#form-button {
 }
 
 ul#list {
-  margin: 5%;
   margin-top: 0;
+  margin-bottom: 2.4rem;
   padding-left: 0;
   list-style-position: inside;
   list-style-type: none;
@@ -223,7 +230,8 @@ li {
   gap: 1vw;
   align-items: center;
   justify-content: start;
-  padding: 0.8rem;
+  padding-left: 0.8rem;
+  padding-right: 0.8rem;
   margin-bottom: 2.5vh;
   background-color: #323232;
   color: white;
@@ -236,13 +244,17 @@ li {
 
 li div {
   flex-grow: 1;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 li span.edit-input-box {
-  padding-left: 0.2rem;
-  padding-right: 0.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
   padding-top: 0.2rem;
   padding-bottom: 0.3rem;
+  padding-left: 0.2rem;
+  padding-right: 0.5rem;
   flex-basis: 1;
   font-family: inherit;
   border-radius: 0.25rem;
@@ -255,7 +267,6 @@ li span.edit-input-box:focus {
 }
 
 button.remove {
-  align-self: self-start;
   border: 2px outset #ddd0c8;
   background: url(images/trash-can-solid.svg) no-repeat;
   background-color: white;
@@ -264,7 +275,6 @@ button.remove {
 }
 
 button.edit {
-  align-self: self-start;
   border: 2px solid #ddd0c8;
   background: url(images/pen-to-square-solid.svg) no-repeat;
   background-color: white;
@@ -297,6 +307,14 @@ button.save-edit {
     padding-top: 1.8rem;
     padding-bottom: 1.5rem;
     font-size: 0.8rem;
+  }
+  
+  header button#discard-edit-button-header {
+    margin-left: 0.5vw;
+  }
+
+  header button#save-edit-button-header {
+    margin-left: 1.75vw;
   }
 
   form {

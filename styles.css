@@ -240,6 +240,8 @@ li {
   background-color: rgb(50, 50, 50, 0.8);
   box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1),
     0 8px 10px -6px rgb(0 0 0 / 0.1);
+  animation-name: slidein;
+  animation-duration: 0.5s;
 }
 
 li div {
@@ -319,5 +321,19 @@ button.save-edit {
 
   form {
     margin-bottom: 1.5rem;
+  }
+}
+
+/* respect when user has reduced motion set by not playing the animation */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes slidein {
+    from {
+      margin-top: 5%;
+      margin-bottom: 5vh;
+    }
+    to {
+      margin-top: 0;
+      margin-bottom: 2.5vh;
+    }
   }
 }

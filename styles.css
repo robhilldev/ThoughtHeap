@@ -14,7 +14,8 @@ body {
   background-attachment: fixed;
   background-repeat: no-repeat;
   background-size: cover;
-  font: 1em sans-serif;
+  font-size: 1em;
+  font-family: system-ui, sans-serif;
   color: #323232;
 }
 
@@ -241,7 +242,7 @@ li {
   box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1),
     0 8px 10px -6px rgb(0 0 0 / 0.1);
   animation-name: slidein;
-  animation-duration: 0.5s;
+  animation-duration: 0.75s;
 }
 
 li div {
@@ -303,6 +304,7 @@ button.save-edit {
   background-position: 50%;
 }
 
+/* mobile specific styles */
 @media (max-width: 640px) {
   header {
     gap: 1.5vw;
@@ -310,7 +312,7 @@ button.save-edit {
     padding-bottom: 1.5rem;
     font-size: 0.8rem;
   }
-  
+
   header button#discard-edit-button-header {
     margin-left: 0.5vw;
   }
@@ -322,13 +324,17 @@ button.save-edit {
   form {
     margin-bottom: 1.5rem;
   }
+
+  li {
+    animation-duration: 0.5s;
+  }
 }
 
-/* respect when user has reduced motion set by not playing the animation */
+/* respect when user has reduced motion set by not playing animations */
 @media (prefers-reduced-motion: no-preference) {
   @keyframes slidein {
     from {
-      margin-top: 5%;
+      margin-top: 2.5vh;
       margin-bottom: 5vh;
     }
     to {

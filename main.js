@@ -6,7 +6,6 @@ const DEFAULT_INITIAL_TITLE = "0_My Thoughts_current";
 let titles = Object.keys(localStorage);
 sortTitlesArray();
 let titleKeys = [];
-let previousTitle = null;
 let currentTitle = 
   titles.find(t => t.endsWith("_current")) || DEFAULT_INITIAL_TITLE;
 // add first default title to titles array on first load
@@ -23,7 +22,6 @@ let currentTitleKey = currentTitle.substring(0, currentTitle.indexOf("_"));
 if (titleKeys.length === 0) titleKeys.push(currentTitleKey);
 let userFacingTitle = currentTitle
   .substring(currentTitle.indexOf("_") + 1, currentTitle.lastIndexOf("_"));
-let previousList = null;
 let currentList = JSON.parse(localStorage.getItem(currentTitle)) || [];
 
 // add current title to page, clear input box, set up event listeners, display notes
@@ -124,30 +122,29 @@ function addList() {
   );
   const newTitle = `${newKey}_New List_current`;
 
-  // remove current from previous title
-  previousList = JSON.parse(localStorage.getItem(currentTitle)) || [];
-  previousTitle = currentTitle.substring(0, currentTitle.lastIndexOf("_"));
-  localStorage.setItem(previousTitle, JSON.stringify(previousList));
+  // update local storage for current and new lists
+  localStorage.setItem(
+    currentTitle.substring(0, currentTitle.lastIndexOf("_")),
+    JSON.stringify(currentList)
+  );
   localStorage.removeItem(currentTitle);
-
-  // add new title to localstorage
   localStorage.setItem(newTitle, "[]");
 
   // update title and title key arrays
   titleKeys.push(newKey);
   titles.push(newTitle.substring(0, newTitle.lastIndexOf("_")));
 
-  // update current title and title key to reflect new list
+  // update current title, title key, and list to reflect new list
   currentTitle = newTitle;
   currentTitleKey = newKey;
   userFacingTitle = currentTitle
     .substring(currentTitle.indexOf("_") + 1, currentTitle.lastIndexOf("_"));
+  currentList = [];
 
   // remove previous list from the screen and list array
   document.getElementById("list").innerHTML = "";
   document.getElementsByTagName("h1")[0].textContent = userFacingTitle;
   document.getElementsByTagName("h1")[0].id = `title-${newKey}`;
-  currentList = [];
 
   // add new list to list menu
   generateListMenu();
@@ -163,8 +160,10 @@ function addNote(e) {
     const newLi = document.createElement("li");
     const newId = String(currentList.length === 0 ? 0 : currentList.length);
 
-    // add note to list array and local storage
+    // add note to list array
     currentList.push(textToAdd.value);
+
+    // add note to localstorage
     localStorage.setItem(currentTitle, JSON.stringify(currentList));
 
     // add note to page with an id, edit button, and remove button
@@ -179,7 +178,7 @@ function addNote(e) {
   }
 }
 
-// remove note from page and mark note for deletion in localstorage
+// remove note from page and list array, mark note for deletion in localstorage
 function removeNote(e) {
   const note = e.target.parentElement;
   note.remove();
@@ -232,10 +231,8 @@ function removeList() {
     }
     
     // update remainder of state tracking variables
-    previousTitle = currentTitle.substring(0, currentTitle.lastIndexOf("_"));
     currentTitle = nextTitle;
     currentTitleKey = nextTitleKey;
-    previousList = currentList;
     currentList = nextList;
 
     // add next list to page and update list menu
@@ -253,21 +250,21 @@ function changeList(e) {
 
   // given the menu item selected is not the current list
   if (newKey !== currentTitleKey) {
-    // store new and previous title and list
+    // store new title and list
     let newTitle = titles.find((t) => t.startsWith(newKey));
     const newList = JSON.parse(localStorage.getItem(newTitle));
     newTitle = newTitle.concat("_current");
-    previousTitle = currentTitle.substring(0, currentTitle.lastIndexOf("_"));
-    previousList = currentList;
 
-    // update localstorage entries for previous and new list
-    // update new list first to ensure at least one list always has _current
+    // update localstorage entries for current and new list
     localStorage.setItem(newTitle, JSON.stringify(newList));
     localStorage.removeItem(titles.find((t) => t.startsWith(newKey)));
-    localStorage.setItem(previousTitle, JSON.stringify(previousList));
+    localStorage.setItem(
+      currentTitle.substring(0, currentTitle.lastIndexOf("_")),
+      JSON.stringify(currentList)
+    );
     localStorage.removeItem(currentTitle);
 
-    // update variables tracking current titles, keys, and list
+    // update state variables
     currentTitle = newTitle;
     currentTitleKey = newKey;
     userFacingTitle = e.target.textContent;
@@ -369,18 +366,22 @@ function exitTextEdit(dataToPass) {
   } else if (parent.tagName === "HEADER") {
     // on title edit
     if (dataToPass.e.target.className == "save-edit") {
-      // update title array and localstorage, populate new text element
-      const previousTitle = currentTitle;
-      currentTitle = `${currentTitleKey}_${edittedText}_current`;
+      const newTitle = `${currentTitleKey}_${edittedText}`;
       titles.splice(
         titles.indexOf(
-          previousTitle.substring(0, previousTitle.lastIndexOf("_"))
+          currentTitle.substring(0, currentTitle.lastIndexOf("_"))
         ),
         1,
-        currentTitle.substring(0, currentTitle.lastIndexOf("_"))
+        newTitle
       );
-      localStorage.setItem(currentTitle, JSON.stringify(currentList));
-      localStorage.removeItem(previousTitle);
+
+      localStorage.setItem(
+        newTitle.concat("_current"),
+        JSON.stringify(currentList)
+      );
+      localStorage.removeItem(currentTitle);
+
+      currentTitle = newTitle.concat("_current");
       userFacingTitle = edittedText;
       textElement.textContent = edittedText;
 

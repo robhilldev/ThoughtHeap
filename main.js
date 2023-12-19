@@ -367,7 +367,10 @@ function exitTextEdit(dataToPass) {
     if (dataToPass.e.target.className == "save-edit") {
       // update list array and localstorage, populate new text element
       currentList.splice(parent.id, 1, edittedText);
-      localStorage.setItem(currentTitle, JSON.stringify(currentList));
+      localStorage.setItem(
+        currentTitle.concat("_current"),
+        JSON.stringify(currentList)
+      );
       textElement.textContent = edittedText;
     } else {
       // put back existing text

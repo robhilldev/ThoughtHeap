@@ -22,12 +22,12 @@ body {
 button {
   padding: 0;
   flex-shrink: 0;
-  flex-basis: 1.5rem;
+  flex-basis: 2.33rem;
   cursor: pointer;
   text-align: center;
   align-items: center;
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 2.33rem;
+  height: 2.33rem;
   border-radius: 50%;
   background-color: white;
   color: #323232;
@@ -37,11 +37,12 @@ header {
   display: flex;
   align-items: center;
   justify-content: center;
-  column-gap: 1vw;
+  column-gap: 1.25vw;
   margin-left: 5%;
   margin-right: 5%;
-  padding-top: 2.4rem;
-  padding-bottom: 2.1rem;
+  padding-top: 1.8rem;
+  padding-bottom: 1.5rem;
+  font-size: 1.33rem;
 }
 
 header div#list-select-dropdown {
@@ -49,16 +50,10 @@ header div#list-select-dropdown {
   display: inline-block;
   z-index: 1;
   order: 1;
-  flex-basis: 1.75rem;
-  margin-right: 0.5vw;
-  width: 1.75rem;
-  height: 1.75rem;
 }
 
 header button#list-select-button {
-  width: 1.75rem;
-  height: 1.75rem;
-  border: 2px outset #323232;
+  border: 3px outset #323232;
   border-radius: 0.25rem;
   background: url(images/bars-solid.svg) no-repeat;
   background-color: white;
@@ -87,8 +82,8 @@ header div#list-select-content.visible {
 }
 
 header div#list-select-content button#add-list-button {
-  margin: 1rem;
-  border: 2px outset #323232;
+  margin: 0.8rem;
+  border: 3px outset #323232;
   border-radius: 0.25rem;
   background: url(images/plus-solid.svg) no-repeat;
   background-color: white;
@@ -139,13 +134,13 @@ header span.edit-input-box:focus {
 header button#edit-button-header {
   order: 3;
   align-self: center;
-  border: 2px solid #323232;
+  border: 3px solid #323232;
 }
 
 header button#remove-button-header {
   order: 4;
   align-self: center;
-  border: 2px outset #323232;
+  border: 3px outset #323232;
 }
 
 header button#discard-edit-button-header {
@@ -292,6 +287,7 @@ button.discard-edit {
   background-color: white;
   background-size: 50%;
   background-position: 50%;
+  border: 3px solid #ddd0c8;
 }
 
 button.save-edit {
@@ -302,14 +298,15 @@ button.save-edit {
   background-color: white;
   background-size: 60%;
   background-position: 50%;
+  border: 3px solid #ddd0c8;
 }
 
 /* mobile specific styles */
 @media (max-width: 640px) {
   header {
-    gap: 1.5vw;
-    padding-top: 1.8rem;
-    padding-bottom: 1.5rem;
+    gap: 1.75vw;
+    padding-top: 1.5rem;
+    padding-bottom: 1.25rem;
     font-size: 0.8rem;
   }
 
@@ -326,6 +323,9 @@ button.save-edit {
   }
 
   li {
+    gap: 1.5vw;
+    padding-left: 0.65rem;
+    padding-right: 0.4rem;
     animation-duration: 0.5s;
   }
 }

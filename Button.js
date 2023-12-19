@@ -31,7 +31,7 @@ function swapToEditButtons(buttonNumber) {
 
   let editButton = document.getElementById(`edit-button-${buttonNumber}`);
   let removeButton = document.getElementById(`remove-button-${buttonNumber}`);
-  
+
   editButton.parentElement.replaceChild(discardEditButton, removeButton);
   editButton.parentElement.replaceChild(saveEditButton, editButton);
 

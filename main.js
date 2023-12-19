@@ -5,8 +5,8 @@ import { toggleListMenu, closeListMenu } from "./Interaction.js";
 const DEFAULT_INITIAL_TITLE = "0_My Thoughts";
 let titles = Object.keys(localStorage);
 let titleKeys = [];
-let currentTitle = 
-  titles.find(t => t.endsWith("_current")) || DEFAULT_INITIAL_TITLE;
+let currentTitle =
+  titles.find((t) => t.endsWith("_current")) || DEFAULT_INITIAL_TITLE;
 // remove current tag from currentTitle variable
 if (currentTitle.includes("_current")) {
   currentTitle = currentTitle.substring(0, currentTitle.lastIndexOf("_"));
@@ -22,19 +22,24 @@ let currentTitleKey = currentTitle.substring(0, currentTitle.indexOf("_"));
 // add first default title key to titleKeys array on first load
 if (titleKeys.length === 0) titleKeys.push(currentTitleKey);
 let userFacingTitle = currentTitle.substring(currentTitle.indexOf("_") + 1);
-let currentList = JSON.parse(
-  localStorage.getItem(currentTitle.concat("_current"))
-) || [];
+let currentList =
+  JSON.parse(localStorage.getItem(currentTitle.concat("_current"))) || [];
 
 // add current title to page, clear input box, set up event listeners, display notes
 window.onload = () => {
   document.getElementsByTagName("h1")[0].textContent = userFacingTitle;
   document.getElementsByTagName("h1")[0].id = `title-${currentTitleKey}`;
-  document.getElementById("list-select-button").addEventListener("click", toggleListMenu);
+  document
+    .getElementById("list-select-button")
+    .addEventListener("click", toggleListMenu);
   document.addEventListener("click", closeListMenu);
   document.getElementById("add-list-button").addEventListener("click", addList);
-  document.getElementById("edit-button-header").addEventListener("click", editText);
-  document.getElementById("remove-button-header").addEventListener("click", removeList);
+  document
+    .getElementById("edit-button-header")
+    .addEventListener("click", editText);
+  document
+    .getElementById("remove-button-header")
+    .addEventListener("click", removeList);
   document.getElementById("form-button").addEventListener("click", addNote);
   document.getElementById("text-to-add").value = "";
 
@@ -43,21 +48,6 @@ window.onload = () => {
   initializeCurrentList();
   generateListMenu();
 };
-
-// retrieve the current list from localstorage and display it on the page
-function initializeCurrentList() {
-  for (let i = 0; i < currentList.length; i++) {
-    // only show note if not marked for deletion
-    if (!currentList[i].startsWith("x_", 0) && !currentList[i].endsWith("_x")) {
-      const currentLi = document.createElement("li");
-      currentLi.innerHTML = `<div id=note-${i}>` + currentList[i] + "</div>";
-      currentLi.id = i;
-      currentLi.appendChild(addEditButton(i)).addEventListener("click", editText);
-      currentLi.appendChild(addRemoveButton(i)).addEventListener("click", removeNote);
-      document.getElementById("list").appendChild(currentLi);
-    }
-  }
-}
 
 // make sure title array is sorted based on preceding key values
 function sortTitlesArray() {
@@ -83,13 +73,32 @@ function generateTitleKeys() {
   }
 }
 
+// retrieve the current list from localstorage and display it on the page
+function initializeCurrentList() {
+  for (let i = 0; i < currentList.length; i++) {
+    // only show note if not marked for deletion
+    if (!currentList[i].startsWith("x_", 0) && !currentList[i].endsWith("_x")) {
+      const currentLi = document.createElement("li");
+      currentLi.innerHTML = `<div id=note-${i}>` + currentList[i] + "</div>";
+      currentLi.id = i;
+      currentLi
+        .appendChild(addEditButton(i))
+        .addEventListener("click", editText);
+      currentLi
+        .appendChild(addRemoveButton(i))
+        .addEventListener("click", removeNote);
+      document.getElementById("list").appendChild(currentLi);
+    }
+  }
+}
+
 // add list titles to title menu and attach event listeners
 function generateListMenu() {
   const menuContent = document.getElementById("list-select-content");
   const pageTitleId = document.getElementById("header").firstElementChild.id;
 
   // remove previous menu titles if any
-  while(menuContent.children.length > 1) {
+  while (menuContent.children.length > 1) {
     menuContent.removeChild(
       menuContent.children[menuContent.children.length - 1]
     );
@@ -103,14 +112,16 @@ function generateListMenu() {
     menuItemDivider.id = `title-menu-divider-${titleKeys[i]}`;
 
     menuItemElement.textContent = titles[i].substring(
-      titles[i].indexOf("_") + 1, titles[i].length
+      titles[i].indexOf("_") + 1,
+      titles[i].length
     );
 
     // add arrow to currently viewed list title and make it bold
-    if (titles[i].substring(0, titles[i].indexOf("_"))
-        === pageTitleId.substring(pageTitleId.lastIndexOf("-") + 1)) {
-      menuItemElement.innerHTML
-        = `&rArr;&nbsp;&nbsp;${menuItemElement.textContent}`;
+    if (
+      titles[i].substring(0, titles[i].indexOf("_")) ===
+      pageTitleId.substring(pageTitleId.lastIndexOf("-") + 1)
+    ) {
+      menuItemElement.innerHTML = `&rArr;&nbsp;&nbsp;${menuItemElement.textContent}`;
       menuItemElement.style.fontWeight = "900";
     }
 
@@ -124,7 +135,7 @@ function generateListMenu() {
 function addList() {
   // make new title key one higher than the max existing title key value
   const newKey = String(
-    Number(titleKeys.reduce((max, n) => n > max ? n : max)) + 1
+    Number(titleKeys.reduce((max, n) => (n > max ? n : max))) + 1
   );
   const newTitle = `${newKey}_New List`;
 
@@ -156,7 +167,7 @@ function addList() {
 function addNote(e) {
   e.preventDefault();
   const textToAdd = document.getElementById("text-to-add");
-  
+
   if (textToAdd.value) {
     // create li element for housing new note and create id
     const newLi = document.createElement("li");
@@ -175,7 +186,9 @@ function addNote(e) {
     newLi.innerHTML = `<div id=note-${newId}>` + textToAdd.value + "</div>";
     newLi.id = newId;
     newLi.appendChild(addEditButton(newId)).addEventListener("click", editText);
-    newLi.appendChild(addRemoveButton(newId)).addEventListener("click", removeNote);
+    newLi
+      .appendChild(addRemoveButton(newId))
+      .addEventListener("click", removeNote);
     document.getElementById("list").appendChild(newLi);
 
     // clear input box
@@ -206,7 +219,7 @@ function removeList() {
     const nextTitleKey = nextTitle.substring(0, nextTitle.indexOf("_"));
     const nextList = JSON.parse(localStorage.getItem(nextTitle)) || [];
     userFacingTitle = nextTitle.substring(nextTitle.indexOf("_") + 1);
-    
+
     // remove list from page
     document.getElementById("list").innerHTML = "";
 
@@ -228,13 +241,8 @@ function removeList() {
         JSON.stringify(nextList)
       );
       localStorage.removeItem(nextTitle);
-    } else {
-      localStorage.setItem(
-        nextTitle.concat("_current"),
-        JSON.stringify(nextList)
-      );
     }
-    
+
     // update remainder of state tracking variables
     currentTitle = nextTitle;
     currentTitleKey = nextTitleKey;
@@ -316,19 +324,19 @@ function editText(e) {
   // pass event object, removed buttons, and text element to event handler on click
   discardEditButton.addEventListener("click", (e) => {
     const dataToPass = {
-      "e": e,
-      "args": [editButton, removeButton, textElement]
+      e: e,
+      args: [editButton, removeButton, textElement],
     };
     exitTextEdit(dataToPass);
   });
   saveEditButton.addEventListener("click", (e) => {
     const dataToPass = {
-      "e": e,
-      "args": [editButton, removeButton, textElement]
+      e: e,
+      args: [editButton, removeButton, textElement],
     };
     exitTextEdit(dataToPass);
   });
-  
+
   // within input box, make enter trigger save edit and escape trigger discard edit
   editInputBox.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {

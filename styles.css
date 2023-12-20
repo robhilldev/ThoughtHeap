@@ -2,9 +2,13 @@
   box-sizing: border-box;
 }
 
-body {
-  margin: auto;
+html {
   overscroll-behavior: none;
+}
+
+body {
+  overscroll-behavior: none;
+  margin: auto;
   background: rgb(255, 140, 0);
   background: linear-gradient(
     0deg,

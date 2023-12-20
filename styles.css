@@ -4,6 +4,7 @@
 
 body {
   margin: auto;
+  overscroll-behavior: none;
   background: rgb(255, 140, 0);
   background: linear-gradient(
     0deg,

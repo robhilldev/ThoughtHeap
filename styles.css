@@ -83,7 +83,7 @@ header div#list-select-content.visible {
 }
 
 header div#list-select-content button#add-list-button {
-  margin: 1rem;
+  margin: 0.8rem;
   border: 3px outset #323232;
   border-radius: 0.25rem;
   background: url(images/plus-solid.svg) no-repeat;
@@ -95,10 +95,10 @@ header div#list-select-content button#add-list-button {
 header div#list-select-content span {
   display: inline-block;
   line-height: 1.2;
-  padding: 1rem;
-  padding-top: 1.25rem;
-  padding-bottom: 1.25rem;
-  font-size: 1.25rem;
+  padding: 0.8rem;
+  padding-top: 1.2rem;
+  padding-bottom: 1.2rem;
+  font-size: 1.2rem;
 }
 
 header div#list-select-content span:hover {

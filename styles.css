@@ -22,12 +22,12 @@ body {
 button {
   padding: 0;
   flex-shrink: 0;
-  flex-basis: 2.33rem;
+  flex-basis: 2rem;
   cursor: pointer;
   text-align: center;
   align-items: center;
-  width: 2.33rem;
-  height: 2.33rem;
+  width: 2rem;
+  height: 2rem;
   border-radius: 50%;
   background-color: white;
   color: #323232;
@@ -37,12 +37,12 @@ header {
   display: flex;
   align-items: center;
   justify-content: center;
-  column-gap: 1.25vw;
+  column-gap: 1vw;
   margin-left: 5%;
   margin-right: 5%;
   padding-top: 1.8rem;
   padding-bottom: 1.5rem;
-  font-size: 1.33rem;
+  font-size: 1rem;
 }
 
 header div#list-select-dropdown {
@@ -53,6 +53,7 @@ header div#list-select-dropdown {
 }
 
 header button#list-select-button {
+  margin-right: 0.5vw;
   border: 3px outset #323232;
   border-radius: 0.25rem;
   background: url(images/bars-solid.svg) no-repeat;
@@ -97,7 +98,7 @@ header div#list-select-content span {
   padding: 1rem;
   padding-top: 1.25rem;
   padding-bottom: 1.25rem;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
 }
 
 header div#list-select-content span:hover {
@@ -137,7 +138,7 @@ header span.edit-input-box:focus {
 header button#edit-button-header {
   order: 3;
   align-self: center;
-  border: 3px solid #323232;
+  border: 3px outset #323232;
 }
 
 header button#remove-button-header {
@@ -148,28 +149,20 @@ header button#remove-button-header {
 
 header button#discard-edit-button-header {
   order: 4;
-  flex-basis: 2.33rem;
-  border: 2px solid #323232;
+  border: 3px outset #323232;
   background: url(images/xmark-solid.svg) no-repeat;
   background-color: white;
   background-size: 50%;
   background-position: 50%;
-  width: 2.33rem;
-  height: 2.33rem;
-  border: 3px outset #323232;
 }
 
 header button#save-edit-button-header {
   order: 3;
-  flex-basis: 2.33rem;
-  border: 2px solid #323232;
+  border: 3px outset #323232;
   background: url(images/check-solid.svg) no-repeat;
   background-color: white;
   background-size: 60%;
   background-position: 50%;
-  width: 2.33rem;
-  height: 2.33rem;
-  border: 3px outset #323232;
 }
 
 main {
@@ -276,7 +269,7 @@ button.remove {
 }
 
 button.edit {
-  border: 2px solid #ddd0c8;
+  border: 2px outset #ddd0c8;
   background: url(images/pen-to-square-solid.svg) no-repeat;
   background-color: white;
   background-size: 60%;
@@ -313,12 +306,8 @@ button.save-edit {
     font-size: 0.8rem;
   }
 
-  header button#discard-edit-button-header {
-    margin-left: 0.5vw;
-  }
-
   header button#save-edit-button-header {
-    margin-left: 1.75vw;
+    margin-left: 1vw;
   }
 
   form {
@@ -328,7 +317,7 @@ button.save-edit {
   li {
     gap: 1.5vw;
     padding-left: 0.65rem;
-    padding-right: 0.4rem;
+    padding-right: 0.5rem;
     animation-duration: 0.5s;
   }
 }

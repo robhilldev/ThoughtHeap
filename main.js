@@ -264,7 +264,7 @@ function changeList(e) {
   // given the menu item selected is not the already viewed list
   if (newKey !== currentTitleKey) {
     // store new title and list
-    let newTitle = titles.find((t) => t.startsWith(newKey));
+    const newTitle = titles.find((t) => t.startsWith(newKey));
     const newList = JSON.parse(localStorage.getItem(newTitle));
 
     // update localstorage entries for current and new list

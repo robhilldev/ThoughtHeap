@@ -1,11 +1,16 @@
-import { addRemoveButton, addEditButton, swapToEditButtons } from "./Button.js";
-import { toggleListMenu, closeListMenu } from "./Interaction.js";
+import {
+  addRemoveButton,
+  addEditButton,
+  swapToEditButtons,
+} from "./modules/Button.js";
+import { toggleListMenu, closeListMenu } from "./modules/Interaction.js";
 
 // most of these variables are for managing state
 const DEFAULT_INITIAL_TITLE = "0_My Thoughts";
 let titles = Object.keys(localStorage);
 let currentTitle =
   titles.find((t) => t.endsWith("_current")) || DEFAULT_INITIAL_TITLE;
+
 // remove current tag from currentTitle variable
 if (currentTitle.includes("_current")) {
   currentTitle = currentTitle.substring(0, currentTitle.lastIndexOf("_"));
@@ -17,6 +22,7 @@ titles = titles.map((t) => {
   if (t.includes("_current")) return t.substring(0, t.lastIndexOf("_"));
   else return t;
 });
+
 let currentTitleKey = currentTitle.substring(0, currentTitle.indexOf("_"));
 let userFacingTitle = currentTitle.substring(currentTitle.indexOf("_") + 1);
 let currentList =
@@ -97,24 +103,17 @@ function generateListMenu() {
   for (let i = 0; i < titles.length; i++) {
     let menuItemDivider = document.createElement("hr");
     let menuItemElement = document.createElement("span");
-    menuItemElement.id = `title-menu-${titles[i].substring(
-      0,
-      titles[i].indexOf("_")
-    )}`;
-    menuItemDivider.id = `title-menu-divider-${titles[i].substring(
-      0,
-      titles[i].indexOf("_")
-    )}`;
+    let menuItemKey = titles[i].substring(0, titles[i].indexOf("_"));
+    menuItemElement.id = `title-menu-${menuItemKey}`;
+    menuItemDivider.id = `title-menu-divider-${menuItemKey}`;
 
     menuItemElement.textContent = titles[i].substring(
-      titles[i].indexOf("_") + 1,
-      titles[i].length
+      titles[i].indexOf("_") + 1
     );
 
     // add arrow to currently viewed list title and make it bold
     if (
-      titles[i].substring(0, titles[i].indexOf("_")) ===
-      pageTitleId.substring(pageTitleId.lastIndexOf("-") + 1)
+      menuItemKey === pageTitleId.substring(pageTitleId.lastIndexOf("-") + 1)
     ) {
       menuItemElement.innerHTML = `&rArr;&nbsp;&nbsp;${menuItemElement.textContent}`;
       menuItemElement.style.fontWeight = "900";

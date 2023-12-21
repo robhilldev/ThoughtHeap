@@ -4,7 +4,6 @@ import { toggleListMenu, closeListMenu } from "./Interaction.js";
 // most of these variables are for managing state
 const DEFAULT_INITIAL_TITLE = "0_My Thoughts";
 let titles = Object.keys(localStorage);
-let titleKeys = [];
 let currentTitle =
   titles.find((t) => t.endsWith("_current")) || DEFAULT_INITIAL_TITLE;
 // remove current tag from currentTitle variable
@@ -19,8 +18,6 @@ titles = titles.map((t) => {
   else return t;
 });
 let currentTitleKey = currentTitle.substring(0, currentTitle.indexOf("_"));
-// add first default title key to titleKeys array on first load
-if (titleKeys.length === 0) titleKeys.push(currentTitleKey);
 let userFacingTitle = currentTitle.substring(currentTitle.indexOf("_") + 1);
 let currentList =
   JSON.parse(localStorage.getItem(currentTitle.concat("_current"))) || [];
@@ -44,7 +41,6 @@ window.onload = () => {
   document.getElementById("text-to-add").value = "";
 
   sortTitlesArray();
-  generateTitleKeys();
   initializeCurrentList();
   generateListMenu();
 };
@@ -54,23 +50,16 @@ function sortTitlesArray() {
   titles.sort((a, b) => {
     if (
       Number(a.substring(0, a.indexOf("_"))) <
-      Number(b.substring(0, a.indexOf("_")))
+      Number(b.substring(0, b.indexOf("_")))
     )
       return -1;
     if (
       Number(a.substring(0, a.indexOf("_"))) >
-      Number(b.substring(0, a.indexOf("_")))
+      Number(b.substring(0, b.indexOf("_")))
     )
       return 1;
     return 0;
   });
-}
-
-// populate title key array
-function generateTitleKeys() {
-  for (let i = 0; i < titles.length; i++) {
-    titleKeys[i] = titles[i].substring(0, titles[i].indexOf("_"));
-  }
 }
 
 // retrieve the current list from localstorage and display it on the page
@@ -108,8 +97,14 @@ function generateListMenu() {
   for (let i = 0; i < titles.length; i++) {
     let menuItemDivider = document.createElement("hr");
     let menuItemElement = document.createElement("span");
-    menuItemElement.id = `title-menu-${titleKeys[i]}`;
-    menuItemDivider.id = `title-menu-divider-${titleKeys[i]}`;
+    menuItemElement.id = `title-menu-${titles[i].substring(
+      0,
+      titles[i].indexOf("_")
+    )}`;
+    menuItemDivider.id = `title-menu-divider-${titles[i].substring(
+      0,
+      titles[i].indexOf("_")
+    )}`;
 
     menuItemElement.textContent = titles[i].substring(
       titles[i].indexOf("_") + 1,
@@ -135,7 +130,7 @@ function generateListMenu() {
 function addList() {
   // make new title key one higher than the max existing title key value
   const newKey = String(
-    Number(titleKeys.reduce((max, n) => (n > max ? n : max))) + 1
+    Number(titles.at(-1).substring(0, titles.at(-1).indexOf("_"))) + 1
   );
   const newTitle = `${newKey}_New List`;
 
@@ -144,8 +139,7 @@ function addList() {
   localStorage.removeItem(currentTitle.concat("_current"));
   localStorage.setItem(newTitle.concat("_current"), "[]");
 
-  // update title and title key arrays
-  titleKeys.push(newKey);
+  // update titles array
   titles.push(newTitle);
 
   // update current title, title key, and list to reflect new list
@@ -210,9 +204,8 @@ function removeNote(e) {
 // remove current list from page and localstorage, update state variables
 function removeList() {
   if (localStorage.length > 0) {
-    // update title and key arrays first for use in determining next list
+    // update titles array first for use in determining next list
     titles.splice(titles.indexOf(currentTitle), 1);
-    titleKeys.splice(titleKeys.indexOf(currentTitleKey), 1);
 
     // determine next title and list to display
     const nextTitle = titles[0] ? titles[0] : DEFAULT_INITIAL_TITLE;
@@ -223,11 +216,8 @@ function removeList() {
     // remove list from page
     document.getElementById("list").innerHTML = "";
 
-    // update titles and titleKeys arrays upon last list deletion
-    if (titles.length === 0) {
-      titles.push(nextTitle);
-      titleKeys.push(nextTitleKey);
-    }
+    // update titles array upon last list deletion
+    if (titles.length === 0) titles.push(nextTitle);
 
     // add next title to page
     document.getElementsByTagName("h1")[0].textContent = userFacingTitle;

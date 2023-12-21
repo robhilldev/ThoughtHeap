@@ -152,8 +152,9 @@ function addList() {
   document.getElementsByTagName("h1")[0].textContent = userFacingTitle;
   document.getElementsByTagName("h1")[0].id = `title-${newKey}`;
 
-  // add new list to list menu
+  // add new list to list menu and open title edit box
   generateListMenu();
+  document.getElementById("edit-button-header").click();
 }
 
 // add note to page and localstorage, update list variables

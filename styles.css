@@ -1,11 +1,10 @@
+/*---------- General styles ----------*/
 * {
   box-sizing: border-box;
 }
-
 html {
   overscroll-behavior: none;
 }
-
 body {
   overscroll-behavior: none;
   margin: auto;
@@ -37,7 +36,33 @@ button {
   background-color: white;
   color: #323232;
 }
+button.remove {
+  background: url(images/trash-can-solid.svg) no-repeat;
+  background-color: white;
+  background-size: 60%;
+  background-position: 50%;
+}
+button.edit {
+  background: url(images/pen-to-square-solid.svg) no-repeat;
+  background-color: white;
+  background-size: 60%;
+  background-position: 50%;
+}
+button.discard-edit {
+  background: url(images/xmark-solid.svg) no-repeat;
+  background-color: white;
+  background-size: 50%;
+  background-position: 50%;
+}
+button.save-edit {
+  margin-left: 0.5vw;
+  background: url(images/check-solid.svg) no-repeat;
+  background-color: white;
+  background-size: 60%;
+  background-position: 50%;
+}
 
+/*---------- Header section styles ----------*/
 header {
   display: flex;
   align-items: center;
@@ -49,25 +74,45 @@ header {
   padding-bottom: 1.5rem;
   font-size: 1rem;
 }
-
-header div#list-select-dropdown {
-  position: relative;
-  display: inline-block;
-  z-index: 1;
-  order: 1;
+header h1 {
+  order: 2;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: 2px;
+}
+header button {
+  border: 3px outset #323232;
 }
 
-header button#list-select-button {
+button#list-select-button {
   margin-right: 0.5vw;
-  border: 3px outset #323232;
   border-radius: 0.25rem;
   background: url(images/bars-solid.svg) no-repeat;
   background-color: white;
   background-size: 50%;
   background-position: 50%;
 }
+button#edit-button-header {
+  order: 3;
+}
+button#remove-button-header {
+  order: 4;
+}
+button#discard-edit-button-header {
+  order: 4;
+}
+button#save-edit-button-header {
+  order: 3;
+}
 
-header div#list-select-content {
+div#list-select-dropdown {
+  position: relative;
+  display: inline-block;
+  z-index: 1;
+  order: 1;
+}
+
+div#list-select-content {
   display: none;
   position: absolute;
   margin-top: 0.4rem;
@@ -82,22 +127,18 @@ header div#list-select-content {
   -webkit-user-select: none;
   user-select: none;
 }
-
-header div#list-select-content.visible {
+div#list-select-content.visible {
   display: block;
 }
-
-header div#list-select-content button#add-list-button {
+div#list-select-content button#add-list-button {
   margin: 0.8rem;
-  border: 3px outset #323232;
   border-radius: 0.25rem;
   background: url(images/plus-solid.svg) no-repeat;
   background-color: white;
   background-size: 60%;
   background-position: 50%;
 }
-
-header div#list-select-content span {
+div#list-select-content span {
   display: inline-block;
   line-height: 1.2;
   padding: 0.8rem;
@@ -105,24 +146,15 @@ header div#list-select-content span {
   padding-bottom: 1.2rem;
   font-size: 1.2rem;
 }
-
-header div#list-select-content span:hover {
+div#list-select-content span:hover {
   font-weight: bold;
   cursor: pointer;
 }
-
-header div#list-select-content hr {
+div#list-select-content hr {
   margin: auto;
   width: 90%;
   border: 1px solid white;
   border-radius: 0.5rem;
-}
-
-header h1 {
-  order: 2;
-  margin-top: 0;
-  margin-bottom: 0;
-  padding: 2px;
 }
 
 header span.edit-input-box {
@@ -135,45 +167,18 @@ header span.edit-input-box {
   font-weight: bold;
   border: 2px solid #323232;
 }
-
 header span.edit-input-box:focus {
-  outline: 0.1rem solid #323232;
+  outline: 2px solid #323232;
 }
 
-header button#edit-button-header {
-  order: 3;
-  align-self: center;
-  border: 3px outset #323232;
-}
-
-header button#remove-button-header {
-  order: 4;
-  align-self: center;
-  border: 3px outset #323232;
-}
-
-header button#discard-edit-button-header {
-  order: 4;
-  border: 3px outset #323232;
-  background: url(images/xmark-solid.svg) no-repeat;
-  background-color: white;
-  background-size: 50%;
-  background-position: 50%;
-}
-
-header button#save-edit-button-header {
-  order: 3;
-  border: 3px outset #323232;
-  background: url(images/check-solid.svg) no-repeat;
-  background-color: white;
-  background-size: 60%;
-  background-position: 50%;
-}
-
+/*---------- Main section styles ----------*/
 main {
   display: grid;
   margin-left: 5%;
   margin-right: 5%;
+}
+main button {
+  border: 3px outset #ddd0c8;
 }
 
 form {
@@ -183,11 +188,9 @@ form {
   justify-content: start;
   margin-bottom: 2rem;
 }
-
 form label {
   display: none;
 }
-
 form input#text-to-add {
   flex-grow: 1;
   height: 2rem;
@@ -195,11 +198,9 @@ form input#text-to-add {
   border: 2px outset #323232;
   border-radius: 0.25rem;
 }
-
 form input#text-to-add:focus {
   outline: none;
 }
-
 form input#form-button {
   flex-basis: 2.33rem;
   padding: 0;
@@ -221,7 +222,6 @@ ul#list {
   list-style-position: inside;
   list-style-type: none;
 }
-
 li {
   display: flex;
   gap: 1vw;
@@ -240,13 +240,11 @@ li {
   animation-name: slidein;
   animation-duration: 0.75s;
 }
-
 li div {
   flex-grow: 1;
   margin-top: 1rem;
   margin-bottom: 1rem;
 }
-
 li span.edit-input-box {
   margin-top: 1rem;
   margin-bottom: 1rem;
@@ -260,49 +258,11 @@ li span.edit-input-box {
   background-color: white;
   color: #323232;
 }
-
 li span.edit-input-box:focus {
-  outline: 0.2rem solid #ddd0c8;
+  outline: 3px outset #ddd0c8;
 }
 
-button.remove {
-  border: 2px outset #ddd0c8;
-  background: url(images/trash-can-solid.svg) no-repeat;
-  background-color: white;
-  background-size: 60%;
-  background-position: 50%;
-}
-
-button.edit {
-  border: 2px outset #ddd0c8;
-  background: url(images/pen-to-square-solid.svg) no-repeat;
-  background-color: white;
-  background-size: 60%;
-  background-position: 50%;
-}
-
-button.discard-edit {
-  align-self: center;
-  border: 2px solid #ddd0c8;
-  background: url(images/xmark-solid.svg) no-repeat;
-  background-color: white;
-  background-size: 50%;
-  background-position: 50%;
-  border: 3px solid #ddd0c8;
-}
-
-button.save-edit {
-  align-self: center;
-  margin-left: 0.5vw;
-  border: 2px solid #ddd0c8;
-  background: url(images/check-solid.svg) no-repeat;
-  background-color: white;
-  background-size: 60%;
-  background-position: 50%;
-  border: 3px solid #ddd0c8;
-}
-
-/* mobile specific styles */
+/*---------- mobile specific styles ----------*/
 @media (max-width: 640px) {
   header {
     gap: 1.75vw;
@@ -327,6 +287,7 @@ button.save-edit {
   }
 }
 
+/*---------- Animations ----------*/
 /* respect when user has reduced motion set by not playing animations */
 @media (prefers-reduced-motion: no-preference) {
   @keyframes slidein {

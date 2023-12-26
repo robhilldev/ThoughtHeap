@@ -92,16 +92,16 @@ button#list-select-button {
   background-size: 50%;
   background-position: 50%;
 }
-button#edit-button-header {
+header button.edit {
   order: 3;
 }
-button#remove-button-header {
+header button.remove {
   order: 4;
 }
-button#discard-edit-button-header {
+header button.discard-edit {
   order: 4;
 }
-button#save-edit-button-header {
+header button.save-edit {
   order: 3;
 }
 

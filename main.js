@@ -4,29 +4,11 @@ import {
   swapToEditButtons,
 } from "./modules/Button.js";
 import { toggleListMenu, closeListMenu } from "./modules/Interaction.js";
+import { initializeState } from "./modules/State.js";
 
-// most of these variables are for managing state
 const DEFAULT_INITIAL_TITLE = "0_My Thoughts";
-let titles = Object.keys(localStorage);
-let currentTitle =
-  titles.find((t) => t.endsWith("_current")) || DEFAULT_INITIAL_TITLE;
-
-// remove current tag from currentTitle variable
-if (currentTitle.includes("_current")) {
-  currentTitle = currentTitle.substring(0, currentTitle.lastIndexOf("_"));
-}
-// add first default title to titles array on first load
-if (titles.length === 0) titles.push(currentTitle);
-// remove current tag from titles array if present
-titles = titles.map((t) => {
-  if (t.includes("_current")) return t.substring(0, t.lastIndexOf("_"));
-  else return t;
-});
-
-let currentTitleKey = currentTitle.substring(0, currentTitle.indexOf("_"));
-let userFacingTitle = currentTitle.substring(currentTitle.indexOf("_") + 1);
-let currentList =
-  JSON.parse(localStorage.getItem(currentTitle.concat("_current"))) || [];
+let [titles, currentTitle, currentTitleKey, userFacingTitle, currentList] =
+  initializeState(DEFAULT_INITIAL_TITLE);
 
 // add current title to page, clear input box, set up event listeners, display notes
 window.onload = () => {
@@ -51,7 +33,7 @@ window.onload = () => {
   generateListMenu();
 };
 
-// make sure title array is sorted based on preceding key values
+// make sure titles array is sorted based on preceding key values
 function sortTitlesArray() {
   titles.sort((a, b) => {
     if (
@@ -119,6 +101,7 @@ function generateListMenu() {
       menuItemElement.style.fontWeight = "900";
     }
 
+    // add divider and title to menu
     menuContent.appendChild(menuItemDivider);
     menuContent.appendChild(menuItemElement);
     menuItemElement.addEventListener("click", changeList);
@@ -133,26 +116,22 @@ function addList() {
   );
   const newTitle = `${newKey}_New List`;
 
-  // update local storage for current and new lists
+  // update local storage
   localStorage.setItem(currentTitle, JSON.stringify(currentList));
-  localStorage.removeItem(currentTitle.concat("_current"));
-  localStorage.setItem(newTitle.concat("_current"), "[]");
+  localStorage.removeItem(`${currentTitle}_current`);
+  localStorage.setItem(`${newTitle}_current`, "[]");
 
-  // update titles array
+  // update state variables
   titles.push(newTitle);
-
-  // update current title, title key, and list to reflect new list
   currentTitle = newTitle;
   currentTitleKey = newKey;
   userFacingTitle = currentTitle.substring(currentTitle.indexOf("_") + 1);
   currentList = [];
 
-  // remove previous list from the screen and list array
+  // update page and open title edit box
   document.getElementById("list").innerHTML = "";
   document.getElementsByTagName("h1")[0].textContent = userFacingTitle;
   document.getElementsByTagName("h1")[0].id = `title-${newKey}`;
-
-  // add new list to list menu and open title edit box
   generateListMenu();
   document.getElementById("edit-button-header").click();
 }
@@ -172,7 +151,7 @@ function addNote(e) {
 
     // add note to localstorage
     localStorage.setItem(
-      currentTitle.concat("_current"),
+      `${currentTitle}_current`,
       JSON.stringify(currentList)
     );
 
@@ -195,50 +174,38 @@ function removeNote(e) {
   const note = e.target.parentElement;
   note.remove();
   currentList.splice(note.id, 1, `x_${note.firstElementChild.textContent}_x`);
-  localStorage.setItem(
-    currentTitle.concat("_current"),
-    JSON.stringify(currentList)
-  );
+  localStorage.setItem(`${currentTitle}_current`, JSON.stringify(currentList));
 }
 
 // remove current list from page and localstorage, update state variables
 function removeList() {
   if (localStorage.length > 0) {
-    // update titles array first for use in determining next list
-    titles.splice(titles.indexOf(currentTitle), 1);
-
     // determine next title and list to display
-    const nextTitle = titles[0] ? titles[0] : DEFAULT_INITIAL_TITLE;
+    let nextTitle = DEFAULT_INITIAL_TITLE;
+    if (titles.length > 1 && titles[0] !== currentTitle) nextTitle = titles[0];
+    if (titles.length > 1 && titles[0] === currentTitle) nextTitle = titles[1];
     const nextTitleKey = nextTitle.substring(0, nextTitle.indexOf("_"));
     const nextList = JSON.parse(localStorage.getItem(nextTitle)) || [];
-    userFacingTitle = nextTitle.substring(nextTitle.indexOf("_") + 1);
 
-    // remove list from page
-    document.getElementById("list").innerHTML = "";
-
-    // update titles array upon last list deletion
-    if (titles.length === 0) titles.push(nextTitle);
-
-    // add next title to page
-    document.getElementsByTagName("h1")[0].textContent = userFacingTitle;
-    document.getElementsByTagName("h1")[0].id = `title-${nextTitleKey}`;
-
-    // remove list from localstorage and tag next list with _current
-    localStorage.removeItem(currentTitle.concat("_current"));
+    // update local storage
+    localStorage.removeItem(`${currentTitle}_current`);
     if (localStorage.getItem(nextTitle)) {
-      localStorage.setItem(
-        nextTitle.concat("_current"),
-        JSON.stringify(nextList)
-      );
+      localStorage.setItem(`${nextTitle}_current`, JSON.stringify(nextList));
       localStorage.removeItem(nextTitle);
     }
 
-    // update remainder of state tracking variables
+    // update state variables
+    userFacingTitle = nextTitle.substring(nextTitle.indexOf("_") + 1);
+    titles.splice(titles.indexOf(currentTitle), 1);
+    if (titles.length === 0) titles.push(nextTitle);
     currentTitle = nextTitle;
     currentTitleKey = nextTitleKey;
     currentList = nextList;
 
-    // add next list to page and update list menu
+    // update page
+    document.getElementById("list").innerHTML = "";
+    document.getElementsByTagName("h1")[0].textContent = userFacingTitle;
+    document.getElementsByTagName("h1")[0].id = `title-${nextTitleKey}`;
     initializeCurrentList();
     generateListMenu();
   }
@@ -246,33 +213,33 @@ function removeList() {
 
 // change to the list selected in the list select menu
 function changeList(e) {
-  const newKey = e.target.id.substring(
+  const nextTitleKey = e.target.id.substring(
     e.target.id.lastIndexOf("-") + 1,
     e.target.id.length
   );
 
   // given the menu item selected is not the already viewed list
-  if (newKey !== currentTitleKey) {
+  if (nextTitleKey !== currentTitleKey) {
     // store new title and list
-    const newTitle = titles.find((t) => t.startsWith(newKey));
-    const newList = JSON.parse(localStorage.getItem(newTitle));
+    const nextTitle = titles.find((t) => t.startsWith(nextTitleKey));
+    const nextList = JSON.parse(localStorage.getItem(nextTitle));
 
-    // update localstorage entries for current and new list
-    localStorage.setItem(newTitle.concat("_current"), JSON.stringify(newList));
-    localStorage.removeItem(newTitle);
+    // update localstorage
+    localStorage.setItem(`${nextTitle}_current`, JSON.stringify(nextList));
+    localStorage.removeItem(nextTitle);
     localStorage.setItem(currentTitle, JSON.stringify(currentList));
-    localStorage.removeItem(currentTitle.concat("_current"));
+    localStorage.removeItem(`${currentTitle}_current`);
 
     // update state variables
-    currentTitle = newTitle;
-    currentTitleKey = newKey;
-    userFacingTitle = newTitle.substring(newTitle.indexOf("_") + 1);
-    currentList = newList;
+    currentTitle = nextTitle;
+    currentTitleKey = nextTitleKey;
+    userFacingTitle = nextTitle.substring(nextTitle.indexOf("_") + 1);
+    currentList = nextList;
 
-    // update the page to show the new list
+    // update page
     document.getElementById("list").innerHTML = "";
     document.getElementsByTagName("h1")[0].textContent = userFacingTitle;
-    document.getElementsByTagName("h1")[0].id = `title-${newKey}`;
+    document.getElementsByTagName("h1")[0].id = `title-${nextTitleKey}`;
     initializeCurrentList();
     generateListMenu();
   }
@@ -358,44 +325,45 @@ function exitTextEdit(dataToPass) {
       // update list array and localstorage, populate new text element
       currentList.splice(parent.id, 1, edittedText);
       localStorage.setItem(
-        currentTitle.concat("_current"),
+        `${currentTitle}_current`,
         JSON.stringify(currentList)
       );
       textElement.textContent = edittedText;
     } else {
-      // put back existing text
+      // on discard edit, put back existing text
       textElement.textContent = currentList[parent.id];
     }
   } else if (parent.tagName === "HEADER") {
     // on title edit
     if (dataToPass.e.target.className == "save-edit") {
-      // create new title and update title in titles array
+      // create new title
       const newTitle = `${currentTitleKey}_${edittedText}`;
+
+      // update localstorage
+      localStorage.setItem(`${newTitle}_current`, JSON.stringify(currentList));
+      if (newTitle !== currentTitle) {
+        localStorage.removeItem(`${currentTitle}_current`);
+      }
+
+      // update state variables
       titles.splice(titles.indexOf(currentTitle), 1, newTitle);
-
-      // update title in localstorage
-      localStorage.setItem(
-        newTitle.concat("_current"),
-        JSON.stringify(currentList)
-      );
-      localStorage.removeItem(currentTitle.concat("_current"));
-
-      // update state variables and page title
       currentTitle = newTitle;
       userFacingTitle = edittedText;
-      textElement.textContent = edittedText;
 
-      // also update title in list select menu
+      // update page
+      textElement.textContent = edittedText;
       generateListMenu();
     } else {
-      // put back existing text
+      // on discard edit, put back existing text
       textElement.textContent = userFacingTitle;
     }
+
     // make list select menu button visible again
     document
       .getElementById("list-select-dropdown")
       .style.removeProperty("display");
   }
+
   // swap in updated text element, edit button, and remove button
   parent.replaceChild(textElement, childInputBox);
   parent.replaceChild(editButton, saveEditButton);

@@ -2,7 +2,7 @@
   "name": "Thought Heap",
   "short_name": "ThoughtHeap",
   "start_url": "./index.html",
-  "display": "minimal-ui",
+  "display": "standalone",
   "background_color": "skyblue",
   "theme_color": "darkorange",
   "description": "A place to track your thoughts",

@@ -1,9 +1,9 @@
 import * as button from "./modules/Button.js";
 import * as interaction from "./modules/Interaction.js";
 import {
-  DEFAULT_INITIAL_TITLE,
   state,
   initializeState,
+  createLocalState,
   updateState,
 } from "./modules/State.js";
 
@@ -96,14 +96,9 @@ function generateListMenu() {
   }
 }
 
-// add list to page and localstorage, update title variables
+// add list to localstorage, update state variables, add list to page
 function addList() {
-  // make new title key one higher than the max existing title key value
-  const newKey = String(
-    Number(state.titles.at(-1).substring(0, state.titles.at(-1).indexOf("_"))) +
-      1
-  );
-  const newTitle = `${newKey}_New List`;
+  const [newKey, newTitle] = createLocalState("addList");
 
   // update local storage
   localStorage.setItem(state.currentTitle, JSON.stringify(state.currentList));
@@ -126,12 +121,7 @@ function addNote(e) {
   const textToAdd = document.getElementById("text-to-add");
 
   if (textToAdd.value) {
-    // create li element for housing new note and create id
-    const newLi = document.createElement("li");
-    const newId = String(
-      state.currentList.length === 0 ? 0 : state.currentList.length
-    );
-
+    const [newLi, newId] = createLocalState("addNote");
     updateState("addNote", textToAdd.value);
 
     // update local storage
@@ -159,16 +149,7 @@ function addNote(e) {
 // remove current list from page and localstorage, update state variables
 function removeList() {
   if (localStorage.length > 0) {
-    // determine next title and list to display
-    let nextTitle = DEFAULT_INITIAL_TITLE;
-    if (state.titles.length > 1 && state.titles[0] !== state.currentTitle) {
-      nextTitle = state.titles[0];
-    }
-    if (state.titles.length > 1 && state.titles[0] === state.currentTitle) {
-      nextTitle = state.titles[1];
-    }
-    const nextTitleKey = nextTitle.substring(0, nextTitle.indexOf("_"));
-    const nextList = JSON.parse(localStorage.getItem(nextTitle)) || [];
+    const [nextTitle, nextTitleKey, nextList] = createLocalState("removeList");
 
     // update local storage
     localStorage.removeItem(`${state.currentTitle}_current`);
@@ -212,9 +193,7 @@ function changeList(e) {
 
   // given the menu item selected is not the already viewed list
   if (nextTitleKey !== state.currentTitleKey) {
-    // store new title and list
-    const nextTitle = state.titles.find((t) => t.startsWith(nextTitleKey));
-    const nextList = JSON.parse(localStorage.getItem(nextTitle));
+    const [nextTitle, nextList] = createLocalState("changeList", nextTitleKey);
 
     // update localstorage
     localStorage.setItem(`${nextTitle}_current`, JSON.stringify(nextList));
@@ -325,7 +304,7 @@ function exitTextEdit(dataToPass) {
     // on title edit
     if (dataToPass.e.target.className == "save-edit") {
       // create new title
-      const newTitle = `${state.currentTitleKey}_${edittedText}`;
+      const [newTitle] = createLocalState("exitTextEditTitle", edittedText);
 
       // update localstorage
       localStorage.setItem(

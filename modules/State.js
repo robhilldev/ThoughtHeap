@@ -59,7 +59,54 @@ function sortTitlesArray() {
 }
 
 // the flag parameter represents which function the state is being updated from
-// function createLocalState(flag) {}
+// values is whatever other data is needed for that state context
+function createLocalState(flag, ...values) {
+  let localStateVars = [];
+
+  if (flag === "addList") {
+    localStateVars = [
+      String(
+        Number(
+          state.titles.at(-1).substring(0, state.titles.at(-1).indexOf("_"))
+        ) + 1
+      ),
+    ];
+    localStateVars.push(`${localStateVars[0]}_New List`);
+  }
+
+  if (flag === "addNote") {
+    localStateVars = [
+      document.createElement("li"),
+      String(state.currentList.length === 0 ? 0 : state.currentList.length),
+    ];
+  }
+
+  if (flag === "removeList") {
+    let nextTitle = DEFAULT_INITIAL_TITLE;
+    if (state.titles.length > 1 && state.titles[0] !== state.currentTitle) {
+      nextTitle = state.titles[0];
+    }
+    if (state.titles.length > 1 && state.titles[0] === state.currentTitle) {
+      nextTitle = state.titles[1];
+    }
+    localStateVars = [
+      nextTitle,
+      nextTitle.substring(0, nextTitle.indexOf("_")),
+      JSON.parse(localStorage.getItem(nextTitle)) || [],
+    ];
+  }
+
+  if (flag === "changeList") {
+    localStateVars = [state.titles.find((t) => t.startsWith(values[0]))];
+    localStateVars.push(JSON.parse(localStorage.getItem(localStateVars[0])));
+  }
+
+  if (flag === "exitTextEditTitle") {
+    localStateVars = [`${state.currentTitleKey}_${values[0]}`];
+  }
+
+  return localStateVars;
+}
 
 // the flag parameter represents which function the state is being updated from
 // stateVars is the local variables to update the global state variables with
@@ -117,4 +164,4 @@ function updateState(flag, ...stateVars) {
   }
 }
 
-export { DEFAULT_INITIAL_TITLE, state, initializeState, updateState };
+export { state, initializeState, createLocalState, updateState };

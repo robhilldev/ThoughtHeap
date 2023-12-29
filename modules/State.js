@@ -1,39 +1,101 @@
-function initializeState(defaultInitialTitle) {
-  let titles = Object.keys(localStorage);
-  let currentTitle =
-    titles.find((t) => t.endsWith("_current")) || defaultInitialTitle;
+const DEFAULT_INITIAL_TITLE = "0_My Thoughts";
+let state = {
+  titles: [],
+  currentTitle: "",
+  currentTitleKey: "",
+  userFacingTitle: "",
+  currentList: [],
+};
+
+function initializeState() {
+  state.titles = Object.keys(localStorage);
+  state.currentTitle =
+    state.titles.find((t) => t.endsWith("_current")) || DEFAULT_INITIAL_TITLE;
 
   // remove current tag from currentTitle variable
-  if (currentTitle.includes("_current")) {
-    currentTitle = currentTitle.substring(0, currentTitle.lastIndexOf("_"));
+  if (state.currentTitle.includes("_current")) {
+    state.currentTitle = state.currentTitle.substring(
+      0,
+      state.currentTitle.lastIndexOf("_")
+    );
   }
   // add first default title to titles array on first load
-  if (titles.length === 0) titles.push(currentTitle);
+  if (state.titles.length === 0) state.titles.push(state.currentTitle);
   // remove current tag from titles array if present
-  titles = titles.map((t) => {
+  state.titles = state.titles.map((t) => {
     if (t.includes("_current")) return t.substring(0, t.lastIndexOf("_"));
     else return t;
   });
 
-  let currentTitleKey = currentTitle.substring(0, currentTitle.indexOf("_"));
-  let userFacingTitle = currentTitle.substring(currentTitle.indexOf("_") + 1);
-  let currentList =
-    JSON.parse(localStorage.getItem(currentTitle.concat("_current"))) || [];
-
-  return [titles, currentTitle, currentTitleKey, userFacingTitle, currentList];
+  state.currentTitleKey = state.currentTitle.substring(
+    0,
+    state.currentTitle.indexOf("_")
+  );
+  state.userFacingTitle = state.currentTitle.substring(
+    state.currentTitle.indexOf("_") + 1
+  );
+  state.currentList =
+    JSON.parse(localStorage.getItem(state.currentTitle.concat("_current"))) ||
+    [];
 }
 
-// the flag argument represents which function the state is being updated from
-// function updateState(flag, ...stateVars) {
-//   let updatedValues;
+// the flag parameter represents which function the state is being updated from
+// function createLocalState(flag) {}
 
-//   if (/* flag 1 */) {/* update updatedValues */}
-//   if (/* flag 2 */) {/* update updatedValues */}
-//   if (/* flag 3 */) {/* update updatedValues */}
-//   if (/* flag 4 */) {/* update updatedValues */}
-//   if (/* flag 5 */) {/* update updatedValues */}
+// the flag parameter represents which function the state is being updated from
+// stateVars is the local variables to update the global state variables with
+function updateState(flag, ...stateVars) {
+  if (flag === "addList") {
+    state.titles.push(stateVars[1]);
+    state.currentTitle = stateVars[1];
+    state.currentTitleKey = stateVars[0];
+    state.userFacingTitle = stateVars[1].substring(
+      stateVars[1].indexOf("_") + 1
+    );
+    state.currentList = [];
+  }
 
-//   return updatedValues;
-// }
+  if (flag === "addNote") {
+    state.currentList.push(stateVars[0]);
+  }
 
-export { initializeState };
+  if (flag === "removeList") {
+    state.userFacingTitle = stateVars[0].substring(
+      stateVars[0].indexOf("_") + 1
+    );
+    state.titles.splice(state.titles.indexOf(state.currentTitle), 1);
+    if (state.titles.length === 0) state.titles.push(stateVars[0]);
+    state.currentTitle = stateVars[0];
+    state.currentTitleKey = stateVars[1];
+    state.currentList = stateVars[2];
+  }
+
+  if (flag === "removeNote") {
+    state.currentList.splice(stateVars[0], 1, stateVars[1]);
+  }
+
+  if (flag === "changeList") {
+    state.currentTitle = stateVars[0];
+    state.currentTitleKey = stateVars[1];
+    state.userFacingTitle = stateVars[0].substring(
+      stateVars[0].indexOf("_") + 1
+    );
+    state.currentList = stateVars[2];
+  }
+
+  if (flag === "exitTextEditNote") {
+    state.currentList.splice(stateVars[0], 1, stateVars[1]);
+  }
+
+  if (flag === "exitTextEditTitle") {
+    state.titles.splice(
+      state.titles.indexOf(state.currentTitle),
+      1,
+      stateVars[0]
+    );
+    state.currentTitle = stateVars[0];
+    state.userFacingTitle = stateVars[1];
+  }
+}
+
+export { DEFAULT_INITIAL_TITLE, state, initializeState, updateState };

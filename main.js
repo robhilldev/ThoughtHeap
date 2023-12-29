@@ -7,7 +7,7 @@ import {
   updateState,
 } from "./modules/State.js";
 
-// add current title to page, clear input box, set up event listeners, display notes
+// setup page based on initial state
 window.onload = () => {
   initializeState();
 
@@ -27,27 +27,9 @@ window.onload = () => {
   document.getElementById("form-button").addEventListener("click", addNote);
   document.getElementById("text-to-add").value = "";
 
-  sortTitlesArray();
   initializeCurrentList();
   generateListMenu();
 };
-
-// make sure titles array is sorted based on preceding key values
-function sortTitlesArray() {
-  state.titles.sort((a, b) => {
-    if (
-      Number(a.substring(0, a.indexOf("_"))) <
-      Number(b.substring(0, b.indexOf("_")))
-    )
-      return -1;
-    if (
-      Number(a.substring(0, a.indexOf("_"))) >
-      Number(b.substring(0, b.indexOf("_")))
-    )
-      return 1;
-    return 0;
-  });
-}
 
 // retrieve the current list from localstorage and display it on the page
 function initializeCurrentList() {

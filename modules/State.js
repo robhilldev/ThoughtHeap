@@ -37,6 +37,25 @@ function initializeState() {
   state.currentList =
     JSON.parse(localStorage.getItem(state.currentTitle.concat("_current"))) ||
     [];
+
+  sortTitlesArray();
+}
+
+// make sure titles array is sorted based on preceding key values
+function sortTitlesArray() {
+  state.titles.sort((a, b) => {
+    if (
+      Number(a.substring(0, a.indexOf("_"))) <
+      Number(b.substring(0, b.indexOf("_")))
+    )
+      return -1;
+    if (
+      Number(a.substring(0, a.indexOf("_"))) >
+      Number(b.substring(0, b.indexOf("_")))
+    )
+      return 1;
+    return 0;
+  });
 }
 
 // the flag parameter represents which function the state is being updated from

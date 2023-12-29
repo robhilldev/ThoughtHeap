@@ -1,5 +1,6 @@
 import * as button from "./modules/Button.js";
 import * as interaction from "./modules/Interaction.js";
+import { updateStorage } from "./modules/Storage.js";
 import {
   state,
   initializeState,
@@ -99,12 +100,7 @@ function generateListMenu() {
 // add list to localstorage, update state variables, add list to page
 function addList() {
   const [newKey, newTitle] = createLocalState("addList");
-
-  // update local storage
-  localStorage.setItem(state.currentTitle, JSON.stringify(state.currentList));
-  localStorage.removeItem(`${state.currentTitle}_current`);
-  localStorage.setItem(`${newTitle}_current`, "[]");
-
+  updateStorage("addList", state.currentTitle, state.currentList, newTitle);
   updateState("addList", newKey, newTitle);
 
   // update page and open title edit box
@@ -115,7 +111,7 @@ function addList() {
   document.getElementById("edit-button-header").click();
 }
 
-// add note to page and localstorage, update list variables
+// add to localstorage, update state variables, add note to page
 function addNote(e) {
   e.preventDefault();
   const textToAdd = document.getElementById("text-to-add");
@@ -123,12 +119,7 @@ function addNote(e) {
   if (textToAdd.value) {
     const [newLi, newId] = createLocalState("addNote");
     updateState("addNote", textToAdd.value);
-
-    // update local storage
-    localStorage.setItem(
-      `${state.currentTitle}_current`,
-      JSON.stringify(state.currentList)
-    );
+    updateStorage("addNote", state.currentTitle, state.currentList);
 
     // add note to page with an id, edit button, and remove button
     newLi.innerHTML = `<div id=note-${newId}>` + textToAdd.value + "</div>";
@@ -146,18 +137,11 @@ function addNote(e) {
   }
 }
 
-// remove current list from page and localstorage, update state variables
+// remove list from localstorage, update state variables, remove from page
 function removeList() {
   if (localStorage.length > 0) {
     const [nextTitle, nextTitleKey, nextList] = createLocalState("removeList");
-
-    // update local storage
-    localStorage.removeItem(`${state.currentTitle}_current`);
-    if (localStorage.getItem(nextTitle)) {
-      localStorage.setItem(`${nextTitle}_current`, JSON.stringify(nextList));
-      localStorage.removeItem(nextTitle);
-    }
-
+    updateStorage("removeList", state.currentTitle, nextTitle, nextList);
     updateState("removeList", nextTitle, nextTitleKey, nextList);
 
     // update page
@@ -169,7 +153,7 @@ function removeList() {
   }
 }
 
-// remove note from page and list array, mark note for deletion in localstorage
+// remove note from page, update state, mark note for deletion in localstorage
 function removeNote(e) {
   const note = e.target.parentElement;
   note.remove();
@@ -178,10 +162,7 @@ function removeNote(e) {
     note.id,
     `x_${note.firstElementChild.textContent}_x`
   );
-  localStorage.setItem(
-    `${state.currentTitle}_current`,
-    JSON.stringify(state.currentList)
-  );
+  updateStorage("removeNote", state.currentTitle, state.currentList);
 }
 
 // change to the list selected in the list select menu
@@ -194,13 +175,13 @@ function changeList(e) {
   // given the menu item selected is not the already viewed list
   if (nextTitleKey !== state.currentTitleKey) {
     const [nextTitle, nextList] = createLocalState("changeList", nextTitleKey);
-
-    // update localstorage
-    localStorage.setItem(`${nextTitle}_current`, JSON.stringify(nextList));
-    localStorage.removeItem(nextTitle);
-    localStorage.setItem(state.currentTitle, JSON.stringify(state.currentList));
-    localStorage.removeItem(`${state.currentTitle}_current`);
-
+    updateStorage(
+      "changeList",
+      state.currentTitle,
+      state.currentList,
+      nextTitle,
+      nextList
+    );
     updateState("changeList", nextTitle, nextTitleKey, nextList);
 
     // update page
@@ -272,7 +253,7 @@ function editText(e) {
   });
 }
 
-// handle saving of edited content to page and localstorage, or discarding edit
+// handle saving and discarding edits
 function exitTextEdit(dataToPass) {
   const editButton = dataToPass.args[0];
   const removeButton = dataToPass.args[1];
@@ -285,16 +266,14 @@ function exitTextEdit(dataToPass) {
   const discardEditButton = parent.lastElementChild;
   const saveEditButton = parent.lastElementChild.previousElementSibling;
 
-  // swap back to text element, populate with editted text or old text
+  // swap back to text element, populate with editted text or previous text
   if (parent.tagName === "LI") {
     // on note edit
     if (dataToPass.e.target.className == "save-edit") {
-      // update state and localstorage, populate new text element
       updateState("exitTextEditNote", parent.id, edittedText);
-      localStorage.setItem(
-        `${state.currentTitle}_current`,
-        JSON.stringify(state.currentList)
-      );
+      updateStorage("exitTextEditNote", state.currentTitle, state.currentList);
+
+      // update page
       textElement.textContent = edittedText;
     } else {
       // on discard edit, put back existing text
@@ -303,18 +282,13 @@ function exitTextEdit(dataToPass) {
   } else if (parent.tagName === "HEADER") {
     // on title edit
     if (dataToPass.e.target.className == "save-edit") {
-      // create new title
       const [newTitle] = createLocalState("exitTextEditTitle", edittedText);
-
-      // update localstorage
-      localStorage.setItem(
-        `${newTitle}_current`,
-        JSON.stringify(state.currentList)
+      updateStorage(
+        "exitTextEditTitle",
+        state.currentTitle,
+        state.currentList,
+        newTitle
       );
-      if (newTitle !== state.currentTitle) {
-        localStorage.removeItem(`${state.currentTitle}_current`);
-      }
-
       updateState("exitTextEditTitle", newTitle, edittedText);
 
       // update page

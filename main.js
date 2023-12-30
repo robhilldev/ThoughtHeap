@@ -8,28 +8,33 @@ import {
   updateState,
 } from "./modules/State.js";
 
-// setup page based on initial state
-window.onload = () => {
-  initializeState();
+document.onreadystatechange = () => {
+  if (document.readyState === "complete") {
+    initializeState();
 
-  document.getElementsByTagName("h1")[0].textContent = state.userFacingTitle;
-  document.getElementsByTagName("h1")[0].id = `title-${state.currentTitleKey}`;
-  document
-    .getElementById("list-select-button")
-    .addEventListener("click", interaction.toggleListMenu);
-  document.addEventListener("click", interaction.closeListMenu);
-  document.getElementById("add-list-button").addEventListener("click", addList);
-  document
-    .getElementById("edit-button-header")
-    .addEventListener("click", editText);
-  document
-    .getElementById("remove-button-header")
-    .addEventListener("click", removeList);
-  document.getElementById("form-button").addEventListener("click", addNote);
-  document.getElementById("text-to-add").value = "";
+    document.getElementsByTagName("h1")[0].textContent = state.userFacingTitle;
+    document.getElementsByTagName(
+      "h1"
+    )[0].id = `title-${state.currentTitleKey}`;
+    document
+      .getElementById("list-select-button")
+      .addEventListener("click", interaction.toggleListMenu);
+    document.addEventListener("click", interaction.closeListMenu);
+    document
+      .getElementById("add-list-button")
+      .addEventListener("click", addList);
+    document
+      .getElementById("edit-button-header")
+      .addEventListener("click", editText);
+    document
+      .getElementById("remove-button-header")
+      .addEventListener("click", removeList);
+    document.getElementById("form-button").addEventListener("click", addNote);
+    document.getElementById("text-to-add").value = "";
 
-  initializeCurrentList();
-  generateListMenu();
+    initializeCurrentList();
+    generateListMenu();
+  }
 };
 
 // retrieve the current list from localstorage and display it on the page

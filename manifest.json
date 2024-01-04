@@ -1,6 +1,7 @@
 {
   "name": "Thought Heap",
   "short_name": "ThoughtHeap",
+  "id": "/",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "skyblue",

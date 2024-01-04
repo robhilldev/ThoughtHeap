@@ -68,16 +68,15 @@ header {
   align-items: center;
   justify-content: center;
   column-gap: 1vw;
-  margin-left: 5%;
-  margin-right: 5%;
+  padding-left: 5%;
+  padding-right: 5%;
   padding-top: 1.8rem;
   padding-bottom: 1.5rem;
   font-size: 1rem;
 }
 header h1 {
   order: 2;
-  margin-top: 0;
-  margin-bottom: 0;
+  margin: 0;
   padding: 2px;
 }
 header button {
@@ -85,7 +84,6 @@ header button {
 }
 
 button#list-select-button {
-  margin-right: 0.5vw;
   border-radius: 0.25rem;
   background: url(images/bars-solid.svg) no-repeat;
   background-color: white;
@@ -110,6 +108,7 @@ div#list-select-dropdown {
   display: inline-block;
   z-index: 1;
   order: 1;
+  padding-right: 0.5vw;
 }
 
 div#list-select-content {
@@ -174,8 +173,8 @@ header span.edit-input-box:focus {
 /*---------- Main section styles ----------*/
 main {
   display: grid;
-  margin-left: 5%;
-  margin-right: 5%;
+  padding-left: 5%;
+  padding-right: 5%;
 }
 main button {
   border: 3px outset #ddd0c8;
@@ -186,7 +185,7 @@ form {
   align-items: center;
   gap: 5%;
   justify-content: start;
-  margin-bottom: 2rem;
+  padding-bottom: 2rem;
 }
 form label {
   display: none;
@@ -216,8 +215,8 @@ form input#form-button {
 }
 
 ul#list {
-  margin-top: 0;
-  margin-bottom: 2.4rem;
+  margin: 0;
+  padding-bottom: 2.4rem;
   padding-left: 0;
   list-style-position: inside;
   list-style-type: none;
@@ -242,8 +241,8 @@ li {
 }
 li div {
   flex-grow: 1;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 }
 li span.edit-input-box {
   margin-top: 1rem;

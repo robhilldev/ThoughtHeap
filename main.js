@@ -1,12 +1,12 @@
-import * as button from "./modules/Button.js";
-import * as interaction from "./modules/Interaction.js";
-import { updateStorage } from "./modules/Storage.js";
 import {
   state,
   initializeState,
   createLocalState,
   updateState,
 } from "./modules/State.js";
+import { updateStorage } from "./modules/Storage.js";
+import * as interaction from "./modules/Interaction.js";
+import * as button from "./modules/Button.js";
 
 document.onreadystatechange = () => {
   if (document.readyState === "complete") {
@@ -17,6 +17,7 @@ document.onreadystatechange = () => {
   }
 };
 
+// set up page elements and event listeners not specific to a list
 function initializePage() {
   document.getElementsByTagName("h1")[0].textContent = state.userFacingTitle;
   document.getElementsByTagName("h1")[0].id = `title-${state.currentTitleKey}`;
@@ -106,11 +107,12 @@ function addList() {
   updateStorage("addList", state.currentTitle, state.currentList, newTitle);
   updateState("addList", newKey, newTitle);
 
-  // update page and open title edit box
   document.getElementById("list").innerHTML = "";
   document.getElementsByTagName("h1")[0].textContent = state.userFacingTitle;
   document.getElementsByTagName("h1")[0].id = `title-${newKey}`;
   generateListMenu();
+
+  // open title edit box
   document.getElementById("edit-button-header").click();
 }
 
@@ -124,7 +126,6 @@ function addNote(e) {
     updateState("addNote", textToAdd.value);
     updateStorage("addNote", state.currentTitle, state.currentList);
 
-    // add note to page with an id, edit button, and remove button
     newLi.innerHTML = `<div id=note-${newId}>` + textToAdd.value + "</div>";
     newLi.id = newId;
     newLi
@@ -147,7 +148,6 @@ function removeList() {
     updateStorage("removeList", state.currentTitle, nextTitle, nextList);
     updateState("removeList", nextTitle, nextTitleKey, nextList);
 
-    // update page
     document.getElementById("list").innerHTML = "";
     document.getElementsByTagName("h1")[0].textContent = state.userFacingTitle;
     document.getElementsByTagName("h1")[0].id = `title-${nextTitleKey}`;
@@ -170,10 +170,7 @@ function removeNote(e) {
 
 // change to the list selected in the list select menu
 function changeList(e) {
-  const nextTitleKey = e.target.id.substring(
-    e.target.id.lastIndexOf("-") + 1,
-    e.target.id.length
-  );
+  const nextTitleKey = e.target.id.substring(e.target.id.lastIndexOf("-") + 1);
 
   // given the menu item selected is not the already viewed list
   if (nextTitleKey !== state.currentTitleKey) {
@@ -187,7 +184,6 @@ function changeList(e) {
     );
     updateState("changeList", nextTitle, nextTitleKey, nextList);
 
-    // update page
     document.getElementById("list").innerHTML = "";
     document.getElementsByTagName("h1")[0].textContent = state.userFacingTitle;
     document.getElementsByTagName("h1")[0].id = `title-${nextTitleKey}`;

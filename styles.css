@@ -275,7 +275,7 @@ li span.edit-input-box:focus {
   }
 
   form {
-    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
   }
 
   li {
